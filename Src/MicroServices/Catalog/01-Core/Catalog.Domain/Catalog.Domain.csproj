@@ -7,8 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="BookAggregate\Events\" />
-    <Folder Include="BookAggregate\ValueObjects\" />
+    <Compile Remove="BookAggregate\**" />
+    <EmbeddedResource Remove="BookAggregate\**" />
+    <None Remove="BookAggregate\**" />
   </ItemGroup>
 
   <ItemGroup>
