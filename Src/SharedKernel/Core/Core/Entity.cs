@@ -1,7 +1,7 @@
 ﻿namespace Core;
 
 public abstract class Entity<T>
-    where T: struct
+    where T: notnull
 
 {
     public T Id { get; set; } = default!;

@@ -1,15 +1,15 @@
 ﻿namespace Core;
 
-public abstract class AggregateRoot<T>: Entity<T> where T: struct
+public abstract class AggregateRoot<T>: Entity<T> where T : notnull
 {
     private readonly List<IDomainEvent> _domainEvents = [];
-    public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
+    protected IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
-    public void AddEvents(IDomainEvent @event)
+    protected void AddEvents(IDomainEvent @event)
     {
         _domainEvents.Add(@event);
     }
-    public IReadOnlyList<IDomainEvent> ClearEvents()
+    protected IReadOnlyList<IDomainEvent> ClearEvents()
     {
         var dequedEvents = _domainEvents;
         _domainEvents.Clear();
