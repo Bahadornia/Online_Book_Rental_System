@@ -1,8 +1,11 @@
 ﻿using Library.Repository.Domain.Dtos;
 using Library.Repository.Domain.Logics;
 using Library.Repository.Domain.Models.BookAggregate.Entities;
+using Library.Repository.Domain.Models.BookAggregate.Events;
 using Library.Repository.Infrastructure.Data;
 using MapsterMapper;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace Library.Repository.Infrastructure.Services;
 
@@ -17,11 +20,11 @@ class BookService : IBookSevice
         _mapper = mapper;
     }
 
-    public Task AddBook(BookDto bookDto, CancellationToken ct)
+    public async Task AddBook(BookDto bookDto, CancellationToken ct)
     {
-        var book = _mapper.Map<Book>(bookDto);
-        _dbContext.Books.InsertOne(book);
-        throw new NotImplementedException();
+        var book = Book.Create(bookDto.Id, bookDto.Title, bookDto.Author, bookDto.PublisherId, bookDto.CategoryId, bookDto.ISBN, bookDto.Description, bookDto.Image);
+
+            await _dbContext.Books.InsertOneAsync(book, null, ct);
     }
 
     public Task DeleteBook(BookDto book, CancellationToken ct)

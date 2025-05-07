@@ -6,7 +6,7 @@ namespace Library.Repository.Infrastructure.Data;
 public class BookDbContext
 {
     private readonly IMongoClient _client;
-    public readonly IMongoDatabase _db;
+    private readonly IMongoDatabase _db;
 
     public BookDbContext(IMongoClient client)
     {
@@ -14,5 +14,9 @@ public class BookDbContext
         _db = _client.GetDatabase("CatalogDb");
 
     }
+
+    public IMongoClient Client => _client;
+    public IMongoDatabase Database => _db;
     public IMongoCollection<Book> Books => _db.GetCollection<Book>("Book");
 }
+

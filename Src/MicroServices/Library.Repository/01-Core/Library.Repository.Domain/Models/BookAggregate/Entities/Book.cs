@@ -1,4 +1,5 @@
 ﻿using Framework;
+using Library.Repository.Domain.Models.BookAggregate.Events;
 using Library.Repository.Domain.Models.BookAggregate.ValueObjects;
 
 namespace Library.Repository.Domain.Models.BookAggregate.Entities;
@@ -28,6 +29,8 @@ public class Book : AggregateRoot<BookId>
             Image = image,
             Description = desctiption,
         };
+        var bookAddedEvent = new BookAddedEvent(book);
+        book.AddDomainEvents(bookAddedEvent);
         return book;
     }
 

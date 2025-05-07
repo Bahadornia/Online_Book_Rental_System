@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.Repository.Domain",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.Repository.Infrastructure", "Src\MicroServices\Library.Repository\02-Infrastructure\Library.Repository.Infrastructure\Library.Repository.Infrastructure.csproj", "{AD64D45D-3E76-BA7F-8F79-DF863271E09B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedKernel.Messaging", "Src\SharedKernel\Messaging\SharedKernel.Messaging\SharedKernel.Messaging.csproj", "{8F64C29A-9661-462E-B15D-A95E442AE53F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{AD64D45D-3E76-BA7F-8F79-DF863271E09B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD64D45D-3E76-BA7F-8F79-DF863271E09B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD64D45D-3E76-BA7F-8F79-DF863271E09B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F64C29A-9661-462E-B15D-A95E442AE53F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F64C29A-9661-462E-B15D-A95E442AE53F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F64C29A-9661-462E-B15D-A95E442AE53F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F64C29A-9661-462E-B15D-A95E442AE53F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +75,7 @@ Global
 		{844589A8-FC1C-45C7-B209-F8965D40EEF7} = {1BE0731B-BDB9-420F-AEA6-A5C9694D15AD}
 		{3F890F02-ABF0-1260-BEF8-3EE2930BB5FD} = {129485C7-F418-48D7-BCBB-C70DBFD0CF46}
 		{AD64D45D-3E76-BA7F-8F79-DF863271E09B} = {EB901876-A6ED-46A7-92C5-8C36F8620497}
+		{8F64C29A-9661-462E-B15D-A95E442AE53F} = {E4BB9269-0FA8-4998-A4E4-A20B215EB10F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5929BD2B-F9E7-4193-A8D3-685286088163}

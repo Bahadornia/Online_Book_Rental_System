@@ -1,3 +1,6 @@
-﻿namespace Library.Repository.Domain.Dtos;
+﻿using Library.Repository.Domain.Models.BookAggregate.ValueObjects;
 
-public record BookDto();
+namespace Library.Repository.Domain.Dtos;
+
+public record BookDto(Guid Id, string Title, string Author, int PublisherId, int CategoryId, long ISBN, string Description, string Image);
+
