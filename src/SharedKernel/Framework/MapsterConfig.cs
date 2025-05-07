@@ -1,7 +1,7 @@
 ﻿using Mapster;
 using System.Reflection;
 
-namespace Catalog.Infrastructure;
+namespace Framework;
 
 public class MapsterConfig
 {

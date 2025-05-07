@@ -1,5 +1,8 @@
-﻿namespace Catalog.Domain.Models.BookAggregate.Events
+﻿using Catalog.Domain.Models.BookAggregate.Entities;
+using Framework;
+
+namespace Catalog.Domain.Models.BookAggregate.Events
 {
-    public record BookUpdatedEvent(Guid Id);
+    public record BookUpdatedEvent(Book book): IDomainEvent;
 
 }

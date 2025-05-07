@@ -1,11 +1,14 @@
-using Catalog.API.Grpc.Client.Logics;
+using Catalog.ApplicationServices;
 using Catalog.API.Grpc.Services;
 using ProtoBuf.Grpc.Server;
+using Catalog.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddCodeFirstGrpc();
+builder.Services.AddApplicationServices();
+builder.Services.AddCatalogInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();
 

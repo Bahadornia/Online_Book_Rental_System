@@ -16,7 +16,7 @@ public class Book : AggregateRoot<BookId>
 
     private Book() { }
 
-    public static Book Create(Guid id, string title, string author, int publisherId, int categoryId, long isbn, string desctiption, string image)
+    public static Book Create(BookId id, string title, string author, int publisherId, int categoryId, ISBN isbn, string desctiption, string image)
     {
         var book = new Book
         {
@@ -43,6 +43,8 @@ public class Book : AggregateRoot<BookId>
         ISBN = isbn;
         Description = desctiption;
         Image = image;
+        var bookUpdatedEvent = new BookUpdatedEvent(this);
+        AddDomainEvents(bookUpdatedEvent);
     }
-
+    
 }

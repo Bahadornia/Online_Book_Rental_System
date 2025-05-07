@@ -14,6 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\01-Core\Catalog.ApplicationServices\Catalog.ApplicationServices.csproj" />
+    <ProjectReference Include="..\..\02-Infrastructure\Catalog.Infrastructure\Catalog.Infrastructure.csproj" />
     <ProjectReference Include="..\API.Grpc.Client\Catalog.API.Grpc.Client\Catalog.API.Grpc.Client.csproj" />
   </ItemGroup>
 

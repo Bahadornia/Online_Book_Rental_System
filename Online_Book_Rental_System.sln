@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.API.Grpc", "src\Mic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.API.Grpc.Verification", "src\MicroServices\Catalog\03-API\Catalog.API.Grpc.Verification\Catalog.API.Grpc.Verification.csproj", "{4963A590-CE38-43AC-8001-7E94C0FF80B4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.ApplicationServices", "src\MicroServices\Catalog\01-Core\Catalog.ApplicationServices\Catalog.ApplicationServices.csproj", "{B9A8BD74-2E4E-4589-96FC-937DECEAA86D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{4963A590-CE38-43AC-8001-7E94C0FF80B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4963A590-CE38-43AC-8001-7E94C0FF80B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4963A590-CE38-43AC-8001-7E94C0FF80B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9A8BD74-2E4E-4589-96FC-937DECEAA86D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9A8BD74-2E4E-4589-96FC-937DECEAA86D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9A8BD74-2E4E-4589-96FC-937DECEAA86D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9A8BD74-2E4E-4589-96FC-937DECEAA86D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,6 +103,7 @@ Global
 		{88DBFBAA-46AD-430F-A7D6-680C507CFFB2} = {DE800833-1B32-4220-A7C3-8AD2F251315A}
 		{C14EBF0C-C7CD-4943-A74D-4B8596334C01} = {DE800833-1B32-4220-A7C3-8AD2F251315A}
 		{4963A590-CE38-43AC-8001-7E94C0FF80B4} = {DE800833-1B32-4220-A7C3-8AD2F251315A}
+		{B9A8BD74-2E4E-4589-96FC-937DECEAA86D} = {129485C7-F418-48D7-BCBB-C70DBFD0CF46}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5929BD2B-F9E7-4193-A8D3-685286088163}

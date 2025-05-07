@@ -1,8 +1,8 @@
 ﻿using Catalog.Domain.Dtos;
 
-namespace Catalog.Domain.Logics;
+namespace Catalog.Domain.Repositories;
 
-public interface IBookSevice
+public interface IBookRepository
 {
     Task AddBook(BookDto book, CancellationToken ct);
     Task UpdateBook(BookDto book, CancellationToken ct);

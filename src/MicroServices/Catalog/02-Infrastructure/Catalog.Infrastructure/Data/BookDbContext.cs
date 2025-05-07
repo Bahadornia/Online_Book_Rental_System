@@ -1,5 +1,6 @@
 ﻿using MongoDB.Driver;
 using Catalog.Domain.Models.BookAggregate.Entities;
+using Catalog.Infrastructure.Data.BookAggregate;
 
 namespace Catalog.Infrastructure.Data;
 
@@ -17,6 +18,6 @@ public class BookDbContext
 
     public IMongoClient Client => _client;
     public IMongoDatabase Database => _db;
-    public IMongoCollection<Book> Books => _db.GetCollection<Book>("Book");
+    public IMongoCollection<BookData> Books => _db.GetCollection<BookData>("Book");
 }
 

@@ -1,0 +1,14 @@
+﻿using MediatR;
+
+namespace Catalog.ApplicationServices.Commands;
+
+public record AddBookCommand(
+    string Title,
+    string Author,
+    int PublisherId,
+    int CategoryId,
+    long ISBN,
+    string Description,
+    byte[] Image) : IRequest
+{
+}
