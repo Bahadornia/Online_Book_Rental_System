@@ -1,0 +1,6 @@
+@Catalog.API.Grpc.Verification_HostAddress = http://localhost:5126
+
+GET {{Catalog.API.Grpc.Verification_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
