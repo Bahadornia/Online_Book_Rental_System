@@ -1,11 +1,12 @@
 ﻿using Catalog.Domain.Dtos;
 using Catalog.Domain.Repositories;
+using Framework.CQRS;
 using MapsterMapper;
 using MediatR;
 
 namespace Catalog.ApplicationServices.Commands;
 
-public class AddBookCommandHandler : IRequestHandler<AddBookCommand>
+public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
 {
     private readonly IBookRepository _bookService;
     private readonly IMapper _mapper;
@@ -16,12 +17,12 @@ public class AddBookCommandHandler : IRequestHandler<AddBookCommand>
         _mapper = mapper;
     }
 
-    async Task IRequestHandler<AddBookCommand>.Handle(AddBookCommand command, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(AddBookCommand command, CancellationToken cancellationToken)
     {
         var dto = _mapper.Map<BookDto>(command);
         dto.Id = Guid.NewGuid();
         dto.Image = "test";
         await _bookService.AddBook(dto, cancellationToken);
-
+        return Unit.Value;
     }
 }

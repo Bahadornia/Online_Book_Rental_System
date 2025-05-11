@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Framework.CQRS;
+using MediatR;
 
 namespace Catalog.ApplicationServices.Commands;
 
@@ -9,6 +10,6 @@ public record AddBookCommand(
     int CategoryId,
     long ISBN,
     string Description,
-    byte[] Image) : IRequest
+    byte[] Image) : ICommand
 {
 }

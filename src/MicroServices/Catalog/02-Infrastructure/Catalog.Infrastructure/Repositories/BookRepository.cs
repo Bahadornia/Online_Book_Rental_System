@@ -3,7 +3,9 @@ using Catalog.Domain.Models.BookAggregate.Entities;
 using Catalog.Domain.Repositories;
 using Catalog.Infrastructure.Data;
 using Catalog.Infrastructure.Data.BookAggregate;
+using DnsClient.Internal;
 using MapsterMapper;
+using Microsoft.Extensions.Logging;
 
 namespace Catalog.Infrastructure.Repositories;
 
@@ -11,11 +13,13 @@ class BookRepository : IBookRepository
 {
     private readonly BookDbContext _dbContext;
     private readonly IMapper _mapper;
+    private readonly ILogger<BookDbContext> _logger;
 
-    public BookRepository(BookDbContext dbContext, IMapper mapper)
+    public BookRepository(BookDbContext dbContext, IMapper mapper, ILogger<BookDbContext> logger)
     {
         _dbContext = dbContext;
         _mapper = mapper;
+        _logger = logger;
     }
 
     public async Task AddBook(BookDto bookDto, CancellationToken ct)
@@ -25,6 +29,7 @@ class BookRepository : IBookRepository
         var bookData = _mapper.Map<BookData>(book);
         
         await _dbContext.Books.InsertOneAsync(bookData, null, ct);
+        _logger.LogInformation($"Book with id {bookData.Id} was saved.");
     }
 
     public Task DeleteBook(BookDto book, CancellationToken ct)
