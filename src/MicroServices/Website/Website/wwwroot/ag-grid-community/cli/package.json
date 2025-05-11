@@ -1,0 +1,23 @@
+{
+  "name": "@ag-grid-community/cli",
+  "version": "31.2.0",
+  "license": "MIT",
+  "description": "AG Grid developer toolkit",
+  "author": "AG Grid <info@ag-grid.com>",
+  "homepage": "https://www.ag-grid.com/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ag-grid/devtools.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ag-grid/devtools/issues"
+  },
+  "dependencies": {
+    "@ag-grid-community/codemods": "31.2.0"
+  },
+  "bundleDependencies": [
+    "@ag-grid-community/codemods"
+  ],
+  "main": "./index.cjs",
+  "bin": "./index.cjs"
+}

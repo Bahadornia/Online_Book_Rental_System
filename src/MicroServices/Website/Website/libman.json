@@ -1,0 +1,41 @@
+{
+  "version": "3.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "provider": "jsdelivr",
+      "library": "@ag-grid-community/cli@31.2.0",
+      "destination": "wwwroot/ag-grid-community/cli/"
+    },
+    {
+      "library": "ag-grid@33.1.1",
+      "destination": "wwwroot/ag-grid/",
+      "files": [
+        "ag-grid-community.js",
+        "ag-grid-community.min.js",
+        "ag-grid-community.min.noStyle.js",
+        "ag-grid-community.noStyle.js"
+      ]
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "@ag-grid-community/styles@32.3.5",
+      "destination": "wwwroot/lib/ag-grid-community/styles/"
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "ag-grid-community@33.2.4",
+      "destination": "wwwroot/lib/ag-grid-community/"
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "bundler@0.8.0",
+      "destination": "wwwroot/lib/bundler/"
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "jquery-ajax-unobtrusive@3.2.6",
+      "destination": "wwwroot/lib/jquery-ajax-unobtrusive/"
+    }
+  ]
+}

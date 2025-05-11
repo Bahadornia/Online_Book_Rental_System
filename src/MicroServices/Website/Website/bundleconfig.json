@@ -1,0 +1,14 @@
+[
+  {
+    "outputFileName": "wwwroot/js/app.min.js",
+    "inputFiles": [
+      "wwwroot/js/app.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/Book/book.min.js",
+    "inputFiles": [
+      "wwwroot/js/Book/book.js"
+    ]
+  }
+]

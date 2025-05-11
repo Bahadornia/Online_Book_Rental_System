@@ -43,6 +43,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.API.Grpc.Verificati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.ApplicationServices", "src\MicroServices\Catalog\01-Core\Catalog.ApplicationServices\Catalog.ApplicationServices.csproj", "{B9A8BD74-2E4E-4589-96FC-937DECEAA86D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Website", "Website", "{16EB5D58-6FAC-4983-8718-6EC0B63D1771}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Website", "src\MicroServices\Website\Website\Website.csproj", "{A819181E-8722-4BD8-80CF-00C3748EBE18}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +85,10 @@ Global
 		{B9A8BD74-2E4E-4589-96FC-937DECEAA86D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9A8BD74-2E4E-4589-96FC-937DECEAA86D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9A8BD74-2E4E-4589-96FC-937DECEAA86D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A819181E-8722-4BD8-80CF-00C3748EBE18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A819181E-8722-4BD8-80CF-00C3748EBE18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A819181E-8722-4BD8-80CF-00C3748EBE18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A819181E-8722-4BD8-80CF-00C3748EBE18}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,6 +112,8 @@ Global
 		{C14EBF0C-C7CD-4943-A74D-4B8596334C01} = {DE800833-1B32-4220-A7C3-8AD2F251315A}
 		{4963A590-CE38-43AC-8001-7E94C0FF80B4} = {DE800833-1B32-4220-A7C3-8AD2F251315A}
 		{B9A8BD74-2E4E-4589-96FC-937DECEAA86D} = {129485C7-F418-48D7-BCBB-C70DBFD0CF46}
+		{16EB5D58-6FAC-4983-8718-6EC0B63D1771} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{A819181E-8722-4BD8-80CF-00C3748EBE18} = {16EB5D58-6FAC-4983-8718-6EC0B63D1771}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5929BD2B-F9E7-4193-A8D3-685286088163}
