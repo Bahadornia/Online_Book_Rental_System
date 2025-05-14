@@ -10,6 +10,7 @@ public record AddBookCommand(
     int CategoryId,
     long ISBN,
     string Description,
+    string ContentType,
     byte[] Image) : ICommand
 {
 }

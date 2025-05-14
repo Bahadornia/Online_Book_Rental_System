@@ -1,9 +1,10 @@
-﻿using Catalog.Domain.Repositories;
+﻿using Catalog.Domain.Interfaces;
 using Catalog.Infrastructure.Data;
 using Catalog.Infrastructure.Repositories;
 using Framework;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Minio;
 using MongoDB.Driver;
 
 namespace Catalog.Infrastructure;
@@ -17,6 +18,17 @@ public static class CatalogInfrastructureBootstrapper
         services.AddScoped<BookDbContext>();
         services.AddScoped<IBookRepository, BookRepository>();
         services.AddMapsterService();
+
+        services.AddMinio(cfg =>
+        {
+            var config = configuration.GetSection("Minio");
+
+            cfg.WithEndpoint(config["Endpoint"])
+                .WithCredentials(config["AccessKey"], config["SecretKey"])
+                .WithSSL(bool.Parse(config["WithSSL"]!))
+                .Build();
+        });
+        services.AddSingleton<IFileService, MinioService>();
 
         return services;
     }

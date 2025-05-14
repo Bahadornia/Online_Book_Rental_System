@@ -1,4 +1,5 @@
 using Catalog.API.Grpc.Client;
+using Catalog.ApplicationServices;
 using Microsoft.AspNetCore.Builder;
 var builder = WebApplication.CreateBuilder(args);
 

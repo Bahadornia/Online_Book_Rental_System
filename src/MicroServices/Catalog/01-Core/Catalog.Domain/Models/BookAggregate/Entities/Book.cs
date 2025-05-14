@@ -12,7 +12,7 @@ public class Book : AggregateRoot<BookId>
     public int CategoryId { get; set; }
     public ISBN ISBN { get; set; } = default!;
     public string? Description { get; set; }
-    public string? Image { get; set; }
+    public string? ImageUrl { get; set; }
 
     private Book() { }
 
@@ -26,7 +26,7 @@ public class Book : AggregateRoot<BookId>
             PublisherId = publisherId,
             CategoryId = categoryId,
             ISBN = isbn,
-            Image = image,
+            ImageUrl = image,
             Description = desctiption,
         };
         var bookAddedEvent = new BookAddedEvent(book);
@@ -42,7 +42,7 @@ public class Book : AggregateRoot<BookId>
         CategoryId = categoryId;
         ISBN = isbn;
         Description = desctiption;
-        Image = image;
+        ImageUrl = image;
         var bookUpdatedEvent = new BookUpdatedEvent(this);
         AddDomainEvents(bookUpdatedEvent);
     }

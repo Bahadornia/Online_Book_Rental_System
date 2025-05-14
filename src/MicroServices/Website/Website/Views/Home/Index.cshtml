@@ -6,9 +6,11 @@
 <div class="book-form">
     <form enctype="multipart/form-data"
           data-ajax=true
-          asp-controller="Home"
-          asp-action="AddBook"
+         asp-controller="Home"
+         asp-action="AddBook"
+          data-ajax-success="onSuccess"
           data-ajax-method="POST"
+          data-ajax-failure = "onFailure"
           data-ajax-loading="#loader">
         <i class="fa fa-address-book-o" aria-hidden="true"></i>
         <div class="row mb-2">

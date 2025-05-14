@@ -1,6 +1,7 @@
 ﻿using Catalog.Domain.Dtos;
+using System.Collections.ObjectModel;
 
-namespace Catalog.Domain.Repositories;
+namespace Catalog.Domain.Interfaces;
 
 public interface IBookRepository
 {
@@ -9,5 +10,5 @@ public interface IBookRepository
     Task DeleteBook(BookDto book, CancellationToken ct);
     Task<IReadOnlyCollection<BookDto>> SearchBook(BookFilterDto filter, CancellationToken ct);
     Task<BookDto> GetBookById(Guid id, CancellationToken ct);
-    Task<IReadOnlyCollection<BookDto>> GetAll(Guid id, CancellationToken ct);
+    Task<IReadOnlyCollection<BookDto>> GetAll(CancellationToken ct);
 }

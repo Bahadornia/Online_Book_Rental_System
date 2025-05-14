@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Catalog.API.Grpc.Client.Logics;
 using Catalog.API.Grpc.Client.Requests;
 using MapsterMapper;
@@ -31,11 +32,10 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll(CancellationToken ct)
     {
-        var books = new List<BookViewModel> {
-          
-        };
+        var books = await _bookService.GetAllBooks(ct);
+       
         var rs = new { rows = books, toatlCount = books.Count };
         return Ok(rs);
     }
@@ -44,9 +44,12 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddBook([FromForm] BookViewModel book, CancellationToken ct)
     {
+        if (!ModelState.IsValid)
+        {
+            return View("Index", book);
+        }
         var addBookRq = _mapper.Map<AddBookRq>(book);
         await _bookService.AddBook(addBookRq, ct);
-        
         return Created();
     }
    

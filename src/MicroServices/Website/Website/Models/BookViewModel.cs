@@ -16,10 +16,13 @@ namespace Website.Models
         public long ISBN { get; init; }
         public string? Description { get; init; }
         public IFormFile ImageFile { get; set; } = default!;
+        public string? ImageUrl { get; set; }
         public byte[] Image => ConvertsToByte(ImageFile);
+        public string ContentType => ImageFile.ContentType;
 
         private byte[] ConvertsToByte(IFormFile file)
         {
+           
             if (file == null || file.Length == 0)
                 return null;
 

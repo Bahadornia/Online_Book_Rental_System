@@ -14,5 +14,5 @@ public class BookData
     public int CategoryId { get; set; }
     public long ISBN { get; set; } = default!;
     public string? Description { get; set; }
-    public string? Image { get; set; }
+    public string? ImageUrl { get; set; }
 }

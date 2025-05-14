@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Framework;
 using Framework.CQRS;
+using Minio;
+using Microsoft.Extensions.Configuration;
 namespace Catalog.ApplicationServices;
 
 public static class CatalogApplicationServicesBootstrapper

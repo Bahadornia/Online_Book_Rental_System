@@ -24,4 +24,7 @@ public class AddBookRq
 
     [ProtoMember(7)]
     public string Description { get; set; } = default!;
+
+    [ProtoMember(8)]
+    public string ContentType { get; set; } = default!;
 }

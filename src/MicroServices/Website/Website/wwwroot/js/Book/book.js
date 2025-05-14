@@ -1,28 +1,4 @@
-﻿const gridOptions = {
-    columnDefs: [
-        { headerName: "شناسه", field: "id", sortable: true, filter: true },
-        { headerName: "نام کتاب", field: "name", sortable: true, filter: true },
-        { headerName: "شابک", field: "isbn", sortable: true, filter: true },
-        { headerName: "دسته", field: "categoryName", sortable: true, filter: true },
-        { headerName: "نویسنده", field: "author", sortable: true, filter: true },
-        { headerName: "ناشر", field: "publisherName", sortable: true, filter: true },
-        { headerName: "توضیحات", field: "description", sortable: true, filter: true },
-        { headerName: "تصویر", field: "image", sortable: true, filter: true }
-    ],
-    defaultColDef: {
-        flex: 1,
-        minWidth: 100,
-        resizable: true
-    },
-    enableRtl: true,
-    animateRows: true,
-    rowModelType: 'serverSide',
-    serverSideStoreType: 'partial', // enables pagination
-    pagination: true,
-    paginationPageSize: 10,
-    theme: "legacy"
-}
-
+﻿
 const datasource = {
     getRows(params) {
         const request = params.request;
@@ -42,11 +18,39 @@ const datasource = {
         });
     }
 };
+
+const gridOptions = {
+    columnDefs: [
+        { headerName: "تصویر", field: "imageUrl", sortable: true, filter: true , cellClass:"logo", cellRenderer:(params)=> `<img src="${params.value}">`},
+        { headerName: "نام کتاب", field: "name", sortable: true, filter: true },
+        { headerName: "شناسه", field: "id", sortable: true, filter: true },
+        { headerName: "شابک", field: "isbn", sortable: true, filter: true },
+        { headerName: "دسته", field: "categoryName", sortable: true, filter: true },
+        { headerName: "نویسنده", field: "author", sortable: true, filter: true },
+        { headerName: "ناشر", field: "publisherName", sortable: true, filter: true },
+        { headerName: "توضیحات", field: "description", sortable: true, filter: true },
+    ],
+   
+    defaultColDef: {
+        flex: 1,
+        minWidth: 100,
+        resizable: true
+    },
+    enableRtl: true,
+    animateRows: true,
+    rowModelType: 'serverSide',
+    serverSideDatasource: datasource,
+    pagination: true,
+    paginationPageSize: 10,
+}
+
+const gridDiv = document.querySelector('#agGrid');
+let gridApi ;
+
+
 // Initialize Grid
 document.addEventListener('DOMContentLoaded', () => {
-    const gridDiv = document.querySelector('#agGrid');
-    new agGrid.Grid(gridDiv, gridOptions);
-    gridOptions.api.setServerSideDatasource(datasource);
+    gridApi = agGrid.createGrid(gridDiv, gridOptions)
 });
 
 function openFile() {
@@ -66,4 +70,12 @@ function previewImage(input) {
 
         reader.readAsDataURL(file);
     }
+}
+
+function onSuccess() {
+    gridApi.refreshServerSide();
+}
+
+function onFailure() {
+    alert("Error!");
 }

@@ -1,5 +1,7 @@
 ﻿using Catalog.API.Grpc.Client.Logics;
 using Catalog.API.Grpc.Client.Requests;
+using Catalog.ApplicationServices.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,14 +33,23 @@ namespace Catalog.API.Grpc.Verification.Controllers
             };
             try
             {
-            await _bookGrpcService.AddBook(bookRq, ct);
-            return Created();
+                await _bookGrpcService.AddBook(bookRq, ct);
+                return Created();
             }
             catch (Exception)
             {
 
                 throw;
             }
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetImage(string fileName, CancellationToken ct)
+        {
+            var rq = new GetBookImageRq { FileName = fileName };
+            var url = await _bookGrpcService.GetBookImage(rq);
+            return Ok(url);
         }
     }
 }
