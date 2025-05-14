@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\SharedKernel\Framework\Framework.csproj" />
+    <ProjectReference Include="..\..\01-Core\Catalog.ApplicationServices\Catalog.ApplicationServices.csproj" />
     <ProjectReference Include="..\..\01-Core\Catalog.Domain\Catalog.Domain.csproj" />
   </ItemGroup>
 

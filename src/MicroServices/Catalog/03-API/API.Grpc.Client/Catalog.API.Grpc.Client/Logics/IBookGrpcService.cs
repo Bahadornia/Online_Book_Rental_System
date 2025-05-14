@@ -1,6 +1,5 @@
 ﻿using Catalog.API.Grpc.Client.Requests;
 using ProtoBuf.Grpc;
-using ProtoBuf.Grpc.Configuration;
 using System.ServiceModel;
 
 namespace Catalog.API.Grpc.Client.Logics
@@ -9,6 +8,6 @@ namespace Catalog.API.Grpc.Client.Logics
     public interface IBookGrpcService
     {
         [OperationContract]
-        Task AddBook(AddBookRq rq, CallContext callContext);
+        Task AddBook(AddBookRq rq, CallContext callContext = default);
     }
 }

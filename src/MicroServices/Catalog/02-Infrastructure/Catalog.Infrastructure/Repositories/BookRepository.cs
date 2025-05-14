@@ -1,4 +1,5 @@
-﻿using Catalog.Domain.Dtos;
+﻿using Catalog.ApplicationServices;
+using Catalog.Domain.Dtos;
 using Catalog.Domain.Models.BookAggregate.Entities;
 using Catalog.Domain.Repositories;
 using Catalog.Infrastructure.Data;
@@ -29,7 +30,7 @@ class BookRepository : IBookRepository
         var bookData = _mapper.Map<BookData>(book);
         
         await _dbContext.Books.InsertOneAsync(bookData, null, ct);
-        _logger.LogInformation($"Book with id {bookData.Id} was saved.");
+        _logger.LogAddBook(book.Id.Value);
     }
 
     public Task DeleteBook(BookDto book, CancellationToken ct)

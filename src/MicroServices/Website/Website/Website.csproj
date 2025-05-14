@@ -14,4 +14,15 @@
     <None Include="bundleconfig.json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\SharedKernel\Framework\Framework.csproj" />
+    <ProjectReference Include="..\..\Catalog\03-API\API.Grpc.Client\Catalog.API.Grpc.Client\Catalog.API.Grpc.Client.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Catalog.API.Grpc.Client">
+      <HintPath>..\..\Catalog\03-API\API.Grpc.Client\Catalog.API.Grpc.Client\bin\Debug\net9.0\Catalog.API.Grpc.Client.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

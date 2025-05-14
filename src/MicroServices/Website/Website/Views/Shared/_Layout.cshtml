@@ -8,8 +8,9 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Website.styles.css" asp-append-version="true" />
-    <link rel = "stylesheet" href="~/lib/ag-grid-enterprise/styles/ag-grid.min.css" />
-    <link rel = "stylesheet" href="~/lib/ag-grid-enterprise/styles/ag-theme-alpine.min.css" />
+    <link rel = "stylesheet" href="~/lib/ag-grid-enterprise/styles/ag-grid.min.css" asp-append-version="true" />
+    <link rel = "stylesheet" href="~/lib/ag-grid-enterprise/styles/ag-theme-alpine.min.css" asp-append-version="true" />
+    <link rel = "stylesheet" href="~/css/fonts/font-awesome/css/font-awesome.min.css" asp-append-version="true"/>
 </head>
 <body>
     <header>
@@ -36,8 +37,10 @@
     <div class="container" dir="rtl">
         <main role="main" class="pb-3">
             @RenderBody()
-            <div class="container">
-                <div id="agGrid" style="height: 500px; width: 100%;" class="ag-theme-alpine" dir="rtl"></div>
+            <div class="row">
+                <div class="col-12">
+                    <div id="agGrid" style="height: 500px; width: 100%;" class="ag-theme-alpine" dir="rtl"></div>
+                </div>
             </div>
         </main>
     </div>

@@ -48,3 +48,22 @@ document.addEventListener('DOMContentLoaded', () => {
     new agGrid.Grid(gridDiv, gridOptions);
     gridOptions.api.setServerSideDatasource(datasource);
 });
+
+function openFile() {
+    document.getElementById("image").click();
+}
+
+function previewImage(input) {
+    var file = $("input[type=file]").get(0).files[0];
+    var name = file.name;
+    $("Image").val(name);
+    if (file) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $("#previewImg").attr("src", reader.result);
+        }
+
+        reader.readAsDataURL(file);
+    }
+}
