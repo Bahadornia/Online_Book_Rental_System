@@ -9,6 +9,13 @@ public abstract class AggregateRoot<T>: Entity<T> where T : notnull
     {
         _domainEvents.Add(@event);
     }
+
+    protected abstract void ValidateInvariants();
+    protected void SetEvent(IDomainEvent @event)
+    {
+        ValidateInvariants();
+        AddDomainEvents(@event);
+    }
     protected IReadOnlyList<IDomainEvent> ClearDomainEvents()
     {
         IDomainEvent[] dequedEvents = _domainEvents.ToArray();

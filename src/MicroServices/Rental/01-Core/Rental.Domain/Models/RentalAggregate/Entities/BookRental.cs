@@ -1,0 +1,85 @@
+﻿using Framework;
+using Microsoft.Extensions.Logging;
+using Rental.Domain.Models.RentalAggregate.Enums;
+using Rental.Domain.Models.RentalAggregate.Events;
+using Rental.Domain.Models.RentalAggregate.ValueObjects;
+
+namespace Rental.Domain.Models.RentalAggregate.Entities;
+
+public class BookRental : AggregateRoot<RentalId>
+{
+
+    private readonly List<RentalHistory> _history = [];
+    public IReadOnlyCollection<RentalHistory> Histories => _history.AsReadOnly();
+
+    public BookId BookId { get; private set; } = default!;
+    public UserId UserId { get; private set; } = default!;
+    public DateTime BorrowDate { get; private set; }
+    public DateTime? ReturnDate { get; private set; }
+    public DateTime DueDate { get; private set; }
+    public TimeSpan OverDueDate
+    {
+        get
+        {
+            if (ReturnDate.HasValue)
+
+                return ReturnDate.Value.Subtract(DueDate);
+            return default;
+        }
+    }
+    public RentalStatus Status { get; private set; }
+    public bool IsExtended { get; private set; }
+
+    private BookRental() { }
+    public BookRental Create(RentalId id, long bookId, DateTime borrowDate, DateTime returnDate, DateTime dueDate, RentalStatus status, bool isExtended)
+    {
+        var rental = new BookRental
+        {
+            Id = id,
+            BookId = bookId,
+            BorrowDate = borrowDate,
+            ReturnDate = returnDate,
+            DueDate = dueDate,
+            Status = status,
+            IsExtended = isExtended,
+        };
+        var addRentalEvent = new AddRentalEvent(rental);
+        SetEvent(addRentalEvent);
+        return rental;
+    }
+
+    public void Update(long bookId, DateTime borrowDate, DateTime returnDate, DateTime dueDate, RentalStatus status, bool isExtended)
+    {
+        BookId = bookId;
+        BorrowDate = borrowDate;
+        ReturnDate = returnDate;
+        DueDate = dueDate;
+        Status = status;
+        IsExtended = isExtended;
+
+        var updateRentalEvent = new UpdateRentalEvent(this);
+        SetEvent(updateRentalEvent);
+    }
+
+    protected override void ValidateInvariants()
+    {
+        if (BorrowDate > DateTime.UtcNow) throw new Exception("Borrow Date can not be in the future.");
+        if (DueDate <= BorrowDate) throw new Exception("DueDate must be after BorrowDate");
+        if (ReturnDate.HasValue) throw new Exception("Rental is already returned");
+        if (ReturnDate < BorrowDate) throw new Exception("ReturnDate cannot be before BorrowDate");
+        if (IsExtended) throw new Exception("Rental period has already been extended");
+        return;
+    }
+
+    public void AddRentalHistory(RentalHistory history)
+    {
+        _history.Add(history);
+    }
+
+    
+    public void SetStatus(RentalStatus status)
+    {
+        Status = status;
+    }
+
+   }

@@ -46,5 +46,9 @@ public class Book : AggregateRoot<BookId>
         var bookUpdatedEvent = new BookUpdatedEvent(this);
         AddDomainEvents(bookUpdatedEvent);
     }
-    
+
+    protected override void ValidateInvariants()
+    {
+        throw new NotImplementedException();
+    }
 }
