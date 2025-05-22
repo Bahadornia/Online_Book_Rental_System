@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework;
+namespace Framework.Extensions;
 
-public static class Extensions
+public static class MapsterExtension
 {
     public static IServiceCollection AddMapsterService(this IServiceCollection services)
     {

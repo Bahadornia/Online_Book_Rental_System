@@ -1,18 +1,18 @@
-﻿using Catalog.Domain.Interfaces;
+﻿using Catalog.Domain.IServices;
 using Microsoft.Extensions.Configuration;
 using Minio;
 using Minio.DataModel.Args;
 using System.IO;
 using System.Net.Mime;
 
-namespace Catalog.Infrastructure;
+namespace Catalog.Infrastructure.Services;
 
-public class MinioService : IFileService
+public class FileService : IFileService
 {
     private readonly IMinioClient _minioClient;
     private readonly string _bucketName;
 
-    public MinioService(IMinioClient minioClient, IConfiguration config)
+    public FileService(IMinioClient minioClient, IConfiguration config)
     {
         _minioClient = minioClient;
         _bucketName = config["Minio:BucketName"];

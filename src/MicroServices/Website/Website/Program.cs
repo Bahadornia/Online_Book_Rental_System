@@ -1,5 +1,5 @@
 using Catalog.API.Grpc.Client;
-using Framework;
+using Framework.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

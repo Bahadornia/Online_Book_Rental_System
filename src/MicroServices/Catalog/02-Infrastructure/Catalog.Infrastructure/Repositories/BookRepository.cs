@@ -1,6 +1,6 @@
 ﻿using Catalog.ApplicationServices;
 using Catalog.Domain.Dtos;
-using Catalog.Domain.Interfaces;
+using Catalog.Domain.IRepositories;
 using Catalog.Domain.Models.BookAggregate.Entities;
 using Catalog.Infrastructure.Data;
 using Catalog.Infrastructure.Data.BookAggregate;

@@ -1,4 +1,4 @@
-﻿namespace Catalog.Domain.Interfaces
+﻿namespace Catalog.Domain.IServices
 {
     public interface IFileService
     {

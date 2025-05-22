@@ -1,7 +1,6 @@
 ﻿using Catalog.Domain.Dtos;
-using System.Collections.ObjectModel;
 
-namespace Catalog.Domain.Interfaces;
+namespace Catalog.Domain.IRepositories;
 
 public interface IBookRepository
 {

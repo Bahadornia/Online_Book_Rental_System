@@ -1,5 +1,6 @@
 ﻿using Catalog.Domain.Dtos;
-using Catalog.Domain.Interfaces;
+using Catalog.Domain.IRepositories;
+using Catalog.Domain.IServices;
 using Framework.CQRS;
 using MapsterMapper;
 using MediatR;

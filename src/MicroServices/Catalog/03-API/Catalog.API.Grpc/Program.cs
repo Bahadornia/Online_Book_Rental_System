@@ -1,16 +1,16 @@
-using Catalog.ApplicationServices;
 using Catalog.API.Grpc.Services;
 using ProtoBuf.Grpc.Server;
 using Catalog.Infrastructure;
 using Serilog;
 using Serilog.Sinks.Elasticsearch;
 using System.Reflection;
+using Framework.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddCodeFirstGrpc();
-builder.Services.AddApplicationServices();
+builder.Services.AddMediatRServices();
 builder.Services.AddCatalogInfrastructureServices(builder.Configuration);
 builder.Host.UseSerilog((context, configuration) =>
 {

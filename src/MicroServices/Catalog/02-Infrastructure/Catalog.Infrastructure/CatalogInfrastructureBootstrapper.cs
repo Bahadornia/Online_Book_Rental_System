@@ -1,7 +1,9 @@
-﻿using Catalog.Domain.Interfaces;
+﻿using Catalog.Domain.IRepositories;
+using Catalog.Domain.IServices;
 using Catalog.Infrastructure.Data;
 using Catalog.Infrastructure.Repositories;
-using Framework;
+using Catalog.Infrastructure.Services;
+using Framework.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Minio;
@@ -28,7 +30,7 @@ public static class CatalogInfrastructureBootstrapper
                 .WithSSL(bool.Parse(config["WithSSL"]!))
                 .Build();
         });
-        services.AddSingleton<IFileService, MinioService>();
+        services.AddSingleton<IFileService, FileService>();
 
         return services;
     }

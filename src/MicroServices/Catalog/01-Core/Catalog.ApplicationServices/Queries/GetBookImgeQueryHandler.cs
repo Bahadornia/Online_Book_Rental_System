@@ -1,4 +1,4 @@
-﻿using Catalog.Domain.Interfaces;
+﻿using Catalog.Domain.IServices;
 using Framework.CQRS;
 
 namespace Catalog.ApplicationServices.Queries;
