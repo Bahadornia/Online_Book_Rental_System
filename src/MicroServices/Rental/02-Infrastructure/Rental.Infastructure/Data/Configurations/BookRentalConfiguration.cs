@@ -6,7 +6,7 @@ using Rental.Domain.Models.RentalAggregate.ValueObjects;
 
 namespace Rental.Infastructure.Data.Configurations;
 
-public sealed class BookRentalConfigurations : IEntityTypeConfiguration<BookRental>
+public sealed class BookRentalConfiguration : IEntityTypeConfiguration<BookRental>
 {
     public void Configure(EntityTypeBuilder<BookRental> builder)
     {
@@ -15,7 +15,7 @@ public sealed class BookRentalConfigurations : IEntityTypeConfiguration<BookRent
         builder.Property(b => b.BookId).HasConversion(b => b.Value, b => BookId.Create(b));
         builder.Property(b => b.UserId).HasConversion(b => b.Value, b => UserId.Create(b));
         builder.Property(b => b.Status).HasConversion(b => b.ToString(), b => Enum.Parse<RentalStatus>(b));
-        builder.HasMany<RentalHistory>()
+        builder.HasMany(b=> b.Histories)
             .WithOne(b => b.Rental).HasForeignKey(b => b.RentalId);
     }
 }

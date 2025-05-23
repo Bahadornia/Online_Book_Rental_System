@@ -1,4 +1,5 @@
-using Catalog.API.Grpc.Client;
+using Rental.API.Grpc.Client;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,8 +8,7 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
-builder.Services.AddCatalogGrpcClient(builder.Configuration.GetValue<string>("CatalogGrpcService")!);
-
+builder.Services.AddRentalGrpcClient(builder.Configuration.GetValue<string>("RentalGrpcAddress")!);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

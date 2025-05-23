@@ -16,7 +16,7 @@ public class BookRental : AggregateRoot<RentalId>
     public UserId UserId { get; private set; } = default!;
     public DateTime BorrowDate { get; private set; }
     public DateTime? ReturnDate { get; private set; }
-    public DateTime DueDate { get; private set; }
+    public DateTime DueDate => BorrowDate.AddDays(14);
     public TimeSpan OverDueDate
     {
         get
@@ -31,7 +31,7 @@ public class BookRental : AggregateRoot<RentalId>
     public bool IsExtended { get; private set; }
 
     private BookRental() { }
-    public BookRental Create(RentalId id, long bookId, DateTime borrowDate, DateTime returnDate, DateTime dueDate, RentalStatus status, bool isExtended)
+    public BookRental Create(RentalId id, long bookId, DateTime borrowDate, DateTime returnDate, RentalStatus status, bool isExtended)
     {
         var rental = new BookRental
         {
@@ -39,7 +39,6 @@ public class BookRental : AggregateRoot<RentalId>
             BookId = bookId,
             BorrowDate = borrowDate,
             ReturnDate = returnDate,
-            DueDate = dueDate,
             Status = status,
             IsExtended = isExtended,
         };
@@ -48,12 +47,11 @@ public class BookRental : AggregateRoot<RentalId>
         return rental;
     }
 
-    public void Update(long bookId, DateTime borrowDate, DateTime returnDate, DateTime dueDate, RentalStatus status, bool isExtended)
+    public void Update(long bookId, DateTime borrowDate, DateTime returnDate, RentalStatus status, bool isExtended)
     {
         BookId = bookId;
         BorrowDate = borrowDate;
         ReturnDate = returnDate;
-        DueDate = dueDate;
         Status = status;
         IsExtended = isExtended;
 
@@ -80,6 +78,7 @@ public class BookRental : AggregateRoot<RentalId>
     public void SetStatus(RentalStatus status)
     {
         Status = status;
+        var statusChangedEvent = new UpdateRentalEvent(this);
+        SetEvent(statusChangedEvent);
     }
-
    }

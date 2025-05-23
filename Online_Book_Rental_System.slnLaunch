@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "src\\MicroServices\\Rental\\03-API\\Rental.API.Grpc\\Rental.API.Grpc.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "src\\MicroServices\\Rental\\03-API\\Rental.API.Grpc.Verification\\Rental.API.Grpc.Verification.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

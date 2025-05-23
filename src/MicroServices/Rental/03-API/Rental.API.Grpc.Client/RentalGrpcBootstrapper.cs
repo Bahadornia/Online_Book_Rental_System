@@ -1,16 +1,15 @@
-﻿using Catalog.API.Grpc.Client.Logics;
-using Grpc.Core;
-using Grpc.Net.Client;
+﻿using Grpc.Core;
 using Grpc.Net.Client.Configuration;
+using Grpc.Net.Client;
 using Microsoft.Extensions.DependencyInjection;
 using ProtoBuf.Grpc.Client;
+using Rental.API.Grpc.Client.Logics;
 
-namespace Catalog.API.Grpc.Client;
+namespace Rental.API.Grpc.Client;
 
-public static class CatalogGrpcBootstrapper
+public static class RentalGrpcBootstrapper
 {
-
-    public static IServiceCollection AddCatalogGrpcClient(this IServiceCollection services, string grpcAddress)
+    public static IServiceCollection AddRentalGrpcClient(this IServiceCollection services, string grpcAddress) 
     {
         var defaultMethodConfig = new MethodConfig
         {
@@ -31,9 +30,10 @@ public static class CatalogGrpcBootstrapper
         var channel = GrpcChannel.ForAddress(grpcAddress, new GrpcChannelOptions { ServiceConfig = new ServiceConfig { MethodConfigs = { defaultMethodConfig, } }, });
         services.AddSingleton(p =>
         {
-            var client = channel.CreateGrpcService<IBookGrpcService>();
+            var client = channel.CreateGrpcService<IRentalGrpcService>();
             return client;
         });
         return services;
+
     }
 }
