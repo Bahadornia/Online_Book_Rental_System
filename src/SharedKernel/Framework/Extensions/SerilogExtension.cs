@@ -8,7 +8,7 @@ namespace Framework.Extensions;
 
 public static class SerilogExtension
 {
-    public static IHostBuilder UseSerilogBuilder(this IHostBuilder builder, string prefix)
+    public static IHostBuilder AddSerilogService(this IHostBuilder builder, string prefix)
     {
        return builder.UseSerilog((context, configuration) =>
         {

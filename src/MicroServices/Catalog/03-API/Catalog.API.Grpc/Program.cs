@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCodeFirstGrpc();
 builder.Services.AddMediatRServices();
 builder.Services.AddCatalogInfrastructureServices(builder.Configuration);
-builder.Host.UseSerilogBuilder("CatalogApp");
+builder.Host.AddSerilogService("CatalogApp");
 
 
 var app = builder.Build();

@@ -27,9 +27,9 @@ public record RentalId
     }
     private static void Validate(long value)
     {
-        if(value < 0)
+        if(value <= 0)
         {
-            throw new Exception("The value of identifier can not be negative!");
+            throw new Exception("The value of identifier can not be zero or negative!");
         }
         
     }
