@@ -2,18 +2,17 @@
 
 public record UserId
 {
-    private readonly long _value;
     public long Value { get; set; }
 
-    private UserId()
+    private UserId(long value)
     {
-        Value = _value;
+        Value = value;
     }
 
     public static UserId Create(long value)
     {
         Validate(value);
-        return new UserId();
+        return new UserId(value);
     }
 
     public static implicit operator long(UserId Id)

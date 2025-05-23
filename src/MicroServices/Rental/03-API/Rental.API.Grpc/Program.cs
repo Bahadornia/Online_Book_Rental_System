@@ -1,6 +1,7 @@
 using Framework.Extensions;
 using ProtoBuf.Grpc.Server;
 using Rental.API.Grpc.Services;
+using Rental.ApplicationServices;
 using Rental.Infastructure;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCodeFirstGrpc();
 builder.Services.AddMediatRServices();
 builder.Services.AddRentalInfrastructureServices(builder.Configuration);
+builder.Services.AddRentalApplicationServies();
 
 var app = builder.Build();
 

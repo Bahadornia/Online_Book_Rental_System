@@ -27,23 +27,23 @@ public class BookRental : AggregateRoot<RentalId>
             return default;
         }
     }
+    public string? Description { get; set; }
     public RentalStatus Status { get; private set; }
     public bool IsExtended { get; private set; }
 
     private BookRental() { }
-    public BookRental Create(RentalId id, long bookId, DateTime borrowDate, DateTime returnDate, RentalStatus status, bool isExtended)
+    public static BookRental Create(RentalId id, UserId userId, BookId bookId, DateTime borrowDate)
     {
         var rental = new BookRental
         {
             Id = id,
             BookId = bookId,
+            UserId = userId,
             BorrowDate = borrowDate,
-            ReturnDate = returnDate,
-            Status = status,
-            IsExtended = isExtended,
+            Status = RentalStatus.Borrowed,
         };
-        var addRentalEvent = new AddRentalEvent(rental);
-        SetEvent(addRentalEvent);
+
+        rental.Emit(new AddRentalEvent(rental));
         return rental;
     }
 
@@ -55,11 +55,10 @@ public class BookRental : AggregateRoot<RentalId>
         Status = status;
         IsExtended = isExtended;
 
-        var updateRentalEvent = new UpdateRentalEvent(this);
-        SetEvent(updateRentalEvent);
+        Emit(new UpdateRentalEvent(this));
     }
 
-    protected override void ValidateInvariants()
+    protected override void ValidateInvariants() 
     {
         if (BorrowDate > DateTime.UtcNow) throw new Exception("Borrow Date can not be in the future.");
         if (DueDate <= BorrowDate) throw new Exception("DueDate must be after BorrowDate");
@@ -79,6 +78,6 @@ public class BookRental : AggregateRoot<RentalId>
     {
         Status = status;
         var statusChangedEvent = new UpdateRentalEvent(this);
-        SetEvent(statusChangedEvent);
     }
-   }
+
+}

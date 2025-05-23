@@ -4,18 +4,17 @@ namespace Rental.Domain.Models.RentalAggregate.ValueObjects;
 
 public record RentalId
 {
-    private readonly long _value;
     public long Value { get; set; }
 
-    private RentalId()
+    private RentalId(long value)
     {
-        Value = _value;
+        Value = value;
     }
 
     public static RentalId Create(long value)
     {
         Validate(value);
-        return new RentalId();
+        return new RentalId(value);
     }
 
     public static implicit operator long(RentalId Id)
@@ -32,5 +31,6 @@ public record RentalId
         {
             throw new Exception("The value of identifier can not be negative!");
         }
+        
     }
 }

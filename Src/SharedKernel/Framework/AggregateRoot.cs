@@ -11,7 +11,7 @@ public abstract class AggregateRoot<T>: Entity<T> where T : notnull
     }
 
     protected abstract void ValidateInvariants();
-    protected void SetEvent(IDomainEvent @event)
+    public void Emit(IDomainEvent @event)
     {
         ValidateInvariants();
         AddDomainEvents(@event);

@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\SharedKernel\Framework\Framework.csproj" />
+    <ProjectReference Include="..\Rental.Domain\Rental.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -2,18 +2,17 @@
 
 public record RentalHistroyId
 {
-    private readonly long _value;
     public long Value { get; set; }
 
-    private RentalHistroyId()
+    private RentalHistroyId(long value)
     {
-        Value = _value;
+        Value = value;
     }
 
     public static RentalHistroyId Create(long value)
     {
         Validate(value);
-        return new RentalHistroyId();
+        return new RentalHistroyId(value);
     }
 
     public static implicit operator long(RentalHistroyId Id)

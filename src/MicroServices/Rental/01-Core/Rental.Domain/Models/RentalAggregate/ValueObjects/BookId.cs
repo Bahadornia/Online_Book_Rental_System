@@ -2,18 +2,17 @@
 
 public record BookId
 {
-    private readonly long _value;
     public long Value { get; set; }
 
-    private BookId()
+    private BookId(long value)
     {
-        Value = _value;
+        Value = value;
     }
 
     public static BookId Create(long value)
     {
         Validate(value);
-        return new BookId();
+        return new BookId(value);
     }
 
     public static implicit operator long(BookId Id)
