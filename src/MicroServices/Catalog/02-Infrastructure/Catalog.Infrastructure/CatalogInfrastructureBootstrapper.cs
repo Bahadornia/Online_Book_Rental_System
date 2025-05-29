@@ -17,7 +17,7 @@ public static class CatalogInfrastructureBootstrapper
     {
         services.AddSingleton<IMongoClient>(new MongoClient(configuration.GetConnectionString("Database")));
 
-        services.AddScoped<BookDbContext>();
+        services.AddScoped<CatalogDbContext>();
         services.AddScoped<IBookRepository, BookRepository>();
         services.AddMapsterService();
 

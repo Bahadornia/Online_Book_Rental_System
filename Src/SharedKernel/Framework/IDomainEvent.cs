@@ -1,6 +1,8 @@
-﻿namespace Framework;
+﻿using MediatR;
 
-public interface IDomainEvent
+namespace Framework;
+
+public interface IDomainEvent: INotification
 {
     public Guid EventId => Guid.NewGuid();
     public string EventType => GetType().AssemblyQualifiedName!;

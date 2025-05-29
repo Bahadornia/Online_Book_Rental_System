@@ -1,9 +1,10 @@
 ﻿namespace Framework;
 
-public abstract class AggregateRoot<T>: Entity<T> where T : notnull
+public abstract class AggregateRoot<T>: Entity<T>, IAggregateRoot where T : notnull
 {
     private readonly List<IDomainEvent> _domainEvents = new();
-    protected IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
+
+    public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
     public void AddDomainEvents(IDomainEvent @event)
     {
@@ -16,10 +17,11 @@ public abstract class AggregateRoot<T>: Entity<T> where T : notnull
         ValidateInvariants();
         AddDomainEvents(@event);
     }
-    protected IReadOnlyList<IDomainEvent> ClearDomainEvents()
+   
+    public IReadOnlyList<IDomainEvent> ClearDomainEvents()
     {
         IDomainEvent[] dequedEvents = _domainEvents.ToArray();
         _domainEvents.Clear();
         return dequedEvents;
-    } 
+    }
 }

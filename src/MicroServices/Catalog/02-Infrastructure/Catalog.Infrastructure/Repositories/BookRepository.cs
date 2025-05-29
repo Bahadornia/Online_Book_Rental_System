@@ -13,11 +13,11 @@ namespace Catalog.Infrastructure.Repositories;
 
 class BookRepository : IBookRepository
 {
-    private readonly BookDbContext _dbContext;
+    private readonly CatalogDbContext _dbContext;
     private readonly IMapper _mapper;
-    private readonly ILogger<BookDbContext> _logger;
+    private readonly ILogger<CatalogDbContext> _logger;
 
-    public BookRepository(BookDbContext dbContext, IMapper mapper, ILogger<BookDbContext> logger)
+    public BookRepository(CatalogDbContext dbContext, IMapper mapper, ILogger<CatalogDbContext> logger)
     {
         _dbContext = dbContext;
         _mapper = mapper;

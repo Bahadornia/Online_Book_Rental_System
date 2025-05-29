@@ -2,7 +2,7 @@ using Framework.Extensions;
 using ProtoBuf.Grpc.Server;
 using Rental.API.Grpc.Services;
 using Rental.ApplicationServices;
-using Rental.Infastructure;
+using Rental.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

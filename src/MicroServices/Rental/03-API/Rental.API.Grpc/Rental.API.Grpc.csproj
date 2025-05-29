@@ -14,7 +14,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\..\SharedKernel\Framework\Framework.csproj" />
 	  <ProjectReference Include="..\..\01-Core\Rental.ApplicationServices\Rental.ApplicationServices.csproj" />
-	  <ProjectReference Include="..\..\02-Infrastructure\Rental.Infastructure\Rental.Infastructure.csproj" />
+	  <ProjectReference Include="..\..\02-Infrastructure\Rental.Infrastructure\Rental.Infrastructure.csproj" />
 	  <ProjectReference Include="..\Rental.API.Grpc.Client\Rental.API.Grpc.Client.csproj" />
 	</ItemGroup>
 	<ItemGroup>

@@ -43,7 +43,7 @@ public class BookRental : AggregateRoot<RentalId>
             Status = RentalStatus.Borrowed,
         };
 
-        rental.Emit(new AddRentalEvent(rental));
+        rental.Emit(new RentalAddedEvent(rental));
         return rental;
     }
 
@@ -55,7 +55,7 @@ public class BookRental : AggregateRoot<RentalId>
         Status = status;
         IsExtended = isExtended;
 
-        Emit(new UpdateRentalEvent(this));
+        Emit(new RentalUpdatedEvent(this));
     }
 
     protected override void ValidateInvariants() 
@@ -77,7 +77,7 @@ public class BookRental : AggregateRoot<RentalId>
     public void SetStatus(RentalStatus status)
     {
         Status = status;
-        var statusChangedEvent = new UpdateRentalEvent(this);
+        var statusChangedEvent = new RentalUpdatedEvent(this);
     }
 
 }
