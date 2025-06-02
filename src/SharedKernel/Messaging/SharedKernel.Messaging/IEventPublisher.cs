@@ -1,8 +1,8 @@
-﻿using Framework;
+﻿using SharedKernel.Messaging.Events;
 
-namespace Inventory.Domain.IServices;
+namespace SharedKernel.Messaging;
 
-public interface IEventPublisher
+public interface IIntegrationEventPublisher
 {
-    Task Publish(IDomainEvent @event, CancellationToken ct);
+    Task Publish(IIntegrationEvent @event, CancellationToken ct);
 }

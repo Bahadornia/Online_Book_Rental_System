@@ -8,9 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Rental.Domain.IRepositories;
 using Rental.Domain.IServices;
 using Rental.Infrastructure.Data;
+using Rental.Infrastructure.Extensions;
 using Rental.Infrastructure.Repositories;
 using Rental.Infrastructure.Services;
-using SharedKernel.Messaging.Extensions;
 
 namespace Rental.Infrastructure;
 

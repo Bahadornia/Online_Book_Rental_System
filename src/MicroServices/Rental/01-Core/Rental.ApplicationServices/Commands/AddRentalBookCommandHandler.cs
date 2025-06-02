@@ -1,12 +1,10 @@
 ﻿using Framework.CQRS;
 using Framework.SnowFlake;
-using MapsterMapper;
-using MassTransit;
 using MediatR;
 using Rental.Domain.Dtos;
 using Rental.Domain.IRepositories;
-using Rental.Domain.IServices;
 using Rental.Domain.Models.RentalAggregate.Entities;
+using SharedKernel.Messaging;
 using SharedKernel.Messaging.Events;
 
 namespace Rental.ApplicationServices.Commands;
@@ -15,13 +13,13 @@ class AddRentalBookCommandHandler : ICommandHandler<AddRentalBookCommand>
 {
     private readonly ISnowFlakeService _snowFlakeService;
     private readonly IRentalRepository _rentalRepository;
-    private readonly IPublishEndpoint _publishEndPoint;
+    private readonly IIntegrationEventPublisher _eventPublisher;
 
-    public AddRentalBookCommandHandler(IRentalRepository rentalRepository, ISnowFlakeService snowFlakeService, IPublishEndpoint publishEndPoint)
+    public AddRentalBookCommandHandler(IRentalRepository rentalRepository, ISnowFlakeService snowFlakeService, IIntegrationEventPublisher publishEndPoint)
     {
         _rentalRepository = rentalRepository;
         _snowFlakeService = snowFlakeService;
-        _publishEndPoint = publishEndPoint;
+        _eventPublisher = publishEndPoint;
     }
 
     public async Task<Unit> Handle(AddRentalBookCommand command, CancellationToken ct)
@@ -33,7 +31,7 @@ class AddRentalBookCommandHandler : ICommandHandler<AddRentalBookCommand>
         {
             Id = _snowFlakeService.CreateId(),
             RentalId = bookRental.Id,
-            Status= bookRental.Status,
+            Status = bookRental.Status,
             Description = bookRental.Description
         };
 
@@ -45,7 +43,7 @@ class AddRentalBookCommandHandler : ICommandHandler<AddRentalBookCommand>
             BorrowDate = command.BorrowDate,
         };
 
-        await _publishEndPoint.Publish(bookRentedEvent, ct);
+        await _eventPublisher.Publish(bookRentedEvent, ct);
         await _rentalRepository.AddBookRental(bookRental, ct);
         return Unit.Value;
     }

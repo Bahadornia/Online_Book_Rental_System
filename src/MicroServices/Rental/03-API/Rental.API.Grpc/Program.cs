@@ -3,12 +3,14 @@ using ProtoBuf.Grpc.Server;
 using Rental.API.Grpc.Services;
 using Rental.ApplicationServices;
 using Rental.Infrastructure;
+using SharedKernel.Messaging.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddCodeFirstGrpc();
 builder.Services.AddMediatRServices();
 builder.Host.AddSerilogService("RentalApp");
+builder.Services.AddMessagingServices();
 builder.Services.AddRentalInfrastructureServices(builder.Configuration);
 builder.Services.AddRentalApplicationServies();
 

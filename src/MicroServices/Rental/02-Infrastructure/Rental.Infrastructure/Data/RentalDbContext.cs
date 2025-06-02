@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rental.Domain.Models.RentalAggregate.Entities;
-using SharedKernel.Messaging.Extensions;
+using Rental.Infrastructure.Extensions;
 using System.Reflection;
 
 namespace Rental.Infrastructure.Data;

@@ -14,6 +14,7 @@ public sealed class RentalHistoryConfiguration : IEntityTypeConfiguration<Rental
         builder.Property(b => b.Id).HasConversion(b => b.Value, b=> RentalHistroyId.Create(b));
         builder.Property(b => b.RentalId).HasConversion(b => b.Value, b=> RentalId.Create(b));
         builder.Property(b => b.Status).HasConversion(b => b.ToString(), b=> Enum.Parse<RentalStatus>(b));
+        builder.Property(b => b.Description).IsSparse();
         builder.HasOne(b=> b.Rental).WithMany(b => b.Histories);
     }
 }

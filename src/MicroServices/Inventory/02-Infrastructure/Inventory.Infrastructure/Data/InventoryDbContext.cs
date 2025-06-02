@@ -1,4 +1,5 @@
 ﻿using Inventory.Domain.Models.InventoryAggregate.Entities;
+using Inventory.Infrastructure.Extensions;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -13,9 +14,7 @@ public sealed class InventoryDbContext: DbContext
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        modelBuilder.AddInboxStateEntity();
-        modelBuilder.AddOutboxMessageEntity();
-        modelBuilder.AddOutboxStateEntity();
+        modelBuilder.AddMassTransitModels();
     }
 
     public DbSet<BookInventory> Inventories => Set<BookInventory>();

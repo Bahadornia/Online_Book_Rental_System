@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace SharedKernel.Messaging.Extensions;
+namespace Rental.Infrastructure.Extensions;
 
 public static class MassTransitExtensions
 {

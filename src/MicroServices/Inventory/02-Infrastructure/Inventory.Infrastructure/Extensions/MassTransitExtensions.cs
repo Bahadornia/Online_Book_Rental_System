@@ -9,6 +9,13 @@ namespace Inventory.Infrastructure.Extensions;
 
 public static class MassTransitExtensions
 {
+    public static ModelBuilder AddMassTransitModels(this ModelBuilder modelBuilder)
+    {
+        modelBuilder.AddInboxStateEntity();
+        modelBuilder.AddOutboxStateEntity();
+        modelBuilder.AddOutboxMessageEntity();
+        return modelBuilder;
+    }
     public static IServiceCollection AddMassTransitServices<T>(this IServiceCollection services, IConfiguration configuration)
         where T:DbContext
     {

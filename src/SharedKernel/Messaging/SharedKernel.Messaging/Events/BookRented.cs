@@ -1,6 +1,6 @@
 ﻿namespace SharedKernel.Messaging.Events;
 
-public class BookRented: IntegrationEvent
+public class BookRented: IIntegrationEvent
 {
     public long EventId { get; set; }
     public long BookId { get; set; }
