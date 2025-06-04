@@ -1,4 +1,4 @@
-﻿namespace Framework;
+﻿namespace Framework.Domain;
 
 public abstract class Entity<T>
     where T: notnull

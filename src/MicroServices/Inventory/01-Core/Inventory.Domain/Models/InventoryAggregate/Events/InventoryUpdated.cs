@@ -1,4 +1,4 @@
-﻿using Framework;
+﻿using Framework.Domain;
 
 namespace Inventory.Domain.Models.InventoryAggregate.Events;
 

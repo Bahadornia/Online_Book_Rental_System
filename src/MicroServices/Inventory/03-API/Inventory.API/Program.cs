@@ -1,5 +1,7 @@
 using Inventory.Infrastructure;
 using SharedKernel.Messaging.Extensions;
+using Framework.Extensions;
+using Inventory.ApplicationServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,8 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddMessagingServices();
+builder.Services.AddInventoryApplicationServices();
+builder.Host.AddSerilogService("InventoryApp");
 builder.Services.AddInventoryInfrastuctureServices(builder.Configuration);
 
 var app = builder.Build();

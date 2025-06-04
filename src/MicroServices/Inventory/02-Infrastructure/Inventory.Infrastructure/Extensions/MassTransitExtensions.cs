@@ -4,6 +4,7 @@ using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SharedKernel.Messaging.Events;
 
 namespace Inventory.Infrastructure.Extensions;
 
@@ -19,10 +20,12 @@ public static class MassTransitExtensions
     public static IServiceCollection AddMassTransitServices<T>(this IServiceCollection services, IConfiguration configuration)
         where T:DbContext
     {
-        var rabbitConfig = configuration.GetSection("RabbitConfig");
+        var rabbitConfig = configuration.GetSection("RabbitMq");
         services.AddMassTransit(x =>
         {
             x.AddConsumer<BookRentedConsumer>();
+            x.AddConsumer<BookAddedConsumer>();
+            x.AddConsumer<BookAddedFualtConsumer>();
 
             x.SetKebabCaseEndpointNameFormatter();
             x.AddEntityFrameworkOutbox<T>(o =>

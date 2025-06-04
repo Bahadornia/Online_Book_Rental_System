@@ -1,4 +1,4 @@
-﻿namespace Framework;
+﻿namespace Framework.Domain;
 
 public abstract class AggregateRoot<T>: Entity<T>, IAggregateRoot where T : notnull
 {

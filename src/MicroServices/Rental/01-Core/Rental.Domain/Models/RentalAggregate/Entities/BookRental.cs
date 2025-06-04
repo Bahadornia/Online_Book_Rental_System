@@ -1,4 +1,4 @@
-﻿using Framework;
+﻿using Framework.Domain;
 using Microsoft.Extensions.Logging;
 using Rental.Domain.Models.RentalAggregate.Enums;
 using Rental.Domain.Models.RentalAggregate.Events;

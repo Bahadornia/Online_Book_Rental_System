@@ -8,7 +8,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddCodeFirstGrpc();
-builder.Services.AddMediatRServices();
 builder.Host.AddSerilogService("RentalApp");
 builder.Services.AddMessagingServices();
 builder.Services.AddRentalInfrastructureServices(builder.Configuration);

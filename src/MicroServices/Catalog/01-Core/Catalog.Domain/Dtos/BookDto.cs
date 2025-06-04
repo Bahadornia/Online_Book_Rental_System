@@ -4,7 +4,7 @@ namespace Catalog.Domain.Dtos;
 
 public record BookDto
 {
-    public Guid Id { get; set; }
+    public long Id { get; set; }
     public string Title { get; init; } = default!;
     public string Author { get; init; } = default!;
     public int PublisherId { get; init; }
@@ -13,4 +13,6 @@ public record BookDto
     public string Description { get; init; } = default!;
     public string ImageUrl { get; set; } = default!;
     public string ContentType { get; set; } = default!;
+    public int AvailableCopies { get; set; }
+
 };

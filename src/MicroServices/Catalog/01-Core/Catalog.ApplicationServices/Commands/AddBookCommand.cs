@@ -1,5 +1,4 @@
 ﻿using Framework.CQRS;
-using MediatR;
 
 namespace Catalog.ApplicationServices.Commands;
 
@@ -9,8 +8,9 @@ public record AddBookCommand(
     int PublisherId,
     int CategoryId,
     long ISBN,
-    string Description,
+    string? Description,
     string ContentType,
+    int AvailableCopies,
     byte[] Image) : ICommand
 {
 }

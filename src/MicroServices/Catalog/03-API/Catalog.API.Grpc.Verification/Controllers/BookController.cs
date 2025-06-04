@@ -1,9 +1,11 @@
 ﻿using Catalog.API.Grpc.Client.Logics;
 using Catalog.API.Grpc.Client.Requests;
 using Catalog.ApplicationServices.Queries;
+using Catalog.Domain.Dtos;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
 namespace Catalog.API.Grpc.Verification.Controllers
 {
@@ -19,18 +21,18 @@ namespace Catalog.API.Grpc.Verification.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddBook(CancellationToken ct)
+        public async Task<IActionResult> AddBook(string title, string author, int categoryId, int publisherId, long isbn, int availableCopies, CancellationToken ct)
         {
             var bookRq = new AddBookRq
             {
-                Author = "Babak",
-                CategoryId = 1,
-                PublisherId = 2,
-                Description = "test",
-                ISBN = 546546556456,
-                Title = "re",
-                Image = new byte[10]
+                Title = title,
+                Author = author,
+                CategoryId = categoryId,
+                PublisherId = publisherId,
+                ISBN = isbn,
+                AvailableCopies = availableCopies,
             };
+
             try
             {
                 await _bookGrpcService.AddBook(bookRq, ct);

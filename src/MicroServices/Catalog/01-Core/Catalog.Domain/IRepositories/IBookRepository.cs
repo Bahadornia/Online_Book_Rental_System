@@ -1,10 +1,11 @@
 ﻿using Catalog.Domain.Dtos;
+using Catalog.Domain.Models.BookAggregate.Entities;
 
 namespace Catalog.Domain.IRepositories;
 
 public interface IBookRepository
 {
-    Task AddBook(BookDto book, CancellationToken ct);
+    Task AddBook(Book book, CancellationToken ct);
     Task UpdateBook(BookDto book, CancellationToken ct);
     Task DeleteBook(BookDto book, CancellationToken ct);
     Task<IReadOnlyCollection<BookDto>> SearchBook(BookFilterDto filter, CancellationToken ct);

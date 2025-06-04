@@ -6,8 +6,7 @@ namespace Catalog.Infrastructure.Data.BookAggregate;
 
 public class BookData
 {
-    [BsonGuidRepresentation(GuidRepresentation.Standard)]
-    public Guid Id { get; set; }
+    public long Id { get; set; }
     public string Title { get; set; } = default!;
     public string Author { get; set; } = default!;
     public int PublisherId { get; set; }
@@ -15,4 +14,6 @@ public class BookData
     public long ISBN { get; set; } = default!;
     public string? Description { get; set; }
     public string? ImageUrl { get; set; }
+    public int AvailableCopies { get; set; }
+
 }

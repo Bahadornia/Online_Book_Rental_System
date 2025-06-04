@@ -1,4 +1,4 @@
-﻿using Framework;
+﻿using Framework.Domain;
 using Inventory.Domain.Models.InventoryAggregate.Events;
 using Inventory.Domain.Models.InventoryAggregate.ValueObjects;
 

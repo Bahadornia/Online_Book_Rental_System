@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Inventory.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Added_Inventory_Model : Migration
+    public partial class Invetory_Entity_Id_ValueGeneratedNever : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -41,10 +41,6 @@ namespace Inventory.Infrastructure.Data.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false),
                     TotalCopies = table.Column<int>(type: "int", nullable: false),
                     AvailableCopies = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Inventories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(

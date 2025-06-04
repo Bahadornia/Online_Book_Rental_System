@@ -12,7 +12,8 @@ internal class IntegrationEventPulbisher : IIntegrationEventPublisher
         _publishEndPoint = publishEndPoint;
     }
 
-    public async Task Publish(IIntegrationEvent @event, CancellationToken ct)
+    public async Task Publish(IntegrationBaseEvent @event, CancellationToken ct)
+       
     {
         await _publishEndPoint.Publish(@event, ct);
     }

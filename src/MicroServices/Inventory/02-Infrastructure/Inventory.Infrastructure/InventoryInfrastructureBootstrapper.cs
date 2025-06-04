@@ -1,6 +1,5 @@
 ﻿using Inventory.Domain.IRepositories;
 using Inventory.Domain.IServices;
-using Inventory.Infrastructure.Consumers;
 using Inventory.Infrastructure.Data;
 using Inventory.Infrastructure.Extensions;
 using Inventory.Infrastructure.Repositories;
@@ -9,8 +8,6 @@ using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SharedKernel.Messaging;
-using System.Runtime.Intrinsics.Arm;
 
 namespace Inventory.Infrastructure;
 

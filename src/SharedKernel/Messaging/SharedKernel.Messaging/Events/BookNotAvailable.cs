@@ -1,6 +1,6 @@
 ﻿namespace SharedKernel.Messaging.Events;
 
-public class BookNotAvailable : IIntegrationEvent
+public class BookNotAvailable : IntegrationBaseEvent
 {
     public long EventId { get; set;}
     public long BookId { get; set; }

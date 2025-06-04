@@ -2,30 +2,30 @@
 {
     public record BookId
     {
-        public Guid Value { get; private set; }
-        private BookId(Guid id) {
+        public long Value { get; private set; }
+        private BookId(long id) {
             Value = id;
         }
 
-        public static BookId Create(Guid id)
+        public static BookId Create(long id)
         {
             Validate(id);
             return new BookId(id);
             
         }
 
-        private static void Validate(Guid value)
+        private static void Validate(long value)
         {
           return;
             
         }
 
-        public static implicit operator BookId(Guid id)
+        public static implicit operator BookId(long id)
         {
             return Create(id);
         }
 
-        public static implicit operator Guid(BookId id)
+        public static implicit operator long(BookId id)
         {
             return id.Value;
         }

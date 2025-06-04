@@ -24,9 +24,9 @@ public static partial class LoggerMessageLogs
     }
 
     [LoggerMessage(EventId = 100, Level = LogLevel.Information, Message = "Book Added in date: {Date} with id: {Id}")]
-    private static partial void LogAddBook(ILogger logger, DateTime date, Guid id);
+    private static partial void LogAddBook(ILogger logger, DateTime date, long id);
 
-    public static void LogAddBook(this ILogger logger, Guid id)
+    public static void LogAddBook(this ILogger logger, long id)
     {
         var dateTime = DateTime.UtcNow;
         LogAddBook(logger, dateTime, id);

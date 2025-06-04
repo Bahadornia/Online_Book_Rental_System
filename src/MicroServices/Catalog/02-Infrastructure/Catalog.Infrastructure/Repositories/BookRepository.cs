@@ -4,6 +4,7 @@ using Catalog.Domain.IRepositories;
 using Catalog.Domain.Models.BookAggregate.Entities;
 using Catalog.Infrastructure.Data;
 using Catalog.Infrastructure.Data.BookAggregate;
+using Framework.Domain;
 using MapsterMapper;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
@@ -15,23 +16,17 @@ class BookRepository : IBookRepository
 {
     private readonly CatalogDbContext _dbContext;
     private readonly IMapper _mapper;
-    private readonly ILogger<CatalogDbContext> _logger;
 
-    public BookRepository(CatalogDbContext dbContext, IMapper mapper, ILogger<CatalogDbContext> logger)
+    public BookRepository(CatalogDbContext dbContext, IMapper mapper)
     {
         _dbContext = dbContext;
         _mapper = mapper;
-        _logger = logger;
     }
 
-    public async Task AddBook(BookDto bookDto, CancellationToken ct)
+    public async Task AddBook(Book book, CancellationToken ct)
     {
-        var book = Book.Create(bookDto.Id, bookDto.Title, bookDto.Author, bookDto.PublisherId, bookDto.CategoryId, bookDto.ISBN, bookDto.Description, bookDto.ImageUrl);
-
         var bookData = _mapper.Map<BookData>(book);
-
-        await _dbContext.Books.InsertOneAsync(bookData, null, ct);
-        _logger.LogAddBook(book.Id.Value);
+        await _dbContext.Books.InsertOneAsync(_dbContext.Session, bookData, null, ct);
     }
 
     public Task DeleteBook(BookDto book, CancellationToken ct)

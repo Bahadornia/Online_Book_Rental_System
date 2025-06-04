@@ -3,11 +3,15 @@
     "Name": "New Profile",
     "Projects": [
       {
-        "Path": "src\\MicroServices\\Rental\\03-API\\Rental.API.Grpc\\Rental.API.Grpc.csproj",
+        "Path": "src\\MicroServices\\Catalog\\03-API\\Catalog.API.Grpc\\Catalog.API.Grpc.csproj",
         "Action": "Start"
       },
       {
-        "Path": "src\\MicroServices\\Rental\\03-API\\Rental.API.Grpc.Verification\\Rental.API.Grpc.Verification.csproj",
+        "Path": "src\\MicroServices\\Catalog\\03-API\\Catalog.API.Grpc.Verification\\Catalog.API.Grpc.Verification.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "src\\MicroServices\\Inventory\\03-API\\Inventory.API\\Inventory.API.csproj",
         "Action": "Start"
       }
     ]

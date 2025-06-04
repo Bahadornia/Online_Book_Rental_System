@@ -9,7 +9,7 @@ namespace Framework.SnowFlake
             Settings settings = new()
             {
                 MachineID = 1,
-                CustomEpoch = new DateTimeOffset(2020, 1, 1, 0, 0, 0, TimeSpan.Zero)
+                CustomEpoch = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero)
             };
 
             Snowflake snowflake = new Snowflake(settings);

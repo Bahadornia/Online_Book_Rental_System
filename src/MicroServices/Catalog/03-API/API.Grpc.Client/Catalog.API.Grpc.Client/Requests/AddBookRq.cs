@@ -13,6 +13,7 @@ public class AddBookRq
 
     [ProtoMember(3)]
     public int PublisherId { get; set; } = default!;
+
     [ProtoMember(4)]
     public int CategoryId { get; set; } = default!;
 
@@ -20,11 +21,14 @@ public class AddBookRq
     public long ISBN { get; set; } = default!;
 
     [ProtoMember(6)]
-    public byte[] Image { get; set; } = default!;
+    public byte[] Image { get; set; } = new byte[10];
 
     [ProtoMember(7)]
-    public string Description { get; set; } = default!;
+    public string? Description { get; set; }
 
     [ProtoMember(8)]
-    public string ContentType { get; set; } = default!;
+    public string ContentType { get; set; } = "image/jpeg";
+
+    [ProtoMember(9)]
+    public int AvailableCopies { get; set; }
 }

@@ -2,12 +2,13 @@ using Catalog.API.Grpc.Services;
 using ProtoBuf.Grpc.Server;
 using Catalog.Infrastructure;
 using Framework.Extensions;
+using Catalog.ApplicationServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddCodeFirstGrpc();
-builder.Services.AddMediatRServices();
+builder.Services.AddCatalogApplicationServices();
 builder.Services.AddCatalogInfrastructureServices(builder.Configuration);
 builder.Host.AddSerilogService("CatalogApp");
 

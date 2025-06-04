@@ -1,4 +1,4 @@
-﻿using Framework;
+﻿using Framework.Domain;
 
 namespace Catalog.Domain.Models.BookAggregate.Entities;
 

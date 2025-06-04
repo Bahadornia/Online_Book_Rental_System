@@ -1,4 +1,4 @@
-﻿using Framework;
+﻿using Framework.Domain;
 using Rental.Domain.Models.RentalAggregate.Enums;
 using Rental.Domain.Models.RentalAggregate.ValueObjects;
 using System.ComponentModel.DataAnnotations.Schema;

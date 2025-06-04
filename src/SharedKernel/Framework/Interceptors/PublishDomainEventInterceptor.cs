@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Framework.Domain;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 

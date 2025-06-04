@@ -1,6 +1,6 @@
-﻿using Framework;
-using Catalog.Domain.Models.BookAggregate.Events;
+﻿using Catalog.Domain.Models.BookAggregate.Events;
 using Catalog.Domain.Models.BookAggregate.ValueObjects;
+using Framework.Domain;
 
 namespace Catalog.Domain.Models.BookAggregate.Entities;
 
@@ -13,10 +13,11 @@ public class Book : AggregateRoot<BookId>
     public ISBN ISBN { get; set; } = default!;
     public string? Description { get; set; }
     public string? ImageUrl { get; set; }
+    public int AvailableCopies { get; set; }
 
     private Book() { }
 
-    public static Book Create(BookId id, string title, string author, int publisherId, int categoryId, ISBN isbn, string desctiption, string image)
+    public static Book Create(BookId id, string title, string author, int publisherId, int categoryId, ISBN isbn, string desctiption, string image, int availableCopies)
     {
         var book = new Book
         {
@@ -28,13 +29,13 @@ public class Book : AggregateRoot<BookId>
             ISBN = isbn,
             ImageUrl = image,
             Description = desctiption,
+            AvailableCopies = availableCopies,
         };
-        var bookAddedEvent = new BookAddedEvent(book);
-        book.AddDomainEvents(bookAddedEvent);
+        book.Emit(new BookAdded(book));
         return book;
     }
 
-    public void Update(string title, string author, int publisherId, int categoryId, long isbn, string desctiption, string image)
+    public void Update(string title, string author, int publisherId, int categoryId, long isbn, string desctiption, string image, int availableCopies)
     {
         Title = title;
         Author = author;
@@ -43,12 +44,12 @@ public class Book : AggregateRoot<BookId>
         ISBN = isbn;
         Description = desctiption;
         ImageUrl = image;
-        var bookUpdatedEvent = new BookUpdatedEvent(this);
-        AddDomainEvents(bookUpdatedEvent);
+        AvailableCopies = availableCopies;
+        Emit(new BookUpdated(this));
     }
 
     protected override void ValidateInvariants()
     {
-        throw new NotImplementedException();
+        return;
     }
 }

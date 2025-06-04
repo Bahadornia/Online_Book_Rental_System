@@ -12,4 +12,8 @@
     <ProjectReference Include="..\..\01-Core\Inventory.Domain\Inventory.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\Migrations\" />
+  </ItemGroup>
+
 </Project>
