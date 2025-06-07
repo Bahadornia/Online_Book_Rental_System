@@ -8,8 +8,8 @@ public class Book : AggregateRoot<BookId>
 {
     public string Title { get; set; } = default!;
     public string Author { get; set; } = default!;
-    public int PublisherId { get; set; }
-    public int CategoryId { get; set; }
+    public Publisher Publisher { get; set; } = default!;
+    public Category Category { get; set; } = default!;
     public ISBN ISBN { get; set; } = default!;
     public string? Description { get; set; }
     public string? ImageUrl { get; set; }
@@ -17,15 +17,18 @@ public class Book : AggregateRoot<BookId>
 
     private Book() { }
 
-    public static Book Create(BookId id, string title, string author, int publisherId, int categoryId, ISBN isbn, string desctiption, string image, int availableCopies)
+    public static Book Create(BookId id, string title, string author, string publisherName, string categoryName, ISBN isbn, string desctiption, string image, int availableCopies)
     {
+
+        var publisher = Publisher.Create(publisherName);
+        var category = Category.Create(categoryName);
         var book = new Book
         {
             Id = id,
             Title = title,
             Author = author,
-            PublisherId = publisherId,
-            CategoryId = categoryId,
+            Publisher = publisher,
+            Category = category,
             ISBN = isbn,
             ImageUrl = image,
             Description = desctiption,
@@ -35,12 +38,14 @@ public class Book : AggregateRoot<BookId>
         return book;
     }
 
-    public void Update(string title, string author, int publisherId, int categoryId, long isbn, string desctiption, string image, int availableCopies)
+    public void Update(string title, string author, string publisherName, string categoryName, long isbn, string desctiption, string image, int availableCopies)
     {
+        var publisher = Publisher.Create(publisherName);
+        var category = Category.Create(categoryName);
         Title = title;
         Author = author;
-        PublisherId = publisherId;
-        CategoryId = categoryId;
+        Publisher = publisher;
+        Category = category;
         ISBN = isbn;
         Description = desctiption;
         ImageUrl = image;

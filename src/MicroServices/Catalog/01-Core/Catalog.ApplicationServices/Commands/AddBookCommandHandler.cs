@@ -44,7 +44,7 @@ public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
         var fileName = await UplodaImage(bookDto.Id, command.Title, command.Image, command.ContentType, ct);
         bookDto.ImageUrl = fileName;
 
-        var book = Book.Create(bookDto.Id, bookDto.Title, bookDto.Author, bookDto.PublisherId, bookDto.CategoryId, bookDto.ISBN, bookDto.Description, bookDto.ImageUrl, bookDto.AvailableCopies);
+        var book = Book.Create(bookDto.Id, bookDto.Title, bookDto.Author, bookDto.Publisher, bookDto.Category, bookDto.ISBN, bookDto.Description, bookDto.ImageUrl, bookDto.AvailableCopies);
 
         await _unitOfWork.BeginTransaction(ct);
         await _bookRepository.AddBook(book, ct);
@@ -56,7 +56,7 @@ public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
             BookId = book.Id.Value,
             AvailableCopies = book.AvailableCopies,
         };
-        await _eventPublisher.Publish(bookAddedEvent, ct);
+        await _eventPublisher.Publish<BookAddedIntegrationEvent>(bookAddedEvent, ct);
 
         _logger.LogAddBook(book.Id.Value);
         try
@@ -73,8 +73,8 @@ public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
 
     private async Task<string> UplodaImage(long id, string title, byte[] image, string contentType, CancellationToken ct)
     {
-        var extentsion = contentType.Split('/')[1];
-        var fileUrl = $"{id}/{title}.{extentsion}";
+        var extension = contentType.Split('/')[1];
+        var fileUrl = $"{id}/{title}.{extension}";
         await _fileService.UploadFileAsync(image, fileUrl, contentType, ct);
         return fileUrl;
     }

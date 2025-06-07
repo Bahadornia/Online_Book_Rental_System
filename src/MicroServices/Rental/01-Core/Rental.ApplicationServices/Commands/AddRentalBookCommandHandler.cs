@@ -36,14 +36,14 @@ class AddRentalBookCommandHandler : ICommandHandler<AddRentalBookCommand>
         };
 
         bookRental.AddRentalHistory(history);
-        var bookRentedEvent = new BookRented
+        var bookRentedEvent = new BookRentedIntegrationEvent
         {
             EventId = _snowFlakeService.CreateId(),
             BookId = command.BookId,
             BorrowDate = command.BorrowDate,
         };
 
-        await _eventPublisher.Publish(bookRentedEvent, ct);
+        await _eventPublisher.Publish<BookRentedIntegrationEvent>(bookRentedEvent, ct);
         await _rentalRepository.AddBookRental(bookRental, ct);
         return Unit.Value;
     }

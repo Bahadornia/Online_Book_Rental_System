@@ -1,12 +1,9 @@
-﻿using Catalog.ApplicationServices;
-using Catalog.Domain.Dtos;
+﻿using Catalog.Domain.Dtos;
 using Catalog.Domain.IRepositories;
 using Catalog.Domain.Models.BookAggregate.Entities;
 using Catalog.Infrastructure.Data;
 using Catalog.Infrastructure.Data.BookAggregate;
-using Framework.Domain;
 using MapsterMapper;
-using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
@@ -43,7 +40,7 @@ class BookRepository : IBookRepository
         return result;
     }
 
-    public Task<BookDto> GetBookById(Guid id, CancellationToken ct)
+    public Task<BookDto> GetBookById(long id, CancellationToken ct)
     {
         throw new NotImplementedException();
     }

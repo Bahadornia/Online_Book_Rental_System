@@ -21,21 +21,23 @@ const datasource = {
 
 const gridOptions = {
     columnDefs: [
-        { headerName: "تصویر", field: "imageUrl", sortable: true, filter: true , cellClass:"logo", cellRenderer:(params)=> `<img src="${params.value}">`},
-        { headerName: "نام کتاب", field: "name", sortable: true, filter: true },
+        { headerName: "تصویر", field: "imageUrl", sortable: true, filter: true , cellClass:"logo", cellRenderer:(params)=> `<img src="${params.value}">`, maxWidth:100},
+        { headerName: "نام کتاب", field: "title", sortable: true, filter: true },
         { headerName: "شناسه", field: "id", sortable: true, filter: true },
         { headerName: "شابک", field: "isbn", sortable: true, filter: true },
-        { headerName: "دسته", field: "categoryName", sortable: true, filter: true },
+        { headerName: "دسته", field: "category", sortable: true, filter: true },
         { headerName: "نویسنده", field: "author", sortable: true, filter: true },
-        { headerName: "ناشر", field: "publisherName", sortable: true, filter: true },
+        { headerName: "ناشر", field: "publisher", sortable: true, filter: true },
         { headerName: "توضیحات", field: "description", sortable: true, filter: true },
     ],
    
     defaultColDef: {
         flex: 1,
-        minWidth: 100,
+        minWidth: 60,
         resizable: true
     },
+    rowStyle: {display: "flex",alignItems:"center"},
+    rowHeight:60,
     enableRtl: true,
     animateRows: true,
     rowModelType: 'serverSide',

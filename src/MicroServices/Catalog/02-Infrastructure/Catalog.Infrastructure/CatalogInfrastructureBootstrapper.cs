@@ -11,6 +11,7 @@ using MongoDB.Driver;
 using SharedKernel.Messaging.Extensions;
 using Catalog.Infrastructure.Extensions;
 using MongoDB.Driver.Core.Configuration;
+using System.Reflection;
 
 namespace Catalog.Infrastructure;
 
@@ -22,10 +23,10 @@ public static class CatalogInfrastructureBootstrapper
 
         services.AddScoped<CatalogDbContext>();
         services.AddSingleton<IMongoClient>(_ => new MongoClient(configuration.GetConnectionString("Database")));
-        services.AddSingleton<IMongoDatabase>(provider => provider.GetRequiredService<IMongoClient>().GetDatabase("CatalogDb"));
+        services.AddSingleton(provider => provider.GetRequiredService<IMongoClient>().GetDatabase("CatalogDb"));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IBookRepository, BookRepository>();
-        services.AddMapsterService();
+        services.AddMapsterService(Assembly.GetExecutingAssembly());
         services.AddDomainServices();
         services.AddMassTransitService(configuration);
         services.AddMessagingServices();

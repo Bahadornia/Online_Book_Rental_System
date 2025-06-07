@@ -1,11 +1,13 @@
 ﻿using Catalog.Infrastructure.Data.BookAggregate;
 using MassTransit.MongoDbIntegration;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Catalog.Infrastructure.Data;
 
 public class CatalogDbContext
 {
+    private const string BOOK_COLLECTION_NAME = "Book";
     private readonly IMongoClient _client;
     private readonly IMongoDatabase _db;
     private readonly MongoDbContext _context;
@@ -19,6 +21,60 @@ public class CatalogDbContext
     public IMongoClient Client => _client;
     public IMongoDatabase Database => _db;
     public IClientSessionHandle? Session => _context.Session;
-    public IMongoCollection<BookData> Books => _db.GetCollection<BookData>("Book");
+    public IMongoCollection<BookData> Books => _db.GetCollection<BookData>(BOOK_COLLECTION_NAME);
+
+    public async Task InitializeMongoDb()
+    {
+        var collectionName = BOOK_COLLECTION_NAME;
+        var collectionList = await _db.ListCollectionNames().ToListAsync();
+        if (!collectionList.Contains(collectionName))
+        {
+            var schema = new BsonDocument
+            {
+                { "bsonType", "object" },
+                { "required", new BsonArray { "title", "author","isbn","publisher","category","availableCopies" } },
+                { "properties", new BsonDocument
+                    {
+                        { "title", new BsonDocument { { "bsonType", "string" }, { "description", "must be a string and is required" } } },
+                        { "author", new BsonDocument { { "bsonType", "string" }, { "description", "must be a string and is required" } } },
+                        { "publisher", new BsonDocument {
+                            { "bsonType", "object" },
+                            { "required", new BsonArray { "name"} },
+                            { "properties", new BsonDocument
+                                {
+                                    { "name", new BsonDocument { { "bsonType", "string" }, { "description", "must be a string and is required" } } },
+                                }
+                            },
+                            { "description", "publisher is required and must be an object" }
+                        } },
+                        { "category", new BsonDocument {
+                            { "bsonType", "object" },
+                            { "required", new BsonArray { "name"} },
+                            { "properties", new BsonDocument
+                                {
+                                    { "name", new BsonDocument { { "bsonType", "string" }, { "description", "category name is required" } } },
+                                }
+                            },
+                            { "description", "category is required and must be an object" }
+                        } },
+                    { "isbn", new BsonDocument { { "bsonType", "long" }, { "description", "must be a long and is required" },{"minLength", 13 },{"maxLength",13 } } },
+                         { "availableCopies", new BsonDocument { { "bsonType", "int" }, { "description", "must be a int and is required" } } }
+                    }
+                }
+            };
+            var options = new CreateCollectionOptions<BsonDocument>
+            {
+
+                Validator = new BsonDocumentFilterDefinition<BsonDocument>(
+                    new BsonDocument
+                    {
+                        { "$jsonSchema", schema }
+                    }
+                )
+            };
+
+            await _db.CreateCollectionAsync(collectionName, options);
+        }
+    }
 }
 

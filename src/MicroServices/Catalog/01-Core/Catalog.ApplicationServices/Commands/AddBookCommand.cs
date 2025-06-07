@@ -5,8 +5,8 @@ namespace Catalog.ApplicationServices.Commands;
 public record AddBookCommand(
     string Title,
     string Author,
-    int PublisherId,
-    int CategoryId,
+    string Publisher,
+    string Category,
     long ISBN,
     string? Description,
     string ContentType,

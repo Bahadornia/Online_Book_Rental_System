@@ -6,7 +6,7 @@ namespace Catalog.API.Grpc.Client.Responses;
 public class GetBookRs
 {
     [ProtoMember(1)]
-    public Guid Id { get; set; }
+    public long Id { get; set; }
 
     [ProtoMember(2)]
     public string Title { get; init; } = default!;
@@ -15,10 +15,10 @@ public class GetBookRs
     public string Author { get; init; } = default!;
 
     [ProtoMember(4)]
-    public int PublisherId { get; init; }
+    public string Publisher { get; init; } = default!;
 
     [ProtoMember(5)]
-    public int CategoryId { get; init; }
+    public string Category { get; init; } = default!;
 
     [ProtoMember(6)]
     public long ISBN { get; init; }

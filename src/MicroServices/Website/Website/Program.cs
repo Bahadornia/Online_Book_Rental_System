@@ -1,12 +1,13 @@
 using Catalog.API.Grpc.Client;
 using Framework.Extensions;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddCatalogGrpcClient(builder.Configuration.GetValue<string>("CatalogGrpcService")!);
-builder.Services.AddMapsterService();
+builder.Services.AddMapsterService(Assembly.GetExecutingAssembly());
 
 var app = builder.Build();
 

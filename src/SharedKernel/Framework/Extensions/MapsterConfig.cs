@@ -5,11 +5,11 @@ namespace Framework.Extensions;
 
 public class MapsterConfig
 {
-    public static void RegisterMapsterConfigurations()
+    public static void RegisterMapsterConfigurations(Assembly assembly)
     {
         var config = TypeAdapterConfig.GlobalSettings;
 
         // Apply all mappings from assemblies
-        config.Scan(Assembly.GetExecutingAssembly());
+        config.Scan(assembly);
     }
 }

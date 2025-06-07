@@ -1,6 +1,7 @@
 ﻿using Inventory.Domain.Models.InventoryAggregate.Events;
 using MediatR;
 using SharedKernel.Messaging;
+using SharedKernel.Messaging.Events;
 
 namespace Inventory.ApplicationServices.EventHandlers
 {
@@ -15,7 +16,7 @@ namespace Inventory.ApplicationServices.EventHandlers
 
         public async Task Handle(InventoryDecreased @event, CancellationToken ct)
         {
-            await _eventPublisher.Publish(null, ct);
+            await _eventPublisher.Publish<IntegrationBaseEvent>(null, ct);
         }
     }
 }

@@ -21,14 +21,14 @@ namespace Catalog.API.Grpc.Verification.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddBook(string title, string author, int categoryId, int publisherId, long isbn, int availableCopies, CancellationToken ct)
+        public async Task<IActionResult> AddBook(string title, string author, string category, string publisher, long isbn, int availableCopies, CancellationToken ct)
         {
             var bookRq = new AddBookRq
             {
                 Title = title,
                 Author = author,
-                CategoryId = categoryId,
-                PublisherId = publisherId,
+                Category = category,
+                Publisher = publisher,
                 ISBN = isbn,
                 AvailableCopies = availableCopies,
             };

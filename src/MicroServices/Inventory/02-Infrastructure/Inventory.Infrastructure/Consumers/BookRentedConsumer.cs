@@ -4,7 +4,7 @@ using SharedKernel.Messaging.Events;
 
 namespace Inventory.Infrastructure.Consumers;
 
-class BookRentedConsumer : IConsumer<BookRented>
+class BookRentedConsumer : IConsumer<BookRentedIntegrationEvent>
 {
     private readonly IInventoryService _inventoryService;
 
@@ -13,7 +13,7 @@ class BookRentedConsumer : IConsumer<BookRented>
         _inventoryService = inventoryService;
     }
 
-    public async Task Consume(ConsumeContext<BookRented> context)
+    public async Task Consume(ConsumeContext<BookRentedIntegrationEvent> context)
     {
         var bookId = context.Message.BookId;
         await _inventoryService.DecreaseAvailableCopies(bookId, context.CancellationToken);

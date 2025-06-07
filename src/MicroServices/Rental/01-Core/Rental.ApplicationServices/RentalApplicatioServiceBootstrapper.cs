@@ -10,7 +10,7 @@ public static class RentalApplicatioServiceBootstrapper
     {
         var assembly = Assembly.GetAssembly(typeof(RentalApplicatioServiceBootstrapper));
         services.AddMediatRServices(assembly);
-        services.AddMapsterService();
+        services.AddMapsterService(Assembly.GetExecutingAssembly());
         services.AddSnowflakeService();
         return services;
     }

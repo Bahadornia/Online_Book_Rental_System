@@ -4,5 +4,5 @@ namespace SharedKernel.Messaging;
 
 public interface IIntegrationEventPublisher
 {
-    Task Publish(IntegrationBaseEvent @event, CancellationToken ct);
+    Task Publish<T>(IntegrationBaseEvent @event, CancellationToken ct) where T:IntegrationBaseEvent;
 }

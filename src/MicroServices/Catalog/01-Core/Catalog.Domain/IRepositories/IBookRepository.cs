@@ -9,6 +9,6 @@ public interface IBookRepository
     Task UpdateBook(BookDto book, CancellationToken ct);
     Task DeleteBook(BookDto book, CancellationToken ct);
     Task<IReadOnlyCollection<BookDto>> SearchBook(BookFilterDto filter, CancellationToken ct);
-    Task<BookDto> GetBookById(Guid id, CancellationToken ct);
+    Task<BookDto> GetBookById(long id, CancellationToken ct);
     Task<IReadOnlyCollection<BookDto>> GetAll(CancellationToken ct);
 }

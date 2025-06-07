@@ -6,18 +6,23 @@ namespace Website.Models
     {
         [Required(ErrorMessage = "عنوان الزامی است.")]
         public string Title { get; init; } = default!;
+
         [Required(ErrorMessage = "نام نویسنده الزامی است.")]
         public string Author { get; init; } = default!;
+
         [Required(ErrorMessage = "ناشر الزامی است.")]
-        public int PublisherId { get; set; }
+        public string Publisher { get; set; } = default!;
+
         [Required(ErrorMessage = "دسته الزامی است.")]
-        public int CategoryId { get; set; }
+        public string Category { get; set; } = default!;
+
         [Required(ErrorMessage = "شابک الزامی است.")]
         public long ISBN { get; init; }
         public string? Description { get; init; }
         public IFormFile ImageFile { get; set; } = default!;
         public string? ImageUrl { get; set; }
         public byte[] Image => ConvertsToByte(ImageFile);
+        public int AvailableCopies { get; set; }
         public string ContentType => ImageFile.ContentType;
 
         private byte[] ConvertsToByte(IFormFile file)

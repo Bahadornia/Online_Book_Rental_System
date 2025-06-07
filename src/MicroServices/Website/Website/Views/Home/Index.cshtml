@@ -26,15 +26,15 @@
             </div>
             <div class="col-12 col-md-4">
                 <label for="publisher">ناشر</label>
-                <input id="publisher" type="text" asp-for="PublisherId" class="form-control" value="" />
-                <span asp-validation-for="PublisherId"></span>
+                <input id="publisher" type="text" asp-for="Publisher" class="form-control" value="" />
+                <span asp-validation-for="Publisher"></span>
             </div>
         </div>
         <div class="row mb-2">
             <div class="col-12 col-md-4">
                 <label for="category">دسته</label>
-                <input id="category" type="text" asp-for="CategoryId" class="form-control" value="" />
-                <span asp-validation-for="CategoryId"></span>
+                <input id="category" type="text" asp-for="Category" class="form-control" value="" />
+                <span asp-validation-for="Category"></span>
             </div>
             <div class="col-12 col-md-4">
                 <label for="isbn">شابک</label>
@@ -47,6 +47,12 @@
             </div>
         </div>
         <div class="row mb-2">
+            <div class="col-12 col-md-4">
+                <label for="AvailableCopies">تعداد نسخه</label>
+                <input asp-for="AvailableCopies"
+                       id="AvailableCopies" type="text"
+                       class="form-control" />
+            </div> 
             <div class="col-12 col-md-4">
                 <input asp-for="ImageFile" 
                 accept="image/*" id="image" hidden type="file" onchange="previewImage(this)"

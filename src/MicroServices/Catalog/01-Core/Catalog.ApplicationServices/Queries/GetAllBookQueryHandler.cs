@@ -22,7 +22,7 @@ public class GetAllBookQueryHandler : IQueryHandler<GetAllBookQuery, IReadOnlyCo
 
         var tasks = rs.Select(async (item) =>
         {
-            var url = await _fileService.GetFileAsync(item.ImageUrl, ct);
+            var url = await _fileService.GetFileAsync($"thumbnails/{item.ImageUrl}", ct);
             item.ImageUrl = url;
         });
 
