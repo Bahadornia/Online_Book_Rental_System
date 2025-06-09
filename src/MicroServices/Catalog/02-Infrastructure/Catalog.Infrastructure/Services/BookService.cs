@@ -4,11 +4,11 @@ using Catalog.Infrastructure.Data;
 
 namespace Catalog.Infrastructure.Services;
 
-internal class CatalogService : ICatalogService
+internal class BookService : ICatalogService
 {
     private readonly CatalogDbContext _dbContext;
 
-    public CatalogService(CatalogDbContext dbContext)
+    public BookService(CatalogDbContext dbContext)
     {
         _dbContext = dbContext;
     }

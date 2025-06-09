@@ -12,6 +12,7 @@ builder.Services.AddCodeFirstGrpc();
 builder.Services.AddCatalogApplicationServices();
 builder.Services.AddCatalogInfrastructureServices(builder.Configuration);
 builder.Host.AddSerilogService("CatalogApp");
+builder.Services.AddRedisServices(builder.Configuration);
 
 
 var app = builder.Build();

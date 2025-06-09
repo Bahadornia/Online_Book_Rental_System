@@ -26,6 +26,7 @@ public static class CatalogInfrastructureBootstrapper
         services.AddSingleton(provider => provider.GetRequiredService<IMongoClient>().GetDatabase("CatalogDb"));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IBookRepository, BookRepository>();
+        services.Decorate<IBookRepository, CachedBookRepository>();
         services.AddMapsterService(Assembly.GetExecutingAssembly());
         services.AddDomainServices();
         services.AddMassTransitService(configuration);
