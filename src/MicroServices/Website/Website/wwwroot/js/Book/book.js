@@ -1,7 +1,8 @@
 ﻿
+import { AppGrid } from "../app.js";
 const datasource = {
     getRows(params) {
-        const request = params.request;
+      params.request;
         $.ajax({
             url: "/Home/GetAll",
             type: "Get",
@@ -46,14 +47,8 @@ const gridOptions = {
     paginationPageSize: 10,
 }
 
-const gridDiv = document.querySelector('#agGrid');
-let gridApi ;
 
-
-// Initialize Grid
-document.addEventListener('DOMContentLoaded', () => {
-    gridApi = agGrid.createGrid(gridDiv, gridOptions)
-});
+var gridApi = AppGrid.Create(gridOptions);
 
 function openFile() {
     document.getElementById("image").click();
