@@ -16,9 +16,9 @@ namespace Rental.API.Grpc.Verification.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> BorrowBook(BorrowBookRq rq , CancellationToken ct)
+        public async Task<IActionResult> BorrowBook(RentBookRq rq , CancellationToken ct)
         {
-            await _rentalGrpcService.BorrowBook(rq, ct);
+            await _rentalGrpcService.RentBook(rq, ct);
             return Ok();
         }
     }

@@ -1,6 +1,7 @@
 ﻿using Inventory.Domain.IRepositories;
 using Inventory.Domain.Models.InventoryAggregate.Entities;
 using Inventory.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Inventory.Infrastructure.Repositories;
 
@@ -16,14 +17,20 @@ internal class InventoryRepository : IInventoryRepository
         _dbContext = inventoryDbContext;
     }
 
-    public void AddBooToInventory(BookInventory bookInventory)
+    public void AddInventory(BookInventory bookInventory)
     {
         _dbContext.Inventories.Add(bookInventory);
     }
 
-    public Task<BookInventory> GetInventory(long bookId, CancellationToken ct)
+    public async Task<BookInventory> GetInventory(long bookId, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        var bookInventory = await _dbContext.Inventories.FirstOrDefaultAsync(item => item.Id == bookId, ct);
+
+        if(bookInventory is null)
+        {
+            throw new Exception("BookInventory not found!");
+        }
+        return bookInventory;
     }
 
     public void UpdateInventory(BookInventory bookInventory)

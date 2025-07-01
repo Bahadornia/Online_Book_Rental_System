@@ -6,8 +6,8 @@ namespace Catalog.Infrastructure.Data.BookAggregate;
 
 public class BookData
 {
-    
-    public long Id { get; set; }
+
+    public long Id { get; set; } = default!;
 
     [BsonElement("title")]
     public string Title { get; set; } = default!;

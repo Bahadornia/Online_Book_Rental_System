@@ -15,8 +15,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.Hashids" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\SharedKernel\Framework\Framework.csproj" />
     <ProjectReference Include="..\..\Catalog\03-API\API.Grpc.Client\Catalog.API.Grpc.Client\Catalog.API.Grpc.Client.csproj" />
+    <ProjectReference Include="..\..\Rental\03-API\Rental.API.Grpc.Client\Rental.API.Grpc.Client.csproj" />
   </ItemGroup>
 
   <ItemGroup>

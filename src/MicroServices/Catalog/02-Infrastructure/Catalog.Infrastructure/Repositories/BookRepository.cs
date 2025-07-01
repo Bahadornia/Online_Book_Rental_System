@@ -22,15 +22,19 @@ class BookRepository : IBookRepository
 
     public async Task AddBook(Book book, CancellationToken ct)
     {
-        var bookData = _mapper.Map<BookData>(book);
+        var bookData = _mapper.Map<BookData
+            >(book);
         await _dbContext.Books.InsertOneAsync(_dbContext.Session, bookData, null, ct);
     }
 
-    public Task DeleteBook(BookDto book, CancellationToken ct)
+    public async Task DeleteBook(long bookId, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        var builder = Builders<BookData>.Filter;
+        var filter = builder.Eq(b=> b.Id ,bookId);
+        var book = _dbContext.Books.Find(filter);
+        await _dbContext.Books.DeleteOneAsync(filter, ct);
     }
-
+    
     public async Task<IReadOnlyCollection<BookDto>> GetAll(CancellationToken ct)
     {
         var builder = Builders<BookData>.Filter;

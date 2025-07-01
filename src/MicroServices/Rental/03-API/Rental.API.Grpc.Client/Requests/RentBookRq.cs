@@ -3,7 +3,7 @@
 namespace Rental.API.Grpc.Client.Requests;
 
 [ProtoContract]
-public record BorrowBookRq
+public record RentBookRq
 {
     [ProtoMember(1)]
     public long BookId { get; init; }

@@ -15,7 +15,7 @@ public class RentalGrpcService : IRentalGrpcService
         _mediator = mediator;
     }
 
-    public async Task BorrowBook(BorrowBookRq rq, CallContext context = default)
+    public async Task RentBook(RentBookRq rq, CallContext context = default)
     {
         var command = new AddRentalBookCommand(rq.BookId, rq.UserId, rq.BorrowDate);
        

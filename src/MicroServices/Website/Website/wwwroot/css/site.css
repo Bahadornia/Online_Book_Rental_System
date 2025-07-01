@@ -29,7 +29,7 @@
     src: url("./fonts/Farsi-Digits-Without-Latin/Vazir-Bold-FD-WOL.eot");
     src: url("./fonts/Farsi-Digits-Without-Latin/Vazir-Bold-FD-WOL.woff") format("woff"), url("./fonts/Farsi-Digits-Without-Latin/Vazir-Bold-FD-WOL.ttf") format("ttf"), url("./fonts/Farsi-Digits-Without-Latin/Vazir-Bold-FD-WOL.woff2") format("woff2");
 }
-* {
+body {
     font-family: 'vazir', Arial, sans-serif !important;
     font-weight: normal;
 }

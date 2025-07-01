@@ -15,13 +15,6 @@ internal class InventoryService : IInventoryService
         _unintOfWork = unintOfWork;
     }
 
-    public async Task AddBookToInventory(long bookId, int initialCopies, CancellationToken ct)
-    {
-        var bookInventory = BookInventory.Create(bookId, initialCopies, initialCopies);
-        _inventoryRepository.AddBooToInventory(bookInventory);
-        await _unintOfWork.SaveChangesAsync(ct);
-    }
-
     public async Task DecreaseAvailableCopies(long bookId, CancellationToken ct)
     {
         var bookInventory = await _inventoryRepository.GetInventory(bookId, ct);
@@ -30,15 +23,15 @@ internal class InventoryService : IInventoryService
         await _unintOfWork.SaveChangesAsync(ct);
 
     }
-
-    public Task<BookInventory> GetInventoryAsync(long bookId, CancellationToken ct)
+    public Task IncreaseAvailableCopies(long bookId, CancellationToken ct)
     {
         throw new NotImplementedException();
     }
 
-    public Task IncreaseAvailableCopies(long bookId, CancellationToken ct)
+    public async Task<bool> IsBookAvailable(long bookId, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        var book = await _inventoryRepository.GetInventory(bookId, ct);
+        return book.AvailableCopies > 0 ;
     }
 
     public Task UpdateTotalCopies(long bookId, int newTotal, CancellationToken ct)

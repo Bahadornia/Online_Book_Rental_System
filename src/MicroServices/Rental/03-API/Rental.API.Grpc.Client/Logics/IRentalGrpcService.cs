@@ -9,5 +9,5 @@ public interface IRentalGrpcService
 {
 
     [OperationContract]
-    Task BorrowBook(BorrowBookRq rq, CallContext context = default!);
+    Task RentBook(RentBookRq rq, CallContext context = default!);
 }

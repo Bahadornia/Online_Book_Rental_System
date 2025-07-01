@@ -4,7 +4,7 @@ using Catalog.Infrastructure.Data;
 
 namespace Catalog.Infrastructure.Services;
 
-internal class BookService : ICatalogService
+internal class BookService : IBookService
 {
     private readonly CatalogDbContext _dbContext;
 

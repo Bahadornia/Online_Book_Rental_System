@@ -16,5 +16,8 @@ namespace Catalog.API.Grpc.Client.Logics
 
         [OperationContract]
         Task<IReadOnlyCollection<GetBookRs>> GetAllBooks(CallContext callContext = default);
+
+        [OperationContract]
+        Task DeleteBook(DeleteBookRq rq, CallContext callContext = default);
     }
 }

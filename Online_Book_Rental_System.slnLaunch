@@ -7,6 +7,10 @@
         "Action": "Start"
       },
       {
+        "Path": "src\\MicroServices\\Inventory\\03-API\\Inventory.API\\Inventory.API.csproj",
+        "Action": "Start"
+      },
+      {
         "Path": "src\\MicroServices\\Website\\Website\\Website.csproj",
         "Action": "Start"
       }

@@ -26,9 +26,10 @@ namespace Catalog.Infrastructure.Repositories
             await _bookRepository.AddBook(book, ct);
         }
 
-        Task IBookRepository.DeleteBook(BookDto book, CancellationToken ct)
+        async Task IBookRepository.DeleteBook(long bookId, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            await _bookRepository.DeleteBook(bookId, ct);
+            await _db.HashDeleteAsync(HASH_KEY, KEY);
         }
 
         async Task<IReadOnlyCollection<BookDto>> IBookRepository.GetAll(CancellationToken ct)

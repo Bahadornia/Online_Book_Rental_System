@@ -1,5 +1,6 @@
 using Catalog.API.Grpc.Client;
 using Framework.Extensions;
+using Rental.API.Grpc.Client;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,7 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddCatalogGrpcClient(builder.Configuration.GetValue<string>("CatalogGrpcService")!);
+builder.Services.AddRentalGrpcClient(builder.Configuration.GetValue<string>("RentalGrpcService")!);
 builder.Services.AddMapsterService(Assembly.GetExecutingAssembly());
+builder.Services.AddHashids(opt => opt.Salt = "/-_#*+!?()=:.@");
 
 var app = builder.Build();
 

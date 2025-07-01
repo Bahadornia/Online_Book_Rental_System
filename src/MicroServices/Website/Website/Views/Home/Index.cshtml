@@ -12,7 +12,6 @@
           data-ajax-method="POST"
           data-ajax-failure = "onFailure"
           data-ajax-loading="#loader">
-        <i class="fa fa-address-book-o" aria-hidden="true"></i>
         <div class="row mb-2">
             <div class="col-12 col-md-4">
                 <label for="title">عنوان</label>
@@ -55,7 +54,7 @@
             </div> 
             <div class="col-12 col-md-4">
                 <input asp-for="ImageFile" 
-                accept="image/*" id="image" hidden type="file" onchange="previewImage(this)"
+                accept="image/*" id="image" hidden type="file" onchange="previewImage()"
                        class="form-control" />
                 <label for="Image">تصویر</label>
                 <input id="Image" class="form-control" type="button" onclick="openFile()" />
@@ -78,7 +77,8 @@
     </form>
 </div>
 
+@await Html.PartialAsync("_DeleteBook")
 @section Scripts {
 
-    <script type="module" src="./js/Book/book.min.js"></script>
+    <script src="./js/Book/book.js" defer></script>
 }

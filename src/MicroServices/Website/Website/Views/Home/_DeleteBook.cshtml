@@ -1,0 +1,8 @@
+﻿<form id="deleteBook" data-ajax=true
+      asp-controller="Home"
+      asp-action="DeleteBook"
+      data-ajax-success="onSuccessDeleteBook"
+      data-ajax-method="POST"
+      data-ajax-failure="onFailureDeleteBook">
+    <input type="hidden" name="bookId" value="" />
+</form>

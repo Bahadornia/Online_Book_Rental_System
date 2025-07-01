@@ -2,7 +2,7 @@
 
 namespace Catalog.Domain.IServices;
 
-public interface ICatalogService
+public interface IBookService
 {
     Task AddBook(BookDto book, CancellationToken ct = default);
 }

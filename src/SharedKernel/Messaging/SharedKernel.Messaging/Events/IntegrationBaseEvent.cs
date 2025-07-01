@@ -1,6 +1,6 @@
 ﻿namespace SharedKernel.Messaging.Events
 {
-    public class IntegrationBaseEvent
+    public abstract class IntegrationBaseEvent
     {
         public long EventId { get; set; }
         public DateTime OccuredOn => DateTime.UtcNow;

@@ -1,14 +1,11 @@
-using Grpc.Core;
-using Catalog.API.Grpc;
 using Catalog.API.Grpc.Client.Logics;
 using Catalog.API.Grpc.Client.Requests;
-using ProtoBuf.Grpc;
-using Catalog.ApplicationServices;
-using Catalog.ApplicationServices.Commands;
-using MediatR;
-using MapsterMapper;
-using Catalog.ApplicationServices.Queries;
 using Catalog.API.Grpc.Client.Responses;
+using Catalog.ApplicationServices.Commands;
+using Catalog.ApplicationServices.Queries;
+using MapsterMapper;
+using MediatR;
+using ProtoBuf.Grpc;
 
 namespace Catalog.API.Grpc.Services;
 
@@ -43,5 +40,16 @@ public class BookGrpcSercvice : IBookGrpcService
         var query = new GetBookImgeQuery(rq.FileName);
         var url = await _mediator.Send(query, callContext.CancellationToken);
         return new GetBookImageRs { Url = url };
+    }
+
+    async Task IBookGrpcService.DeleteBook(DeleteBookRq rq, CallContext callContext)
+    {
+        var command = new DeleteBookCommand(rq.BookId);
+        await _mediator.Send(command, callContext.CancellationToken);
+    }
+
+    Task<GetBookImageRs> IBookGrpcService.GetBookImage(GetBookImageRq rq, CallContext callContext)
+    {
+        throw new NotImplementedException();
     }
 }
