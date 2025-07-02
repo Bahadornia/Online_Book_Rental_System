@@ -11,7 +11,7 @@ public record UserId
 
     public static UserId Create(long value)
     {
-        Validate(value);
+        //Validate(value);
         return new UserId(value);
     }
 

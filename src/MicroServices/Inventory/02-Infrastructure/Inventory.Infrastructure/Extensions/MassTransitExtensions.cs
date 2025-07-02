@@ -26,6 +26,8 @@ public static class MassTransitExtensions
             x.AddConsumer<BookRentedConsumer>();
             x.AddConsumer<BookAddedConsumer>();
             x.AddConsumer<BookAddedFualtConsumer>();
+            x.AddConsumer<BookDeletedConsumer>();
+            x.AddConsumer<BookDeletedFaultConsumer>();
 
             x.SetKebabCaseEndpointNameFormatter();
             x.AddEntityFrameworkOutbox<T>(o =>

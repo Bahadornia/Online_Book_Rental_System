@@ -12,5 +12,6 @@ namespace Website.Dtos
         public long ISBN { get; init; }
         public string Description { get; init; } = default!;
         public string ImageUrl { get; set; } = default!;
+        public int AvailableCopies { get; set; } = default!;
     }
 }

@@ -28,4 +28,7 @@ public class GetBookRs
 
     [ProtoMember(8)]
     public string ImageUrl { get; set; } = default!;
+
+    [ProtoMember(9)]
+    public int AvailableCopies { get; set; }
 }

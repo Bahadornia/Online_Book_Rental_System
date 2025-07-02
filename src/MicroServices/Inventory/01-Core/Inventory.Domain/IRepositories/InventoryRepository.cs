@@ -6,5 +6,6 @@ namespace Inventory.Domain.IRepositories;
     void AddInventory(BookInventory bookInventory);
     void UpdateInventory(BookInventory bookInventory);
     Task<BookInventory> GetInventory(long bookId, CancellationToken ct);
+    Task DeleteInventory(long bookId, CancellationToken ct);
     }
 

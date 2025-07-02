@@ -2,7 +2,7 @@
 {
     public class RentBookDto
     {
-        public long BookId { get; set; }
+        public string BookId { get; set; }
         public long UserId { get; set; }
     }
 }

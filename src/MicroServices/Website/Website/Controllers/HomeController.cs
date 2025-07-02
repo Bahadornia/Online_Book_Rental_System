@@ -1,14 +1,11 @@
-using System.Diagnostics;
-using System.Threading.Tasks;
 using Catalog.API.Grpc.Client.Logics;
 using Catalog.API.Grpc.Client.Requests;
-using Catalog.API.Grpc.Client.Responses;
 using HashidsNet;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Rental.API.Grpc.Client.Logics;
 using Rental.API.Grpc.Client.Requests;
+using System.Diagnostics;
 using Website.Dtos;
 using Website.Models;
 
@@ -48,7 +45,7 @@ public class HomeController : Controller
         var rs = books.Select(book => new BookDto
         {
             Author = book.Author,
-            Category= book.Category,
+            Category = book.Category,
             Id = _hashIds.EncodeLong(book.Id),
             Description = book.Description,
             ISBN = book.ISBN,
@@ -77,7 +74,7 @@ public class HomeController : Controller
     {
         var rentBookRq = new RentBookRq
         {
-            BookId = dto.BookId,
+            BookId = _hashIds.DecodeLong(dto.BookId)[0],
             UserId = dto.UserId,
             BorrowDate = DateTime.UtcNow,
         };
@@ -95,7 +92,7 @@ public class HomeController : Controller
     public async Task<IActionResult> DeleteBook([FromForm] string bookId, CancellationToken ct)
     {
         var id = _hashIds.DecodeLong(bookId);
-       
+
         var deleteBookRq = new DeleteBookRq
         {
             BookId = id[0]

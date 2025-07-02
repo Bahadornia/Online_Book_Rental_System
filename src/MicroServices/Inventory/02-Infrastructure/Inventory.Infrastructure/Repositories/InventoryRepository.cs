@@ -22,11 +22,22 @@ internal class InventoryRepository : IInventoryRepository
         _dbContext.Inventories.Add(bookInventory);
     }
 
+    public async Task DeleteInventory(long bookId, CancellationToken ct)
+    {
+        var inventory = await _dbContext.Inventories.FirstOrDefaultAsync(item => item.Id == bookId, ct);
+        if (inventory is null)
+        {
+            throw new Exception("Inventory not found!");
+        }
+        _dbContext.Inventories.Remove(inventory);
+
+    }
+
     public async Task<BookInventory> GetInventory(long bookId, CancellationToken ct)
     {
         var bookInventory = await _dbContext.Inventories.FirstOrDefaultAsync(item => item.Id == bookId, ct);
 
-        if(bookInventory is null)
+        if (bookInventory is null)
         {
             throw new Exception("BookInventory not found!");
         }

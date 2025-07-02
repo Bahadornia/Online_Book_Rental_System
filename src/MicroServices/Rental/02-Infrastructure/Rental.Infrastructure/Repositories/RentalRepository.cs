@@ -15,9 +15,8 @@ internal class RentalRepository : IRentalRepository
         _dbContext = dbContext;
     }
 
-    public async Task AddBookRental(BookRental rental, CancellationToken ct)
+    public void AddBookRental(BookRental rental, CancellationToken ct)
     {
         _dbContext.BookRentals.Add(rental);
-        await _dbContext.SaveChangesAsync(ct);
     }
 }

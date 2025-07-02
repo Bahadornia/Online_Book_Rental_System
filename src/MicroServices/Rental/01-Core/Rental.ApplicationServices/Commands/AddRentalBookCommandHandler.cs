@@ -16,13 +16,15 @@ class AddRentalBookCommandHandler : ICommandHandler<AddRentalBookCommand>
     private readonly IRentalRepository _rentalRepository;
     private readonly IRentalService _rentalService;
     private readonly IIntegrationEventPublisher _eventPublisher;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public AddRentalBookCommandHandler(IRentalRepository rentalRepository, ISnowFlakeService snowFlakeService, IIntegrationEventPublisher publishEndPoint, IRentalService rentalService)
+    public AddRentalBookCommandHandler(IRentalRepository rentalRepository, ISnowFlakeService snowFlakeService, IIntegrationEventPublisher publishEndPoint, IRentalService rentalService, IUnitOfWork unitOfWork)
     {
         _rentalRepository = rentalRepository;
         _snowFlakeService = snowFlakeService;
         _eventPublisher = publishEndPoint;
         _rentalService = rentalService;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Unit> Handle(AddRentalBookCommand command, CancellationToken ct)
@@ -56,8 +58,20 @@ class AddRentalBookCommandHandler : ICommandHandler<AddRentalBookCommand>
             BorrowDate = command.BorrowDate,
         };
 
+        await _unitOfWork.BenginTransacttionAsync(ct);
         await _eventPublisher.Publish<BookRentedIntegrationEvent>(bookRentedEvent, ct);
-        await _rentalRepository.AddBookRental(bookRental, ct);
+        _rentalRepository.AddBookRental(bookRental, ct);
+        await _unitOfWork.SaveChangesAsync(ct);
+        try
+        {
+            await _unitOfWork.CommitTransacttionAsync(ct);
+        }
+        catch (Exception)
+        {
+
+            await _unitOfWork.RollBackTransacttionAsync(ct);
+            throw new Exception("Error in renting the book!");
+        }
         return Unit.Value;
     }
 

@@ -1,5 +1,4 @@
-﻿
-let gridApi;
+﻿let gridApi;
 const datasource = {
     getRows(params) {
         params.request;
@@ -29,7 +28,6 @@ const gridOptions = {
         { headerName: "دسته", field: "category", sortable: true, filter: true },
         { headerName: "نویسنده", field: "author", sortable: true, filter: true },
         { headerName: "ناشر", field: "publisher", sortable: true, filter: true },
-        { headerName: "تعداد نسخه موجود", field: "AvailableCopies"},
         { headerName: "توضیحات", field: "description", sortable: true, filter: true },
         { headerName: "عملیات", sortable: false, filter: false, cellClass: "operation", cellRenderer: (params) => operationComponent(params.data.id) }
     ],

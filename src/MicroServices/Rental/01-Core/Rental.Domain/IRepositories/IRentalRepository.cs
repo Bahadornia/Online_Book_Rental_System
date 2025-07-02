@@ -4,5 +4,5 @@ namespace Rental.Domain.IRepositories;
 
 public interface IRentalRepository
 {
-    Task AddBookRental(BookRental bookRental, CancellationToken ct);
+    void AddBookRental(BookRental bookRental, CancellationToken ct);
 }

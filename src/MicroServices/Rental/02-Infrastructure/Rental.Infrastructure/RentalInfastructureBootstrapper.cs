@@ -31,6 +31,7 @@ public static class RentalInfastructureBootstrapper
         });
         services.AddScoped<IRentalRepository, RentalRepository>();
         services.AddScoped<IRentalService, RentalService>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
 
     }
