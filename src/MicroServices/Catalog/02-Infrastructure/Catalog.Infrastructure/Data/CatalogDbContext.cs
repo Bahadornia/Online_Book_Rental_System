@@ -73,11 +73,12 @@ public class CatalogDbContext
                 )
             };
 
-            var indexes = Builders<BookData>.IndexKeys.Ascending(item => item.Title);
-            var indexModel = new CreateIndexModel<BookData>(indexes);
             await _db.CreateCollectionAsync(collectionName, options);
-            await _db.GetCollection<BookData>(collectionName).Indexes.CreateOneAsync(indexModel);
         }
+
+        var indexes = Builders<BookData>.IndexKeys.Ascending(item => item.Title);
+        var indexModel = new CreateIndexModel<BookData>(indexes);
+        await _db.GetCollection<BookData>(collectionName).Indexes.CreateOneAsync(indexModel);
     }
 }
 

@@ -1,4 +1,6 @@
 ﻿let gridApi;
+var isAdmin = $("#isAdmin").val();
+
 const datasource = {
     getRows(params) {
         params.request;
@@ -31,17 +33,26 @@ const gridOptions = {
         { headerName: "توضیحات", field: "description", sortable: true, filter: true },
         { headerName: "عملیات", sortable: false, filter: false, cellClass: "operation", cellRenderer: (params) => operationComponent(params.data.id) }
     ],
- 
+
 
     defaultColDef: {
         flex: 1,
         minWidth: 60,
         resizable: true
     },
-    rowStyle: { display: "flex", alignItems: "center" },
+    rowStyle: { display: "flex", alignItems: "center", justifyContent: "center",backGroundColor:'reds' },
     rowHeight: 60,
     enableRtl: true,
     animateRows: true,
+    cellStyle: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    headerStyle: {
+        justifyContent: "center",
+        display: 'flex'
+    },
     rowModelType: 'serverSide',
     serverSideDatasource: datasource,
     pagination: true,
@@ -59,7 +70,7 @@ reserveBook = (id) => {
             UserId: 0
         },
         success: function (data) {
-            
+
         },
         error: function (err) {
             console.error(err);
@@ -70,12 +81,14 @@ deleteBook = bookId => {
     debugger
     $("#deleteBook input[name='bookId']").val(bookId);
     $("#deleteBook").submit();
-   
+
 }
 
 
-let operationComponent = (id) =>
-    `
+let operationComponent = (id) => {
+    let html = "";
+    if (isAdmin == "true") {
+        html = `
 <button class="btn btn-sm"><i class="fa fa-pencil" aria-hidden="true"></i>
 </button>
 <button class="btn btn-sm" onclick="reserveBook('${id}')"><i class="fa fa-bookmark" aria-hidden="true"></i>
@@ -83,13 +96,25 @@ let operationComponent = (id) =>
 <button class="btn btn-sm" onclick = "deleteBook('${id}')"><i class="fa fa-trash" aria-hidden="true"></i></i>
 </button>
 `;
+    }
+    else {
+        html = `
+
+<button class="btn btn-sm" onclick="reserveBook('${id}')"><i class="fa fa-bookmark" aria-hidden="true"></i>
+</button>
+
+`;
+    }
+    return html;
+}
+
 
 const gridDiv = document.querySelector('#agGrid');
 document.addEventListener('DOMContentLoaded', () => {
     gridApi = agGrid.createGrid(gridDiv, gridOptions)
 });
 
-openFile = ()=> {
+openFile = () => {
     document.getElementById("image").click();
 }
 
@@ -121,7 +146,6 @@ previewImage = () => {
 }
 
 onSuccess = (data) => {
-    debugger
     gridApi.refreshServerSide();
     Swal.fire({
         title: 'کتاب مورد نظر با موفقیت اضافه شد.',
@@ -130,10 +154,10 @@ onSuccess = (data) => {
         allowEscapeKey: false,
         showCloseButton: true,
         showCancelButton: false,
-        confirmButtonText:"باشه"
+        confirmButtonText: "باشه"
     })
 }
 
-onFailure = ()=> {
+onFailure = () => {
     alert("Error!");
 }

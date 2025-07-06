@@ -1,5 +1,7 @@
 using Catalog.API.Grpc.Client;
 using Framework.Extensions;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Rental.API.Grpc.Client;
 using System.Reflection;
 
@@ -11,6 +13,26 @@ builder.Services.AddCatalogGrpcClient(builder.Configuration.GetValue<string>("Ca
 builder.Services.AddRentalGrpcClient(builder.Configuration.GetValue<string>("RentalGrpcService")!);
 builder.Services.AddMapsterService(Assembly.GetExecutingAssembly());
 builder.Services.AddHashids(opt => opt.Salt = "/-_#*+!?()=:.@");
+var authConfigs = builder.Configuration.GetSection("Authentication");
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+})
+    .AddCookie()
+    .AddOpenIdConnect(opt =>
+    {
+        opt.Authority = authConfigs["Authority"];
+        opt.ClientId = authConfigs["ClientId"];
+        opt.ClientSecret = authConfigs["ClientSecret"];
+        opt.SaveTokens = true; // Store access token in cookie
+        opt.ResponseType = "code";
+        opt.Scope.Add("openid");
+        opt.Scope.Add("profile");
+        opt.Scope.Add("roles");
+        
+    });
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
@@ -26,7 +48,7 @@ app.UseDeveloperExceptionPage();
 
 app.UseHttpsRedirection();
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();

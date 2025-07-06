@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var isAdmin = User.IsInRole("Admin");
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -8,11 +11,11 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Website.styles.css" asp-append-version="true" />
-    <link rel = "stylesheet" href="~/lib/ag-grid-enterprise/styles/ag-grid.min.css" asp-append-version="true" />
-    <link rel = "stylesheet" href="~/lib/ag-grid-enterprise/styles/ag-theme-alpine.min.css" asp-append-version="true" />
-    <link rel = "stylesheet" href="~/css/fonts/font-awesome/css/font-awesome.min.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/lib/ag-grid-enterprise/styles/ag-grid.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/ag-grid-enterprise/styles/ag-theme-alpine.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/fonts/font-awesome/css/font-awesome.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/sweetalert2/dist/styles/theme-default.min.css" asp-append-version="true" />
-   
+
 </head>
 <body>
     <header>
@@ -24,14 +27,27 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+                    <div>
+                        <ul class="navbar-nav flex-grow-1">
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="navbar-nav flex-grow-1">
+                            @if (User is not null && User.Identity is not null && User.Identity.IsAuthenticated)
+                            {
+                                <li lass="nav-item">
+                                    <button id="logoutButton" class="nav-link text-dark">logout</button>
+                                </li>
+                            }
+                        </ul>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -40,8 +56,8 @@
         <main role="main" class="pb-3">
             @RenderBody()
             <div class="row">
-                <div class="col-12">
-                    <div id="agGrid" style="height: 500px; width: 100%;" class="ag-theme-alpine" dir="rtl"></div>
+                <div class="col-12" style="height: @(isAdmin ? "500px":"calc(100vh - 150px)") ">
+                    <div id="agGrid" style="height: 100%; width: 100%;" class="ag-theme-alpine" dir="rtl"></div>
                 </div>
             </div>
         </main>
@@ -52,6 +68,7 @@
             &copy; 2025 - Website - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+    @await Html.PartialAsync("_Logout")
     <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true" defer></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" asp-append-version="true" defer></script>
     <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js" asp-append-version="true" defer></script>

@@ -2,6 +2,11 @@ using Catalog.API.Grpc.Client.Logics;
 using Catalog.API.Grpc.Client.Requests;
 using HashidsNet;
 using MapsterMapper;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rental.API.Grpc.Client.Logics;
 using Rental.API.Grpc.Client.Requests;
@@ -11,6 +16,7 @@ using Website.Models;
 
 namespace Website.Controllers;
 
+[Authorize]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -18,14 +24,18 @@ public class HomeController : Controller
     private readonly IRentalGrpcService _rentalGrpcService;
     private readonly IMapper _mapper;
     private readonly IHashids _hashIds;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly HttpContext _httpContext;
 
-    public HomeController(ILogger<HomeController> logger, IBookGrpcService bookService, IMapper msapper, IRentalGrpcService rentalGrpcService, IHashids hashIds)
+    public HomeController(ILogger<HomeController> logger, IBookGrpcService bookService, IMapper msapper, IRentalGrpcService rentalGrpcService, IHashids hashIds, IHttpContextAccessor httpContextAccessor)
     {
         _logger = logger;
         _bookService = bookService;
         _mapper = msapper;
         _rentalGrpcService = rentalGrpcService;
         _hashIds = hashIds;
+        _httpContextAccessor = httpContextAccessor;
+        _httpContext = _httpContextAccessor.HttpContext;
     }
 
     public IActionResult Index()
@@ -41,6 +51,8 @@ public class HomeController : Controller
     [HttpGet]
     public async Task<IActionResult> GetAll(CancellationToken ct)
     {
+        var claims = User.Claims;
+        var toekn = await HttpContext.GetTokenAsync("id_token");
         var books = await _bookService.GetAllBooks(ct);
         var rs = books.Select(book => new BookDto
         {

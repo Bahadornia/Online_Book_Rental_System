@@ -86,3 +86,18 @@ body {
 .logo{
     height:auto !important;
 }
+
+/*------------------------------*/
+.ag-header-cell-label{
+    display:flex !important;
+    justify-content:center !important;
+}
+
+.ag-cell{
+    display: flex !important;
+    justify-content: center !important;
+}
+
+
+
+/*------------------------------*/
