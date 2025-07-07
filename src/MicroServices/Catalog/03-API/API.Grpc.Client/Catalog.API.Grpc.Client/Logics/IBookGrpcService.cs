@@ -10,7 +10,7 @@ namespace Catalog.API.Grpc.Client.Logics
     {
         [OperationContract]
         Task AddBook(AddBookRq rq, CallContext callContext = default);
-        
+
         [OperationContract]
         Task<GetBookImageRs> GetBookImage(GetBookImageRq rq, CallContext callContext = default);
 
@@ -19,5 +19,8 @@ namespace Catalog.API.Grpc.Client.Logics
 
         [OperationContract]
         Task DeleteBook(DeleteBookRq rq, CallContext callContext = default);
+        
+        [OperationContract]
+        Task<IReadOnlyCollection<GetBookRs>> SearchBook(BookFilterRq rq, CallContext callContext = default);
     }
 }

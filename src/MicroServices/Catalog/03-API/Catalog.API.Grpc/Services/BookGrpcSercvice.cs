@@ -3,6 +3,7 @@ using Catalog.API.Grpc.Client.Requests;
 using Catalog.API.Grpc.Client.Responses;
 using Catalog.ApplicationServices.Commands;
 using Catalog.ApplicationServices.Queries;
+using Catalog.Domain.Dtos;
 using MapsterMapper;
 using MediatR;
 using ProtoBuf.Grpc;
@@ -40,6 +41,15 @@ public class BookGrpcSercvice : IBookGrpcService
         var query = new GetBookImgeQuery(rq.FileName);
         var url = await _mediator.Send(query, callContext.CancellationToken);
         return new GetBookImageRs { Url = url };
+    }
+
+    public async Task<IReadOnlyCollection<GetBookRs>> SearchBook(BookFilterRq rq, CallContext callContext = default)
+    {
+        var bookFilterDto = _mapper.Map<BookFilterDto>(rq);
+        var query = new BookFilterQuery(bookFilterDto);
+        var books =  await _mediator.Send(query, callContext.CancellationToken);
+        var rs = _mapper.Map<IReadOnlyCollection<GetBookRs>>(books);
+        return rs;
     }
 
     async Task IBookGrpcService.DeleteBook(DeleteBookRq rq, CallContext callContext)

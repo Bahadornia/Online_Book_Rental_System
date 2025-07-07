@@ -16,7 +16,7 @@ using Website.Models;
 
 namespace Website.Controllers;
 
-[Authorize]
+//[Authorize]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -79,6 +79,15 @@ public class HomeController : Controller
         var addBookRq = _mapper.Map<AddBookRq>(book);
         await _bookService.AddBook(addBookRq, ct);
         return Created();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Search(BookFilterDto dto, CancellationToken ct)
+    {
+        var bookFilterRq = _mapper.Map<BookFilterRq>(dto);
+        var books = await _bookService.SearchBook(bookFilterRq, ct);
+        return Ok(new { rows = books, toatlCount = books.Count });
     }
 
     [HttpPost]

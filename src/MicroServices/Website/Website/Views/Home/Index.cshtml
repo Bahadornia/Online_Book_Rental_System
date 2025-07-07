@@ -3,9 +3,9 @@
 }
 
 @model BookViewModel
-    @if (User.IsInRole("Admin"))
-    {
     <div class="book-form">
+    @if (User.IsInRole("Admin") || true)
+    {
 
         <form enctype="multipart/form-data"
               data-ajax=true
@@ -79,8 +79,15 @@
             </div>
             <input type="hidden" id="isAdmin" value="@User.IsInRole("Admin").ToString().ToLower()" />
         </form>
-    </div>
     }
+
+    <div class="row">
+        <div class="col-12">
+            @await Html.PartialAsync("_SearchBook")
+        </div>
+    </div>
+  
+    </div>
 
 
 

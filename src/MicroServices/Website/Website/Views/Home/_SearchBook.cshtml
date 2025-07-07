@@ -1,0 +1,45 @@
+﻿@using Website.Dtos
+@model BookFilterDto
+
+<form 
+      asp-controller="Home"
+      asp-action="Search"
+      id="searchForm">
+
+    <div class="row mb-2">
+        <div class="col-12 col-md-3">
+            <label for="title">عنوان</label>
+            <input class="form-control" id="title" name="Title" type="text" value="" />
+        </div>
+
+        <div class="col-12 col-md-3">
+            <label for="author">نویسنده</label>
+            <input class="form-control" id="author" name="Author" type="text" value="" />
+        </div>
+
+        <div class="col-12 col-md-3">
+            <label for="publisher">ناشر</label>
+            <input class="form-control" id="publisher" name="Publisher" type="text" value="" />
+        </div>
+        <div class="col-12 col-md-3">
+            <label for="isbn">شابک</label>
+            <input class="form-control" id="isbn" name="ISBN" type="text" value="" />
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-12 col-md-3">
+            <label for="category">دسته</label>
+            <input class="form-control" id="category" name="Category" type="text" value="" />
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="d-flex justify-content-end">
+
+            <button id="searchButton" type="button" class="btn btn-sm btn-primary">
+                جستجو
+                <i class="fa fa-spinner" aria-hidden="true" id="searchButtonLoading" style="display:none"></i>
+            </button>
+        </div>
+    </div>
+</form>

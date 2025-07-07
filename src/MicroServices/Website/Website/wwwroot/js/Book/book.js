@@ -78,7 +78,6 @@ reserveBook = (id) => {
     })
 }
 deleteBook = bookId => {
-    debugger
     $("#deleteBook input[name='bookId']").val(bookId);
     $("#deleteBook").submit();
 
@@ -161,3 +160,39 @@ onSuccess = (data) => {
 onFailure = () => {
     alert("Error!");
 }
+
+onSuccessFilterBook = (data) => {
+    gridApi.setGridOption('rowData', []);
+    gridApi.setGridOption('rowData', data);
+}
+
+document.getElementById("searchButton").addEventListener('click', () => {
+    let arr = $("#searchForm").serializeArray();
+    let formObject = arr.reduce((obj, item) => { obj[item.name] = item.value ?? ""; return obj }, {})
+
+    gridApi.setServerSideDatasource({
+        getRows(params) {
+            params.request;
+            $.ajax({
+                url: "/Home/Search",
+                type: "Post",
+                data: {
+                    ...formObject
+                },
+                headers: {
+                    'RequestVerificationToken': $('#searchForm input[name="__RequestVerificationToken"]').val()
+                },
+                success: function (data) {
+                    params.success({
+                        rowData: data.rows,
+                        rowCount: data.total
+                    });
+                },
+                error: function (err) {
+                    console.error(err);
+                    params.fail();
+                }
+            });
+        }
+})
+});

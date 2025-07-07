@@ -2,6 +2,7 @@
 using Catalog.Domain.IRepositories;
 using Catalog.Domain.IServices;
 using Catalog.Domain.Models.BookAggregate.Entities;
+using Catalog.Domain.Shared.Enums;
 using StackExchange.Redis;
 using System.Text.Json;
 
@@ -55,9 +56,27 @@ namespace Catalog.Infrastructure.Repositories
             return book;
         }
 
-        Task<IReadOnlyCollection<BookDto>> IBookRepository.SearchBook(BookFilterDto filter, CancellationToken ct)
+
+        async Task<IReadOnlyCollection<BookDto>> IBookRepository.SearchBook(BookFilterDto filter, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            Func<BookDto, bool> query = filterDto =>
+            {
+                return filterDto.Author.Contains(filter.Title ?? string.Empty) ||
+                filterDto.Title.Contains(filter.Author ?? string.Empty) ||
+                filterDto.Publisher.Contains(filter.Publisher ?? string.Empty) ||
+                filterDto.Category.Contains(filter.Category ?? string.Empty) ||
+                filterDto.ISBN == filter.ISBN;
+            };
+            var value = await _db.HashGetAsync(HASH_KEY, KEY);
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return await _bookRepository.SearchBook(filter, ct);
+            }
+
+            var books = JsonSerializer.Deserialize<IReadOnlyCollection<BookDto>>(value);
+            var rs = books.Where(book => book.Title.Contains(filter.Title)).ToList().AsReadOnly();
+            
+            return rs;
         }
 
         Task IBookRepository.UpdateBook(BookDto book, CancellationToken ct)

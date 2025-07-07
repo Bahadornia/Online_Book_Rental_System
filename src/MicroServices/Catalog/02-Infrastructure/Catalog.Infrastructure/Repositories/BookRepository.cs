@@ -4,6 +4,7 @@ using Catalog.Domain.Models.BookAggregate.Entities;
 using Catalog.Infrastructure.Data;
 using Catalog.Infrastructure.Data.BookAggregate;
 using MapsterMapper;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
@@ -49,9 +50,18 @@ class BookRepository : IBookRepository
         throw new NotImplementedException();
     }
 
-    public Task<IReadOnlyCollection<BookDto>> SearchBook(BookFilterDto filter, CancellationToken ct)
+    public async Task<IReadOnlyCollection<BookDto>> SearchBook(BookFilterDto filterDto, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        var builder = Builders<BookData>.Filter;
+        var filter = builder.Or(
+            builder.Regex(item => item.Title, new BsonRegularExpression(filterDto.Title, "i")),
+            builder.Regex(item => item.Title, new BsonRegularExpression(filterDto.Author, "i")),
+            builder.Regex(item => item.Title, new BsonRegularExpression(filterDto.Publisher, "i")),
+            builder.Regex(item => item.Title, new BsonRegularExpression(filterDto.Category, "i")), builder.Regex(item => item.Title, new BsonRegularExpression(filterDto.ISBN.ToString(), "i"))
+            );
+        var rs=  await _dbContext.Books.Find(filter).ToListAsync(ct);
+        return _mapper.Map<IReadOnlyCollection<BookDto>>(rs);
+        
     }
 
     public Task UpdateBook(BookDto book, CancellationToken ct)
