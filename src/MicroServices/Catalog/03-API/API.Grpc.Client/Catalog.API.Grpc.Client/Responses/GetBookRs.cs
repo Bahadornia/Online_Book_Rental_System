@@ -21,7 +21,7 @@ public class GetBookRs
     public string Category { get; init; } = default!;
 
     [ProtoMember(6)]
-    public long ISBN { get; init; }
+    public string ISBN { get; init; }
 
     [ProtoMember(7)]
     public string Description { get; init; } = default!;

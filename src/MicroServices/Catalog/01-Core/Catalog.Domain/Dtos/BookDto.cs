@@ -9,7 +9,7 @@ public record BookDto
     public string Author { get; init; } = default!;
     public string Publisher { get; init; } = default!;
     public string Category { get; init; } = default!;
-    public long ISBN { get; init; }
+    public string ISBN { get; init; }
     public string Description { get; init; } = default!;
     public string ImageUrl { get; set; } = default!;
     public string ContentType { get; set; } = default!;

@@ -2,29 +2,29 @@
 
 public record ISBN
 {
-    public long Value { get; set; }
-    private ISBN(long isbn)
+    public string Value { get; set; }
+    private ISBN(string ISBN)
     {
-        Value = isbn;
+        Value = ISBN;
     }
 
-    public static ISBN Create(long isbn)
+    public static ISBN Create(string ISBN)
     {
 
-        ValidateIsbn(isbn);
-        return new ISBN(isbn);
+        ValidateIsbn(ISBN);
+        return new ISBN(ISBN);
     }
-    private static void ValidateIsbn(long isbn)
+    private static void ValidateIsbn(string ISBN)
     {
-        if (isbn < 0 && isbn.ToString().Length < 13) throw new Exception("Invalid ISBN");
+        if (string.IsNullOrWhiteSpace(ISBN) || ISBN.Length < 13) throw new Exception("Invalid ISBN");
     }
 
-    public static implicit operator ISBN(long isbn)
+    public static implicit operator ISBN(string ISBN)
     {
-        return Create(isbn);
+        return Create(ISBN);
     }
 
-    public static implicit operator long(ISBN isbn)
+    public static implicit operator string(ISBN isbn)
     {
         return isbn.Value;
     }

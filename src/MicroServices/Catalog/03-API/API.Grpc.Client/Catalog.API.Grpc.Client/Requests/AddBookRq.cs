@@ -18,7 +18,7 @@ public class AddBookRq
     public string Category { get; set; } = default!;
 
     [ProtoMember(5)]
-    public long ISBN { get; set; } = default!;
+    public string ISBN { get; set; } = default!;
 
     [ProtoMember(6)]
     public byte[] Image { get; set; } = default!;

@@ -19,6 +19,6 @@ namespace Catalog.API.Grpc.Client.Requests
         [ProtoMember(4)]
         public string Category { get; init; } = default!;
         [ProtoMember(5)]
-        public long ISBN { get; init; }
+        public string ISBN { get; init; }
     }
 }

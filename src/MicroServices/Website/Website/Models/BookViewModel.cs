@@ -17,7 +17,7 @@ namespace Website.Models
         public string Category { get; set; } = default!;
 
         [Required(ErrorMessage = "شابک الزامی است.")]
-        public long ISBN { get; init; }
+        public string ISBN { get; init; }
         public string? Description { get; init; }
         public IFormFile ImageFile { get; set; } = default!;
         public string? ImageUrl { get; set; }

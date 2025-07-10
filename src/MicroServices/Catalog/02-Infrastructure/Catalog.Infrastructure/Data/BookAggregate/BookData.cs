@@ -16,13 +16,13 @@ public class BookData
     public string Author { get; set; } = default!;
 
     [BsonElement("publisher")]
-    public PublisherData Publisher { get; set; } = default!;
+    public string Publisher { get; set; } = default!;
 
     [BsonElement("category")]
-    public CategoryData Category { get; set; } = default!;
+    public string Category { get; set; } = default!;
 
     [BsonElement("isbn")]
-    public long ISBN { get; set; } = default!;
+    public string ISBN { get; set; } = default!;
 
     [BsonElement("description")]
     public string? Description { get; set; }

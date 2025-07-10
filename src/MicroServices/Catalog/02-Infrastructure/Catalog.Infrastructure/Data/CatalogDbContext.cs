@@ -38,7 +38,7 @@ public class CatalogDbContext
                         { "title", new BsonDocument { { "bsonType", "string" }, { "description", "must be a string and is required" } } },
                         { "author", new BsonDocument { { "bsonType", "string" }, { "description", "must be a string and is required" } } },
                         { "publisher", new BsonDocument {
-                            { "bsonType", "object" },
+                            { "bsonType", "string" },
                             { "required", new BsonArray { "name"} },
                             { "properties", new BsonDocument
                                 {
@@ -48,7 +48,7 @@ public class CatalogDbContext
                             { "description", "publisher is required and must be an object" }
                         } },
                         { "category", new BsonDocument {
-                            { "bsonType", "object" },
+                            { "bsonType", "string" },
                             { "required", new BsonArray { "name"} },
                             { "properties", new BsonDocument
                                 {
@@ -57,7 +57,7 @@ public class CatalogDbContext
                             },
                             { "description", "category is required and must be an object" }
                         } },
-                    { "isbn", new BsonDocument { { "bsonType", "long" }, { "description", "must be a long and is required" },{"minLength", 13 },{"maxLength",13 } } },
+                    { "isbn", new BsonDocument { { "bsonType", "string" }, { "description", "must be a long and is required" },{"minLength", 13 },{"maxLength",13 } } },
                          { "availableCopies", new BsonDocument { { "bsonType", "int" }, { "description", "must be a int and is required" } } }
                     }
                 }
@@ -76,7 +76,14 @@ public class CatalogDbContext
             await _db.CreateCollectionAsync(collectionName, options);
         }
 
-        var indexes = Builders<BookData>.IndexKeys.Ascending(item => item.Title);
+
+        var indexes = Builders<BookData>.IndexKeys
+            //.Ascending(item => item.Title)
+            //.Ascending(item => item.Author)
+            //.Ascending(item => item.Publisher)
+            //.Ascending(item => item.Category)
+            .Ascending(item => item.ISBN);
+        
         var indexModel = new CreateIndexModel<BookData>(indexes);
         await _db.GetCollection<BookData>(collectionName).Indexes.CreateOneAsync(indexModel);
     }

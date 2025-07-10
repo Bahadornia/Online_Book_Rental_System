@@ -7,7 +7,7 @@ public record AddBookCommand(
     string Author,
     string Publisher,
     string Category,
-    long ISBN,
+    string ISBN,
     string? Description,
     string ContentType,
     int AvailableCopies,
