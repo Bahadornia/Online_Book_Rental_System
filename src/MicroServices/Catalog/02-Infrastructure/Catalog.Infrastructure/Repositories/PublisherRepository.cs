@@ -14,7 +14,7 @@ namespace Catalog.Infrastructure.Repositories
 
         public async Task AddPubliser(string publisher, CancellationToken ct)
         {
-            await _dbContext.Publishers.InsertOneAsync(publisher, null, ct);
+            //await _dbContext.Publishers.InsertOneAsync(publisher, null, ct);
         }
 
         public Task<IReadOnlyCollection<string>> GetAll(string publisher, CancellationToken ct)

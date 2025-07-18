@@ -21,7 +21,6 @@ public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
     private readonly IFileService _fileService;
     private readonly ISnowFlakeService _sonowFlakeService;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IDomainEventPublisher _publisher;
     private readonly ILogger<AddBookCommandHandler> _logger;
     private readonly IIntegrationEventPublisher _eventPublisher;
 
@@ -31,7 +30,6 @@ public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
         _mapper = mapper;
         _fileService = fileService;
         _sonowFlakeService = sonowFlakeService;
-        _publisher = publisher;
         _logger = logger;
         _unitOfWork = unitOfWork;
         _eventPublisher = eventPublisher;
