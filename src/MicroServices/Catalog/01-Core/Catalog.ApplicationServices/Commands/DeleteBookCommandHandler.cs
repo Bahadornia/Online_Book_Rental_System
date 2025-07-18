@@ -36,6 +36,7 @@ public class DeleteBookCommandHandler : ICommandHandler<DeleteBookCommand>
         try
         {
             await _unitOfWork.CommitTransaction(ct);
+            //
         }
         catch (Exception)
         {
