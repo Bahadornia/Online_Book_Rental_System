@@ -8,6 +8,7 @@ namespace Catalog.Infrastructure.Data;
 public class CatalogDbContext
 {
     private const string BOOK_COLLECTION_NAME = "Book";
+    private const string PUBLISHER_COLLECTION_NAME = "Publisher";
     private readonly IMongoClient _client;
     private readonly IMongoDatabase _db;
     private readonly MongoDbContext _context;
@@ -22,6 +23,7 @@ public class CatalogDbContext
     public IMongoDatabase Database => _db;
     public IClientSessionHandle? Session => _context.Session;
     public IMongoCollection<BookData> Books => _db.GetCollection<BookData>(BOOK_COLLECTION_NAME);
+    //public IMongoCollection<string> Publishers => _db.GetCollection<string>(PUBLISHER_COLLECTION_NAME);
 
     public async Task InitializeMongoDb()
     {

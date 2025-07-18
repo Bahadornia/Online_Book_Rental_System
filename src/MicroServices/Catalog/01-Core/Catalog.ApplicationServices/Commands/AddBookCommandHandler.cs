@@ -49,7 +49,6 @@ public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
         await _unitOfWork.BeginTransaction(ct);
         await _bookRepository.AddBook(book, ct);
         var domainEvents = book.ClearDomainEvents();
-        //_publisher.Publish(domainEvents);
         var bookAddedEvent = new BookAddedIntegrationEvent
         {
             EventId = 45646456,

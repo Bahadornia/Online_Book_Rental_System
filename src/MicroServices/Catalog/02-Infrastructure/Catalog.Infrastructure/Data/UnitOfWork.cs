@@ -17,7 +17,6 @@ namespace Catalog.Infrastructure.Data
 
         public Task BeginTransaction(CancellationToken cancellationToken) => _context.BeginTransaction(cancellationToken);
 
-
         public Task CommitTransaction(CancellationToken cancellationToken) => _context.CommitTransaction(cancellationToken);
 
         public void Dispose()
