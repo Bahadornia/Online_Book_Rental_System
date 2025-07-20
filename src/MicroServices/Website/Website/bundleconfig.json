@@ -16,5 +16,11 @@
     "inputFiles": [
       "wwwroot/js/Home/index.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/Order/Order.min.js",
+    "inputFiles": [
+      "wwwroot/js/Order/Order.js"
+    ]
   }
 ]
