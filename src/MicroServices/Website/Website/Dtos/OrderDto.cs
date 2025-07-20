@@ -1,4 +1,6 @@
-﻿namespace Website.Dtos;
+﻿using Website.Enum;
+
+namespace Website.Dtos;
 
 public class OrderDto
 {

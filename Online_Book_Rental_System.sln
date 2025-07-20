@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedKernel", "SharedKerne
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Catalog", "Catalog", "{2C8D0D1C-8902-42AA-A708-61A5819254B9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rental", "Rental", "{D6DB0CC3-A97F-4F4F-B578-946AA95C66C3}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Order", "Order", "{D6DB0CC3-A97F-4F4F-B578-946AA95C66C3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Billing", "Billing", "{B82E3536-5A46-4AA1-975A-BF1ED717AB80}"
 EndProject
@@ -53,15 +53,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02-Infrastructure", "02-Inf
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03-API", "03-API", "{543BDDBB-8B4D-4D9A-B973-BAD0DF06CA9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rental.Domain", "src\MicroServices\Rental\01-Core\Rental.Domain\Rental.Domain.csproj", "{5A61F6EF-F044-44A6-AF5B-77E68FA1766B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Order.Domain", "src\MicroServices\Order\01-Core\Order.Domain\Order.Domain.csproj", "{5A61F6EF-F044-44A6-AF5B-77E68FA1766B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rental.ApplicationServices", "src\MicroServices\Rental\01-Core\Rental.ApplicationServices\Rental.ApplicationServices.csproj", "{EC523322-EF93-4A13-8CAA-428CE0135F68}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Order.ApplicationServices", "src\MicroServices\Order\01-Core\Order.ApplicationServices\Order.ApplicationServices.csproj", "{EC523322-EF93-4A13-8CAA-428CE0135F68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rental.API.Grpc", "src\MicroServices\Rental\03-API\Rental.API.Grpc\Rental.API.Grpc.csproj", "{C6098907-672D-47A0-8D16-FCECD9F149BD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Order.API.Grpc", "src\MicroServices\Order\03-API\Order.API.Grpc\Order.API.Grpc.csproj", "{C6098907-672D-47A0-8D16-FCECD9F149BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rental.API.Grpc.Client", "src\MicroServices\Rental\03-API\Rental.API.Grpc.Client\Rental.API.Grpc.Client.csproj", "{CCE287DA-D807-4CF9-B51A-6218C3113117}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Order.API.Grpc.Client", "src\MicroServices\Order\03-API\Order.API.Grpc.Client\Order.API.Grpc.Client.csproj", "{CCE287DA-D807-4CF9-B51A-6218C3113117}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rental.API.Grpc.Verification", "src\MicroServices\Rental\03-API\Rental.API.Grpc.Verification\Rental.API.Grpc.Verification.csproj", "{D4F86457-B521-462D-A0FF-265E1B3E5114}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Order.API.Grpc.Verification", "src\MicroServices\Order\03-API\Order.API.Grpc.Verification\Order.API.Grpc.Verification.csproj", "{D4F86457-B521-462D-A0FF-265E1B3E5114}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01-Core", "01-Core", "{1F28F28E-838B-46CE-B706-B80F392DD100}"
 EndProject
@@ -69,7 +69,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02-Infrastructure", "02-Inf
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03-API", "03-API", "{FE56983D-8092-4D3E-AB55-F339DCFDFD8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rental.Infrastructure", "src\MicroServices\Rental\02-Infrastructure\Rental.Infrastructure\Rental.Infrastructure.csproj", "{3BE282A6-AB93-C15F-126D-E54D5C5A9408}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Order.Infrastructure", "src\MicroServices\Order\02-Infrastructure\Order.Infrastructure\Order.Infrastructure.csproj", "{3BE282A6-AB93-C15F-126D-E54D5C5A9408}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Domain", "src\MicroServices\Inventory\01-Core\Inventory.Domain\Inventory.Domain.csproj", "{248E924F-D3CC-4450-AA44-0BEA6B927B1E}"
 EndProject

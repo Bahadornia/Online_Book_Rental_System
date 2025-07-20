@@ -22,7 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\SharedKernel\Framework\Framework.csproj" />
     <ProjectReference Include="..\..\Catalog\03-API\API.Grpc.Client\Catalog.API.Grpc.Client\Catalog.API.Grpc.Client.csproj" />
-    <ProjectReference Include="..\..\Rental\03-API\Rental.API.Grpc.Client\Rental.API.Grpc.Client.csproj" />
+    <ProjectReference Include="..\..\Order\03-API\Order.API.Grpc.Client\Order.API.Grpc.Client.csproj" />
   </ItemGroup>
 
   <ItemGroup>

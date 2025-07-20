@@ -2,7 +2,7 @@ using Catalog.API.Grpc.Client;
 using Framework.Extensions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Rental.API.Grpc.Client;
+using Order.API.Grpc.Client;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
