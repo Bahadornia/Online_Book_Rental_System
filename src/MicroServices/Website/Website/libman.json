@@ -18,9 +18,8 @@
       "destination": "wwwroot/lib/font-awesome/"
     },
     {
-      "provider": "jsdelivr",
-      "library": "font-awesome@4.7.0",
-      "destination": "wwwroot/lib/font-awesome/"
+      "library": "metisMenu@3.0.7",
+      "destination": "wwwroot/lib/metisMenu/"
     }
   ]
 }

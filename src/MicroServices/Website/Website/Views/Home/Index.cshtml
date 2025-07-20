@@ -2,97 +2,17 @@
     ViewData["Title"] = "Home Page";
 }
 
-@model BookViewModel
-    <div class="book-form">
-    @if (User.IsInRole("Admin") || true)
-    {
-
-        <form enctype="multipart/form-data"
-              data-ajax=true
-              asp-controller="Home"
-              asp-action="AddBook"
-              data-ajax-success="onSuccess"
-              data-ajax-method="POST"
-              data-ajax-failure="onFailure"
-              data-ajax-loading="#loader">
-            <div class="row mb-2">
-                <div class="col-12 col-md-4">
-                    <label for="title">عنوان</label>
-                    <input id="title" type="text" asp-for="Title" class="form-control" value="" />
-                    <span asp-validation-for="Title"></span>
-                </div>
-                <div class="col-12 col-md-4">
-                    <label for="author">نویسنده</label>
-                    <input id="author" type="text" asp-for="Author" class="form-control" value="" />
-                    <span asp-validation-for="Author"></span>
-                </div>
-                <div class="col-12 col-md-4">
-                    <label for="publisher">ناشر</label>
-                    <input id="publisher" type="text" asp-for="Publisher" class="form-control" value="" />
-                    <span asp-validation-for="Publisher"></span>
-                </div>
-            </div>
-            <div class="row mb-2">
-                <div class="col-12 col-md-4">
-                    <label for="category">دسته</label>
-                    <input id="category" type="text" asp-for="Category" class="form-control" value="" />
-                    <span asp-validation-for="Category"></span>
-                </div>
-                <div class="col-12 col-md-4">
-                    <label for="isbn">شابک</label>
-                    <input id="isbn" type="text" asp-for="ISBN" class="form-control" value="" />
-                    <span asp-validation-for="ISBN"></span>
-                </div>
-                <div class="col-12 col-md-4">
-                    <label for="description">توضیحات</label>
-                    <input id="description" type="text" asp-for="Description" class="form-control" value="" />
-                </div>
-            </div>
-            <div class="row mb-2">
-                <div class="col-12 col-md-4">
-                    <label for="AvailableCopies">تعداد نسخه</label>
-                    <input asp-for="AvailableCopies"
-                           id="AvailableCopies" type="text"
-                           class="form-control" />
-                </div>
-                <div class="col-12 col-md-4">
-                    <input asp-for="ImageFile"
-                           accept="image/*" id="image" hidden type="file" onchange="previewImage()"
-                           class="form-control" />
-                    <label for="Image">تصویر</label>
-                    <input id="Image" class="form-control" type="button" onclick="openFile()" />
-                </div>
-                <div class="col-12 col-md-4 d-flex justify-content-center">
-                    <img src="" style="border-radius:10px" id="previewImg" alt="" />
-                </div>
-            </div>
-
-            <div class="row mb-2">
-                <div class="col-12 col-md-12  d-flex justify-content-end">
-                    <button type="submit" class="btn btn-primary text-center">
-                        ثبت
-                        <span id="loader" style="display:none;">
-                            <i class="fa fa-spinner" aria-hidden="true"></i>
-                        </span>
-                    </button>
-                </div>
-            </div>
-            <input type="hidden" id="isAdmin" value="@User.IsInRole("Admin").ToString().ToLower()" />
-        </form>
-    }
-
-    <div class="row">
-        <div class="col-12">
-            @await Html.PartialAsync("_SearchBook")
-        </div>
+<div class="row">
+    <div class="col-12">
+        @await Html.PartialAsync("_SearchBook")
     </div>
-  
-    </div>
+</div>
 
 
+<input type="hidden" id="isAdmin" value="@User.IsInRole("Admin").ToString().ToLower()" />
 
 @await Html.PartialAsync("_DeleteBook")
 @section Scripts {
 
-    <script src="./js/Book/book.js" defer></script>
+    <script src="~/js/Home/index.min.js" defer></script>
 }

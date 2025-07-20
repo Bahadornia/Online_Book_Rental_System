@@ -3,10 +3,6 @@ using Catalog.API.Grpc.Client.Requests;
 using HashidsNet;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rental.API.Grpc.Client.Logics;
 using Rental.API.Grpc.Client.Requests;
@@ -68,18 +64,6 @@ public class HomeController : Controller
         return Ok(new { rows = rs, toatlCount = books.Count });
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AddBook([FromForm] BookViewModel book, CancellationToken ct)
-    {
-        if (!ModelState.IsValid)
-        {
-            return View("Index", book);
-        }
-        var addBookRq = _mapper.Map<AddBookRq>(book);
-        await _bookService.AddBook(addBookRq, ct);
-        return Created();
-    }
 
     [HttpPost]
     [ValidateAntiForgeryToken]

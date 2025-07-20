@@ -10,5 +10,11 @@
     "inputFiles": [
       "wwwroot/js/Book/book.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/Home/index.min.js",
+    "inputFiles": [
+      "wwwroot/js/Home/index.js"
+    ]
   }
 ]

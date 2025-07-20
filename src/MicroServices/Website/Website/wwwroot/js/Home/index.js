@@ -1,5 +1,5 @@
 ﻿let gridApi;
-var isAdmin = $("#isAdmin").val();
+var isAdmin = $("#isAdmin").val() ;
 
 const datasource = {
     getRows(params) {
@@ -78,15 +78,27 @@ reserveBook = (id) => {
     })
 }
 deleteBook = bookId => {
-    $("#deleteBook input[name='bookId']").val(bookId);
-    $("#deleteBook").submit();
-
+    Swal.fire({
+        html: 'آیا از حذف کتاب با شناسه' + ` <b>${bookId}</b> ` + 'مطمئن هستید.',
+        icon: 'warning',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showCloseButton: true,
+        showCancelButton: true,
+        confirmButtonText: "بله",
+        cancelButtonText: "لغو",
+    }).then((result) => {
+        if (result.isConfirmed) {
+        $("#deleteBook input[name='bookId']").val(bookId);
+        $("#deleteBook").submit();
+        };
+    });
 }
 
 
 let operationComponent = (id) => {
     let html = "";
-    if (isAdmin == "true") {
+    if (isAdmin == "true" || true) {
         html = `
 <button class="btn btn-sm"><i class="fa fa-pencil" aria-hidden="true"></i>
 </button>
@@ -113,9 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
     gridApi = agGrid.createGrid(gridDiv, gridOptions)
 });
 
-openFile = () => {
-    document.getElementById("image").click();
-}
 
 onSuccessDeleteBook = (data) => {
     gridApi.refreshServerSide();
@@ -129,37 +138,7 @@ onSuccessDeleteBook = (data) => {
         confirmButtonText: "باشه"
     })
 }
-previewImage = () => {
-    var file = $("input[type=file]").get(0).files[0];
-    var name = file.name;
-    $("Image").val(name);
-    if (file) {
-        var reader = new FileReader();
 
-        reader.onload = function (e) {
-            $("#previewImg").attr("src", reader.result);
-        }
-
-        reader.readAsDataURL(file);
-    }
-}
-
-onSuccess = (data) => {
-    gridApi.refreshServerSide();
-    Swal.fire({
-        title: 'کتاب مورد نظر با موفقیت اضافه شد.',
-        icon: 'success',
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        showCloseButton: true,
-        showCancelButton: false,
-        confirmButtonText: "باشه"
-    })
-}
-
-onFailure = () => {
-    alert("Error!");
-}
 
 onSuccessFilterBook = (data) => {
     gridApi.setGridOption('rowData', []);
