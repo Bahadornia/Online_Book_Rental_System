@@ -12,10 +12,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Responses\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <ProjectReference Include="..\..\..\..\SharedKernel\Framework\Framework.csproj" />
 	</ItemGroup>
 </Project>

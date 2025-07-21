@@ -7,7 +7,7 @@ namespace Order.Infrastructure.Data;
 
 public sealed class OrderDbContext: DbContext
 {
-    public DbSet<BookOrder> BookRentals => Set<BookOrder>();
+    public DbSet<BookOrder> BookOrders => Set<BookOrder>();
     public DbSet<OrderHistory> OrderHistories => Set<OrderHistory>();
     public OrderDbContext(DbContextOptions<OrderDbContext> options): base(options) { }
 

@@ -3,7 +3,7 @@
 namespace Order.API.Grpc.Client.Requests;
 
 [ProtoContract]
-public record RentBookRq
+public record OrderBookRq
 {
     [ProtoMember(1)]
     public long BookId { get; init; }

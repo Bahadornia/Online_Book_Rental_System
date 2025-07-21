@@ -28,7 +28,7 @@ public class BookGrpcSercvice : IBookGrpcService
         await _mediator.Send(command, callContext.CancellationToken);
     }
 
-    public async Task<IReadOnlyCollection<GetBookRs>> GetAllBooks(CallContext callContext = default)
+    public async Task<IReadOnlyCollection<GetBookRs>> GetAllBooks(CallContext callContext)
     {
         var query = new GetAllBookQuery();
         var rs = await _mediator.Send(query, callContext.CancellationToken);
@@ -43,7 +43,14 @@ public class BookGrpcSercvice : IBookGrpcService
         return new GetBookImageRs { Url = url };
     }
 
-    public async Task<IReadOnlyCollection<GetBookRs>> SearchBook(BookFilterRq rq, CallContext callContext = default)
+    public async Task<GetBookRs> GetById(GetBookRq rq, CallContext context)
+    {
+        var command = new GetBookQuery(rq.Id);
+        var book = await _mediator.Send(command, context.CancellationToken);
+        return _mapper.Map<GetBookRs>(book);
+    }
+
+    public async Task<IReadOnlyCollection<GetBookRs>> SearchBook(BookFilterRq rq, CallContext callContext)
     {
         var bookFilterDto = _mapper.Map<BookFilterDto>(rq);
         var query = new BookFilterQuery(bookFilterDto);

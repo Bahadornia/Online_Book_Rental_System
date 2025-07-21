@@ -1,13 +1,17 @@
 ﻿using ProtoBuf.Grpc;
 using Order.API.Grpc.Client.Requests;
 using System.ServiceModel;
+using Order.API.Grpc.Client.Responses;
 
 namespace Order.API.Grpc.Client.Logics;
 
 [ServiceContract]
-public interface IRentalGrpcService
+public interface IOrderGrpcService
 {
 
     [OperationContract]
-    Task RentBook(RentBookRq rq, CallContext context = default!);
+    Task RentBook(OrderBookRq rq, CallContext context = default!);
+
+    [OperationContract]
+    Task<IReadOnlyCollection<GetOrderRs>> GetAll(CallContext context = default!);
 }

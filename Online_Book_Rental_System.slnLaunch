@@ -11,7 +11,7 @@
         "Action": "Start"
       },
       {
-        "Path": "src\\MicroServices\\Rental\\03-API\\Rental.API.Grpc\\Rental.API.Grpc.csproj",
+        "Path": "src\\MicroServices\\Order\\03-API\\Order.API.Grpc\\Order.API.Grpc.csproj",
         "Action": "Start"
       },
       {

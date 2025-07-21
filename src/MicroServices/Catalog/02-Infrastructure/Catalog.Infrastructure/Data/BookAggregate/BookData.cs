@@ -1,6 +1,5 @@
-﻿using Catalog.Domain.Models.BookAggregate.ValueObjects;
+﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson;
 
 namespace Catalog.Infrastructure.Data.BookAggregate;
 

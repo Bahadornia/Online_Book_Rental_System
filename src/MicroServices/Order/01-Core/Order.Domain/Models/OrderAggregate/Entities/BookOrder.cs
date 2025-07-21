@@ -1,5 +1,4 @@
 ﻿using Framework.Domain;
-using Microsoft.Extensions.Logging;
 using Order.Domain.Models.RentalAggregate.Enums;
 using Order.Domain.Models.RentalAggregate.Events;
 using Order.Domain.Models.RentalAggregate.ValueObjects;
@@ -58,7 +57,7 @@ public class BookOrder : AggregateRoot<OrderId>
         Emit(new OrderUpdatedEvent(this));
     }
 
-    protected override void ValidateInvariants() 
+    protected override void ValidateInvariants()
     {
         if (BorrowDate > DateTime.UtcNow) throw new Exception("Borrow Date can not be in the future.");
         if (DueDate <= BorrowDate) throw new Exception("DueDate must be after BorrowDate");
@@ -73,7 +72,7 @@ public class BookOrder : AggregateRoot<OrderId>
         _history.Add(history);
     }
 
-    
+
     public void SetStatus(OrderStatus status)
     {
         Status = status;

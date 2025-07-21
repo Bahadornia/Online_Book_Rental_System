@@ -8,15 +8,15 @@ namespace Order.API.Grpc.Verification.Controllers
     [ApiController]
     public class RentalController : ControllerBase
     {
-        private readonly IRentalGrpcService _rentalGrpcService;
+        private readonly IOrderGrpcService _rentalGrpcService;
 
-        public RentalController(IRentalGrpcService rentalGrpcService)
+        public RentalController(IOrderGrpcService rentalGrpcService)
         {
             _rentalGrpcService = rentalGrpcService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> BorrowBook(RentBookRq rq , CancellationToken ct)
+        public async Task<IActionResult> BorrowBook(OrderBookRq rq , CancellationToken ct)
         {
             await _rentalGrpcService.RentBook(rq, ct);
             return Ok();

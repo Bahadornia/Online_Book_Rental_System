@@ -40,7 +40,7 @@ class AddOrderBookCommandHandler : ICommandHandler<AddOrderBookCommand>
         }
 
         var id = _snowFlakeService.CreateId();
-        var dto = new BookOrderDto(id, command.UserId, command.BookId, command.BorrowDate);
+        var dto = new AddBookOrderDto(id, command.UserId, command.BookId, command.BorrowDate);
         var bookOrder = BookOrder.Create(dto.Id, dto.UserId, dto.BookId, dto.BorrowDate);
         var history = new OrderHistory
         {

@@ -1,5 +1,6 @@
 using Catalog.API.Grpc.Client;
 using Framework.Extensions;
+using Grpc.Core;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Order.API.Grpc.Client;

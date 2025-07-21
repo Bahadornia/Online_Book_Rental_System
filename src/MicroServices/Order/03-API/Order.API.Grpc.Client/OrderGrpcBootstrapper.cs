@@ -30,7 +30,7 @@ public static class RentalGrpcBootstrapper
         var channel = GrpcChannel.ForAddress(grpcAddress, new GrpcChannelOptions { ServiceConfig = new ServiceConfig { MethodConfigs = { defaultMethodConfig, } }, });
         services.AddSingleton(p =>
         {
-            var client = channel.CreateGrpcService<IRentalGrpcService>();
+            var client = channel.CreateGrpcService<IOrderGrpcService>();
             return client;
         });
         return services;

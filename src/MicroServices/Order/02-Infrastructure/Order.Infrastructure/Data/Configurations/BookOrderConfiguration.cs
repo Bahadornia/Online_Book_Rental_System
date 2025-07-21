@@ -17,6 +17,6 @@ public sealed class BookRentalConfiguration : IEntityTypeConfiguration<BookOrder
         builder.Property(b => b.UserId).HasConversion(b => b.Value, b => UserId.Create(b));
         builder.Property(b => b.Status).HasConversion(b => b.ToString(), b => Enum.Parse<OrderStatus>(b));
         builder.HasMany(b=> b.Histories)
-            .WithOne(b => b.Rental).HasForeignKey(b => b.OrderId);
+            .WithOne(b => b.Order).HasForeignKey(b => b.OrderId);
     }
 }

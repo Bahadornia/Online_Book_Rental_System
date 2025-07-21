@@ -22,5 +22,8 @@ namespace Catalog.API.Grpc.Client.Logics
         
         [OperationContract]
         Task<IReadOnlyCollection<GetBookRs>> SearchBook(BookFilterRq rq, CallContext callContext = default);
+
+        [OperationContract]
+        Task<GetBookRs> GetById(GetBookRq rq, CallContext context = default);
     }
 }

@@ -17,13 +17,13 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly IBookGrpcService _bookService;
-    private readonly IRentalGrpcService _rentalGrpcService;
+    private readonly IOrderGrpcService _rentalGrpcService;
     private readonly IMapper _mapper;
     private readonly IHashids _hashIds;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly HttpContext _httpContext;
 
-    public HomeController(ILogger<HomeController> logger, IBookGrpcService bookService, IMapper msapper, IRentalGrpcService rentalGrpcService, IHashids hashIds, IHttpContextAccessor httpContextAccessor)
+    public HomeController(ILogger<HomeController> logger, IBookGrpcService bookService, IMapper msapper, IOrderGrpcService rentalGrpcService, IHashids hashIds, IHttpContextAccessor httpContextAccessor)
     {
         _logger = logger;
         _bookService = bookService;
@@ -77,7 +77,7 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> RentBook(RentBookDto dto, CancellationToken ct)
     {
-        var rentBookRq = new RentBookRq
+        var rentBookRq = new OrderBookRq
         {
             BookId = _hashIds.DecodeLong(dto.BookId)[0],
             UserId = dto.UserId,

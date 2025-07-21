@@ -10,5 +10,5 @@ public class OrderHistory: Entity<OrderHistroyId>
     public OrderStatus Status { get; set; }
     public string? Description { get; set; }
     public OrderId OrderId { get; set; } = default!;
-    public BookOrder Rental { get; set; } = default!;
+    public BookOrder Order { get; set; } = default!;
 }

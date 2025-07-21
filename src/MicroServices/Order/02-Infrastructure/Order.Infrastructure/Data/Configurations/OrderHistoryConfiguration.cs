@@ -15,6 +15,6 @@ public sealed class OrderHistoryConfiguration : IEntityTypeConfiguration<OrderHi
         builder.Property(b => b.OrderId).HasConversion(b => b.Value, b=> OrderId.Create(b));
         builder.Property(b => b.Status).HasConversion(b => b.ToString(), b=> Enum.Parse<OrderStatus>(b));
         builder.Property(b => b.Description).IsSparse();
-        builder.HasOne(b=> b.Rental).WithMany(b => b.Histories);
+        builder.HasOne(b=> b.Order).WithMany(b => b.Histories);
     }
 }
