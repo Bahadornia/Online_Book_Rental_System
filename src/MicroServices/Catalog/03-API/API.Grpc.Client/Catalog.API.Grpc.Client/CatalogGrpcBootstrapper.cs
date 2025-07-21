@@ -24,6 +24,7 @@ public static class CatalogGrpcBootstrapper
                 RetryableStatusCodes =
                 {
                     StatusCode.Internal, StatusCode.Unauthenticated, StatusCode.NotFound,
+                    StatusCode.Unavailable
                 },
             }
         };
