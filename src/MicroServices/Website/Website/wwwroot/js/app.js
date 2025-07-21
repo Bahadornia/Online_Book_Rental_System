@@ -5,3 +5,4 @@ window.App = window.App || {};
 document.getElementById("logoutButton").addEventListener('click', () => {
     $("#logoutForm").submit();
 })
+

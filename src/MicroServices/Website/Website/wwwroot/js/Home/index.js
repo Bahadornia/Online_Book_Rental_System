@@ -1,5 +1,34 @@
-﻿let gridApi;
-var isAdmin = $("#isAdmin").val() ;
+﻿class ButtonRenderer {
+    init(params) {
+        this.eGui = document.createElement('button');
+        this.eGui.className = 'btn btn-sm btn-primary';
+        this.eGui.innerText = 'Click me';
+
+        this.eGui.setAttribute('title', 'Click to perform action');
+        this.eGui.setAttribute('data-bs-toggle', 'tooltip');
+
+        // Add your click logic here
+        this.eGui.addEventListener('click', () => {
+            alert('Button clicked!');
+        });
+
+        // Initialize Bootstrap tooltip
+        setTimeout(() => {
+            new bootstrap.Tooltip(this.eGui);
+        }, 0);
+    }
+
+    getGui() {
+        return this.eGui;
+    }
+
+    destroy() {
+        // Optional: cleanup
+        bootstrap.Tooltip.getInstance(this.eGui)?.dispose();
+    }
+}
+let gridApi;
+var isAdmin = $("#isAdmin").val();
 
 const datasource = {
     getRows(params) {
@@ -40,7 +69,7 @@ const gridOptions = {
         minWidth: 60,
         resizable: true
     },
-    rowStyle: { display: "flex", alignItems: "center", justifyContent: "center",backGroundColor:'reds' },
+    rowStyle: { display: "flex", alignItems: "center", justifyContent: "center", backGroundColor: 'reds' },
     rowHeight: 60,
     enableRtl: true,
     animateRows: true,
@@ -89,22 +118,22 @@ deleteBook = bookId => {
         cancelButtonText: "لغو",
     }).then((result) => {
         if (result.isConfirmed) {
-        $("#deleteBook input[name='bookId']").val(bookId);
-        $("#deleteBook").submit();
+            $("#deleteBook input[name='bookId']").val(bookId);
+            $("#deleteBook").submit();
         };
     });
 }
 
 
-let operationComponent = (id) => {
+function operationComponent(id) {
     let html = "";
     if (isAdmin == "true" || true) {
         html = `
-<button class="btn btn-sm"><i class="fa fa-pencil" aria-hidden="true"></i>
+       <button class="btn btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ویرایش"><i class="fa fa-pencil" aria-hidden="true"></i>
 </button>
-<button class="btn btn-sm" onclick="reserveBook('${id}')"><i class="fa fa-bookmark" aria-hidden="true"></i>
+<button class="btn btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="رزرو" onclick="reserveBook('${id}')"><i class="fa fa-bookmark" aria-hidden="true"></i>
 </button>
-<button class="btn btn-sm" onclick = "deleteBook('${id}')"><i class="fa fa-trash" aria-hidden="true"></i></i>
+<button class="btn btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="حذف" onclick = "deleteBook('${id}')"><i class="fa fa-trash" aria-hidden="true"></i></i>
 </button>
 `;
     }
@@ -116,6 +145,8 @@ let operationComponent = (id) => {
 
 `;
     }
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
     return html;
 }
 
@@ -173,5 +204,5 @@ document.getElementById("searchButton").addEventListener('click', () => {
                 }
             });
         }
-})
+    })
 });
