@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Order.Domain.Models.RentalAggregate.Entities;
+using Order.Domain.Models.OrderAggregate.Entities;
 using Order.Infrastructure.Extensions;
 using System.Reflection;
 

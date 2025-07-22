@@ -1,4 +1,4 @@
-﻿namespace Order.Domain.Models.RentalAggregate.ValueObjects;
+﻿namespace Order.Domain.Models.OrderAggregate.ValueObjects;
 
 public record UserId
 {

@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 
 namespace Catalog.Infrastructure.Repositories;
 
-class BookRepository : IBookRepository
+internal class BookRepository : IBookRepository
 {
     private readonly CatalogDbContext _dbContext;
     private readonly IMapper _mapper;
@@ -24,14 +24,14 @@ class BookRepository : IBookRepository
 
     public async Task AddBook(Book book, CancellationToken ct)
     {
-        var bookData = _mapper.Map<Data.BookAggregate.BookData
+        var bookData = _mapper.Map<BookData
             >(book);
         await _dbContext.Books.InsertOneAsync(_dbContext.Session, bookData, null, ct);
     }
 
     public async Task DeleteBook(long bookId, CancellationToken ct)
     {
-        var builder = Builders<Data.BookAggregate.BookData>.Filter;
+        var builder = Builders<BookData>.Filter;
         var filter = builder.Eq(b=> b.Id ,bookId);
         var book = _dbContext.Books.Find(filter);
         await _dbContext.Books.DeleteOneAsync(filter, ct);
@@ -46,15 +46,28 @@ class BookRepository : IBookRepository
         return result;
     }
 
-    public Task<BookDto> GetBookById(long id, CancellationToken ct)
+    public async Task<BookDto> GetBookById(long id, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        var filterBuilder = Builders<BookData>.Filter;
+        var filter = filterBuilder.Eq(b => b.Id, id);
+        var book = await _dbContext.Books.Find(filter, null).FirstOrDefaultAsync(ct);
+        return _mapper.Map<BookDto>(book);
     }
 
-    public async Task<IReadOnlyCollection<Domain.Dtos.BookDto>> SearchBook(BookFilterDto filterDto, CancellationToken ct)
+    public async Task<IReadOnlyCollection<BookDto>> GetBooksByIds(IEnumerable<long> ids, CancellationToken ct)
     {
-        var builder = Builders<Data.BookAggregate.BookData>.Filter;
-        var filters = new List<FilterDefinition<Data.BookAggregate.BookData>>();
+        var filterBuilder = Builders<BookData>.Filter;
+        var filter = filterBuilder.In(b => b.Id, ids);
+        var books = await _dbContext.Books.Find(filter, null).ToListAsync(ct);
+        
+       return  _mapper.Map<IReadOnlyCollection<BookDto>>(books);
+       
+    }
+
+    public async Task<IReadOnlyCollection<BookDto>> SearchBook(BookFilterDto filterDto, CancellationToken ct)
+    {
+        var builder = Builders<BookData>.Filter;
+        var filters = new List<FilterDefinition<BookData>>();
         if (!string.IsNullOrWhiteSpace(filterDto.Title))
         {
             filters.Add(builder.Regex(item => item.Title, new BsonRegularExpression(filterDto.Title, "i")));
@@ -80,10 +93,10 @@ class BookRepository : IBookRepository
           filters
             ) : builder.Empty;
         var rs=  await _dbContext.Books.Find(filter).ToListAsync(ct);
-        return _mapper.Map<IReadOnlyCollection<Domain.Dtos.BookDto>>(rs);
+        return _mapper.Map<IReadOnlyCollection<BookDto>>(rs);
     }
 
-    public Task UpdateBook(Domain.Dtos.BookDto book, CancellationToken ct)
+    public Task UpdateBook(BookDto book, CancellationToken ct)
     {
         throw new NotImplementedException();
     }

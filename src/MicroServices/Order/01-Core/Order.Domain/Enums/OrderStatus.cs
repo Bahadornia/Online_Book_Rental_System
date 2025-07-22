@@ -1,5 +1,7 @@
-﻿namespace Order.Domain.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Resources;
 
+namespace Order.Domain.Enums;
 public enum OrderStatus
 {
     None = 0,

@@ -30,4 +30,19 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Resources\resources.Designer.cs">
+      <DependentUpon>resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\resources.resx">
+      <LastGenOutput>resources.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

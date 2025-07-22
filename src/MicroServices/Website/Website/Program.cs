@@ -1,13 +1,11 @@
 using Catalog.API.Grpc.Client;
 using Framework.Extensions;
-using Grpc.Core;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Order.API.Grpc.Client;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddCatalogGrpcClient(builder.Configuration.GetValue<string>("CatalogGrpcService")!);
@@ -31,7 +29,7 @@ builder.Services.AddAuthentication(opt =>
         opt.Scope.Add("openid");
         opt.Scope.Add("profile");
         opt.Scope.Add("roles");
-        
+
     });
 builder.Services.AddHttpContextAccessor();
 

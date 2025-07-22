@@ -1,4 +1,4 @@
-﻿using Order.Domain.Models.RentalAggregate.Entities;
+﻿using Order.Domain.Models.OrderAggregate.Entities;
 
 namespace Order.Domain.IRepositories;
 

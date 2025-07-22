@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Order.Domain.Models.RentalAggregate.Entities;
-using Order.Domain.Models.RentalAggregate.Enums;
-using Order.Domain.Models.RentalAggregate.ValueObjects;
+using Order.Domain.Enums;
+using Order.Domain.Models.OrderAggregate.Entities;
+using Order.Domain.Models.OrderAggregate.ValueObjects;
 
 namespace Order.Infrastructure.Data.Configurations;
 
@@ -11,10 +11,10 @@ public sealed class OrderHistoryConfiguration : IEntityTypeConfiguration<OrderHi
     public void Configure(EntityTypeBuilder<OrderHistory> builder)
     {
         builder.HasKey(p => p.Id);
-        builder.Property(b => b.Id).HasConversion(b => b.Value, b=> OrderHistroyId.Create(b));
-        builder.Property(b => b.OrderId).HasConversion(b => b.Value, b=> OrderId.Create(b));
-        builder.Property(b => b.Status).HasConversion(b => b.ToString(), b=> Enum.Parse<OrderStatus>(b));
+        builder.Property(b => b.Id).HasConversion(b => b.Value, b => OrderHistroyId.Create(b));
+        builder.Property(b => b.OrderId).HasConversion(b => b.Value, b => OrderId.Create(b));
+        builder.Property(b => b.Status).HasConversion(b => b.ToString(), b => Enum.Parse<OrderStatus>(b));
         builder.Property(b => b.Description).IsSparse();
-        builder.HasOne(b=> b.Order).WithMany(b => b.Histories);
+        builder.HasOne(b => b.Order).WithMany(b => b.Histories);
     }
 }

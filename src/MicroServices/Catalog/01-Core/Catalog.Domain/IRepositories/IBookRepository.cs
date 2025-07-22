@@ -11,4 +11,5 @@ public interface IBookRepository
     Task<IReadOnlyCollection<BookDto>> SearchBook(BookFilterDto filter,  CancellationToken ct);
     Task<BookDto> GetBookById(long id, CancellationToken ct);
     Task<IReadOnlyCollection<BookDto>> GetAll(CancellationToken ct);
+    Task<IReadOnlyCollection<BookDto>> GetBooksByIds(IEnumerable<long> ids, CancellationToken ct);
 }

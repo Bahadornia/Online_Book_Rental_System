@@ -1,4 +1,7 @@
-﻿namespace Order.API.Grpc.Client.Enum;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Resources;
+
+namespace Order.API.Grpc.Client.Enum;
 
 public enum OrderStatus
 {

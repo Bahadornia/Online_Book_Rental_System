@@ -21,6 +21,11 @@ namespace Catalog.Infrastructure.Repositories
             _db = redis.GetDatabase(2);
         }
 
+        public async Task<IReadOnlyCollection<BookDto>> GetBooksByIds(IEnumerable<long> ids, CancellationToken ct)
+        {
+            return await _bookRepository.GetBooksByIds(ids, ct);
+        }
+
         async Task IBookRepository.AddBook(Book book, CancellationToken ct)
         {
             await _db.HashDeleteAsync(HASH_KEY, KEY);

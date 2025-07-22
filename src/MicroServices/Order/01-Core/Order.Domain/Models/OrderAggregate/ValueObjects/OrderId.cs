@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Order.Domain.Models.RentalAggregate.ValueObjects;
+namespace Order.Domain.Models.OrderAggregate.ValueObjects;
 
 public record OrderId
 {

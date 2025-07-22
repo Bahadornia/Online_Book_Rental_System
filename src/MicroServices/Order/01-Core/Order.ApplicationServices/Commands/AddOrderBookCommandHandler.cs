@@ -4,7 +4,7 @@ using MediatR;
 using Order.Domain.Dtos;
 using Order.Domain.IRepositories;
 using Order.Domain.IServices;
-using Order.Domain.Models.RentalAggregate.Entities;
+using Order.Domain.Models.OrderAggregate.Entities;
 using SharedKernel.Messaging;
 using SharedKernel.Messaging.Events;
 

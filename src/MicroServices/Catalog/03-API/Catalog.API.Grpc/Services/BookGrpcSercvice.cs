@@ -43,6 +43,13 @@ public class BookGrpcSercvice : IBookGrpcService
         return new GetBookImageRs { Url = url };
     }
 
+    public async Task<IReadOnlyCollection<GetBookRs>> GetBooksByIds(IEnumerable<long> ids, CallContext context)
+    {
+        var query = new GetBooksByIdsQuery(ids);
+        var books = await _mediator.Send(query, context.CancellationToken);
+        return _mapper.Map<IReadOnlyCollection<GetBookRs>>(books);
+    }
+
     public async Task<GetBookRs> GetById(GetBookRq rq, CallContext context)
     {
         var command = new GetBookQuery(rq.Id);
@@ -63,10 +70,5 @@ public class BookGrpcSercvice : IBookGrpcService
     {
         var command = new DeleteBookCommand(rq.BookId);
         await _mediator.Send(command, callContext.CancellationToken);
-    }
-
-    Task<GetBookImageRs> IBookGrpcService.GetBookImage(GetBookImageRq rq, CallContext callContext)
-    {
-        throw new NotImplementedException();
     }
 }

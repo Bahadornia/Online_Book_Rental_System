@@ -24,8 +24,8 @@ public record ISBN
         return Create(ISBN);
     }
 
-    public static implicit operator string(ISBN isbn)
+    public static implicit operator string(ISBN ISBN)
     {
-        return isbn.Value;
+        return ISBN.Value;
     }
 }

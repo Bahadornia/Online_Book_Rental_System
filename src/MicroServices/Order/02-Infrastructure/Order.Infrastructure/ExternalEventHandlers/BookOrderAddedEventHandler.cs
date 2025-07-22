@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Order.Domain.Models.RentalAggregate.Events;
+using Order.Domain.Models.OrderAggregate.Events;
 
 namespace Order.Infrastructure.ExternalEventHandlers;
 

@@ -1,8 +1,7 @@
 ﻿using Catalog.API.Grpc.Client.Logics;
-using Catalog.API.Grpc.Client.Requests;
+using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using Order.Domain.Dtos;
-using Order.Domain.Enums;
 using Order.Domain.IRepositories;
 using Order.Domain.IServices;
 using Order.Infrastructure.Services.Refit;
@@ -14,12 +13,14 @@ internal class OrderService : IOrderService
     private readonly IInventoryApi _inventoryApi;
     private readonly IOrderRepository _orderRepository;
     private readonly IBookGrpcService _bookService;
+    private readonly IMapper _mapper;
 
-    public OrderService(IInventoryApi inventoryApi, IOrderRepository orderRepository, IBookGrpcService bookService)
+    public OrderService(IInventoryApi inventoryApi, IOrderRepository orderRepository, IBookGrpcService bookService, IMapper mapper)
     {
         _inventoryApi = inventoryApi;
         _orderRepository = orderRepository;
         _bookService = bookService;
+        _mapper = mapper;
     }
 
     public Task<bool> CanUserRentBook(long userId, CancellationToken ct)
@@ -30,23 +31,25 @@ internal class OrderService : IOrderService
     public async Task<IReadOnlyCollection<OrderListDto>> GetAll(CancellationToken ct)
     {
         var orders = await _orderRepository.GetAll(ct).ToListAsync(ct);
-        var tasks = orders.Select(async (order) =>
+        var bookIds = orders.Select(order => order.BookId.Value).Distinct();
+        var books = await _bookService.GetBooksByIds(bookIds, ct);
+        var bookDict = books.ToDictionary(b => b.Id);
+        var result = orders.Select(order =>
         {
-            var book = await _bookService.GetById(new GetBookRq { Id = order.BookId.Value }, ct);
+            var book = bookDict[order.BookId.Value];
             var rs = new OrderListDto
-             (order.Id.Value,
+             (order.Id,
               order.BookId,
               "",
               book.Title,
               book.ISBN,
-              order.ReturnDate.Value ,
+              order.ReturnDate ?? order.BorrowDate.AddDays(14),
               order.BorrowDate,
-              4,
-              OrderStatus.OverDue);
+              order.IsExtended ? 1 : 0,
+              order.Status);
             return rs;
         });
-        var result = await Task.WhenAll(tasks);
-        return result;
+        return result.ToList().AsReadOnly() ;
     }
 
     public async Task<bool> IsBookAvailable(long bookId, CancellationToken ct)

@@ -22,14 +22,14 @@ const datasource = {
 
 const gridOptions = {
     columnDefs: [
-        { headerName: "شناسه سفارش", field: "orderId", maxWidth: 100 },
+        { headerName: "شناسه سفارش", field: "orderId", maxWidth: 150 },
         { headerName: "شناسه کتاب", field: "bookId", sortable: true, filter: true },
-        { headerName: "نام کتاب", field: "title", sortable: true, filter: true },
+        { headerName: "نام کتاب", field: "bookTitle", sortable: true, filter: true },
         { headerName: "شابک", field: "isbn", sortable: true, filter: true },
-        { headerName: "تاریخ امانت", field: "description", sortable: true, filter: true },
+        { headerName: "تاریخ امانت", field: "orderDate", sortable: true, filter: true },
         { headerName: "تاریخ عودت", field: "description", sortable: true, filter: true },
         { headerName: "تعداد دفعات تمدید شده", field: "description", sortable: true, filter: true },
-        { headerName: "وضعیت", field: "description", sortable: true, filter: true },
+        { headerName: "وضعیت", field: "statusString", sortable: true, filter: true },
         { headerName: "عملیات", sortable: false, filter: false, cellClass: "operation", cellRenderer: (params) => operationComponent(params.data.id) }
     ],
 

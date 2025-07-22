@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Order.Domain.Dtos;
 using Order.Domain.IRepositories;
-using Order.Domain.Models.RentalAggregate.Entities;
+using Order.Domain.Models.OrderAggregate.Entities;
 using Order.Infrastructure.Data;
 
 namespace Order.Infrastructure.Repositories;

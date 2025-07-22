@@ -1,15 +1,15 @@
 ﻿using Framework.Domain;
-using Order.Domain.Models.RentalAggregate.Enums;
-using Order.Domain.Models.RentalAggregate.Events;
-using Order.Domain.Models.RentalAggregate.ValueObjects;
+using Order.Domain.Enums;
+using Order.Domain.Models.OrderAggregate.Events;
+using Order.Domain.Models.OrderAggregate.ValueObjects;
 
-namespace Order.Domain.Models.RentalAggregate.Entities;
+namespace Order.Domain.Models.OrderAggregate.Entities;
 
 public class BookOrder : AggregateRoot<OrderId>
 {
 
     private readonly List<OrderHistory> _history = [];
-    public IReadOnlyCollection<OrderHistory> Histories => _history.AsReadOnly();
+    public IEnumerable<OrderHistory> Histories => _history;
 
     public BookId BookId { get; private set; } = default!;
     public UserId UserId { get; private set; } = default!;
@@ -39,9 +39,8 @@ public class BookOrder : AggregateRoot<OrderId>
             BookId = bookId,
             UserId = userId,
             BorrowDate = borrowDate,
-            Status = OrderStatus.Borrowed,
+            Status = OrderStatus.Approved,
         };
-
         order.Emit(new OrderAddedEvent(order));
         return order;
     }

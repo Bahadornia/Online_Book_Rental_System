@@ -23,6 +23,7 @@ public static class RentalGrpcBootstrapper
                 RetryableStatusCodes =
                 {
                     StatusCode.Internal, StatusCode.Unauthenticated, StatusCode.NotFound,
+                    StatusCode.Unavailable
                 },
             }
         };

@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Order.API.Grpc.Client.Logics;
 using Order.API.Grpc.Client.Requests;
 using System.Diagnostics;
+using System.Globalization;
 using Website.Dtos;
+using Website.Enum;
 using Website.Models;
 
 namespace Website.Controllers;
@@ -36,6 +38,8 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
+        var name = Resources.resources.Approved;
+
         return View();
     }
 
