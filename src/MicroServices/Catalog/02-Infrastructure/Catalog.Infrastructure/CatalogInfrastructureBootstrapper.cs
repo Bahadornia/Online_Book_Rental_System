@@ -19,8 +19,6 @@ public static class CatalogInfrastructureBootstrapper
 {
     public static IServiceCollection AddCatalogInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSingleton<IMongoClient>(new MongoClient(configuration.GetConnectionString("Database")));
-
         services.AddScoped<CatalogDbContext>();
         services.AddSingleton<IMongoClient>(_ => new MongoClient(configuration.GetConnectionString("Database")));
         services.AddSingleton(provider => provider.GetRequiredService<IMongoClient>().GetDatabase("CatalogDb"));

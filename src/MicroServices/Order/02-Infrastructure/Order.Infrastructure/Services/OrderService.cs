@@ -33,7 +33,9 @@ internal class OrderService : IOrderService
         var orders = await _orderRepository.GetAll(ct).ToListAsync(ct);
         var bookIds = orders.Select(order => order.BookId.Value).Distinct();
         var books = await _bookService.GetBooksByIds(bookIds, ct);
-        var bookDict = books.ToDictionary(b => b.Id);
+        var bookDict = books.Where(book => book is not null).ToDictionary(b => b.Id);
+        if(bookDict.Count > 0)
+        {
         var result = orders.Select(order =>
         {
             var book = bookDict[order.BookId.Value];
@@ -49,7 +51,10 @@ internal class OrderService : IOrderService
               order.Status);
             return rs;
         });
-        return result.ToList().AsReadOnly() ;
+        return result.ToList().AsReadOnly();
+
+        }
+        return Enumerable.Empty<OrderListDto>().ToList().AsReadOnly();
     }
 
     public async Task<bool> IsBookAvailable(long bookId, CancellationToken ct)
