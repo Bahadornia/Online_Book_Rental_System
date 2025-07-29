@@ -1,10 +1,12 @@
 using Notification.API.Grpc.Services;
 using ProtoBuf.Grpc.Server;
+using Notification.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddCodeFirstGrpc();
+builder.Services.AddMassTransitService(builder.Configuration);
 
 var app = builder.Build();
 

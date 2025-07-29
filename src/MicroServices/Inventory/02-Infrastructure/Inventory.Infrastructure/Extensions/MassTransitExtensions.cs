@@ -4,8 +4,6 @@ using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SharedKernel.Messaging.Events;
-
 namespace Inventory.Infrastructure.Extensions;
 
 public static class MassTransitExtensions
@@ -18,7 +16,7 @@ public static class MassTransitExtensions
         return modelBuilder;
     }
     public static IServiceCollection AddMassTransitServices<T>(this IServiceCollection services, IConfiguration configuration)
-        where T:DbContext
+        where T : DbContext
     {
         var rabbitConfig = configuration.GetSection("RabbitMq");
         services.AddMassTransit(x =>

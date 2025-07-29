@@ -1,5 +1,4 @@
 ﻿using Catalog.Domain.IRepositories;
-using Catalog.Infrastructure.Data;
 using Framework.CQRS;
 using Framework.SnowFlake;
 using MediatR;

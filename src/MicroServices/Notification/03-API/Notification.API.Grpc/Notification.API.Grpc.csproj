@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\02-Infrastructure\Notification.Infrastructure\Notification.Infrastructure.csproj" />
     <ProjectReference Include="..\Notification.API.Grpc.Client\Notification.API.Grpc.Client.csproj" />
   </ItemGroup>
 

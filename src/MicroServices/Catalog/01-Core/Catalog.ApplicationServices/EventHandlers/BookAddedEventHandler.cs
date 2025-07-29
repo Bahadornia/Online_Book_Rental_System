@@ -25,6 +25,6 @@ internal sealed class BookAddedEventHandler : INotificationHandler<BookAdded>
             BookId = notification.Book.Id.Value,
             AvailableCopies = notification.Book.AvailableCopies,
         };
-        //await _eventPublisher.Publish(bookAddedEvent, ct);
+        await _eventPublisher.Publish<BookAddedIntegrationEvent>(bookAddedEvent, ct);
     }
 }

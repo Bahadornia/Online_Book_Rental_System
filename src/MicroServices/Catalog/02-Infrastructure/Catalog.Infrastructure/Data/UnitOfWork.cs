@@ -1,4 +1,5 @@
-﻿using MassTransit.MongoDbIntegration;
+﻿using Catalog.Domain.IRepositories;
+using MassTransit.MongoDbIntegration;
 using MongoDB.Driver;
 
 namespace Catalog.Infrastructure.Data

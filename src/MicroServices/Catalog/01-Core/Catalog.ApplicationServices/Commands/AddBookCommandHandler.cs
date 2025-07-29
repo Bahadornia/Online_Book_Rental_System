@@ -2,7 +2,6 @@
 using Catalog.Domain.IRepositories;
 using Catalog.Domain.IServices;
 using Catalog.Domain.Models.BookAggregate.Entities;
-using Catalog.Infrastructure.Data;
 using Framework.CQRS;
 using Framework.Domain;
 using Framework.SnowFlake;

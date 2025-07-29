@@ -1,4 +1,4 @@
-﻿namespace Catalog.Infrastructure.Data
+﻿namespace Catalog.Domain.IRepositories
 {
     public interface IUnitOfWork
     {
