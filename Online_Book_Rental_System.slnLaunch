@@ -15,6 +15,10 @@
         "Action": "Start"
       },
       {
+        "Path": "src\\MicroServices\\Notification\\03-API\\Notification.API\\Notification.API.csproj",
+        "Action": "Start"
+      },
+      {
         "Path": "src\\MicroServices\\Website\\Website\\Website.csproj",
         "Action": "Start"
       }

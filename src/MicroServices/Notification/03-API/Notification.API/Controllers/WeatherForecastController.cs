@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Notification.API.Grpc.Verification.Controllers;
+namespace Notification.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]

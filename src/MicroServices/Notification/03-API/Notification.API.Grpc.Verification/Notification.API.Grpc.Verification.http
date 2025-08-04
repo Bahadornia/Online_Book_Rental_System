@@ -1,6 +1,0 @@
-@Notification.API.Grpc.Verification_HostAddress = http://localhost:5214
-
-GET {{Notification.API.Grpc.Verification_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

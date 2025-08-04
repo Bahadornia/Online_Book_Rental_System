@@ -33,7 +33,6 @@ namespace Website.Controllers
             var addBookRq = _mapper.Map<AddBookRq>(book);
             await _bookService.AddBook(addBookRq, ct);
             return Redirect("/Home/Index");
-           
         }
     }
 }

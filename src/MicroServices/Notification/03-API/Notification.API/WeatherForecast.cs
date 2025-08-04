@@ -1,4 +1,4 @@
-namespace Notification.API.Grpc.Verification
+namespace Notification.API
 {
     public class WeatherForecast
     {

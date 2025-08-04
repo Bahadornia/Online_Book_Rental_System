@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Order.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using Order.Infrastructure.Data;
 namespace Order.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(OrderDbContext))]
-    partial class OrderDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250803170112_Added_Index_on_DueDate")]
+    partial class Added_Index_on_DueDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -228,7 +231,7 @@ namespace Order.Infrastructure.Data.Migrations
 
                     b.HasIndex("DueDate");
 
-                    SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("DueDate"), new[] { "BookId", "UserId" });
+                    SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("DueDate"), new[] { "UserId" });
 
                     b.ToTable("Orders", (string)null);
                 });

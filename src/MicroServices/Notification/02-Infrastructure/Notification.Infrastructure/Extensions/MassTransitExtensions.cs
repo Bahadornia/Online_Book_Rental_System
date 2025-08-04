@@ -1,8 +1,10 @@
-﻿using MassTransit;
+﻿using Inventory.Infrastructure.Consumers;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
+using Notification.Infrastructure.Consumers;
 
 namespace Notification.Infrastructure.Extensions;
 
@@ -22,6 +24,8 @@ public static class MassTransitExtensions
         var rabbitConfig = configuration.GetSection("RabbitMq");
         services.AddMassTransit(x =>
          {
+             x.AddConsumer<BookAddedConsumer>();
+             x.AddConsumer<OrdersOverDueDatedConsumer>();
              x.SetKebabCaseEndpointNameFormatter();
              x.AddMongoDbOutbox(o =>
              {
@@ -44,6 +48,10 @@ public static class MassTransitExtensions
 
 
                  cfg.ConfigureEndpoints(context);
+                 cfg.ReceiveEndpoint("notification-book-added-queue", e =>
+                 {
+                     e.ConfigureConsumer<BookAddedConsumer>(context);
+                 });
              });
          });
         return services;

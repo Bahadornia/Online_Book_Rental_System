@@ -51,6 +51,10 @@ public static class MassTransitExtensions
 
 
                 cfg.ConfigureEndpoints(context);
+                cfg.ReceiveEndpoint("inventory-queue", e =>
+                {
+                    e.ConfigureConsumer<BookAddedConsumer>(context);
+                });
             });
         });
         return services;

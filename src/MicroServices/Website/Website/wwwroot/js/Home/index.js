@@ -41,6 +41,7 @@ const datasource = {
                     rowData: data.rows,
                     rowCount: data.total
                 });
+
             },
             error: function (err) {
                 console.error(err);
@@ -87,6 +88,11 @@ const gridOptions = {
     pagination: true,
     paginationPageSize: 10,
     getRowId: params => params.data.id,
+    onFirstDataRendered: (event) => {
+
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    },
 }
 reserveBook = (id) => {
 
@@ -145,8 +151,6 @@ function operationComponent(id) {
 
 `;
     }
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
     return html;
 }
 

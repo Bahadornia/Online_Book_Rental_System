@@ -91,11 +91,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notification.Domain", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notification.Infrastructure", "src\MicroServices\Notification\02-Infrastructure\Notification.Infrastructure\Notification.Infrastructure.csproj", "{CE5BAF25-FEBC-4C75-A3AB-96E597DF5C2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notification.API.Grpc.Client", "src\MicroServices\Notification\03-API\Notification.API.Grpc.Client\Notification.API.Grpc.Client.csproj", "{45221A4D-A9C0-4EF0-A433-9E0434CC1C53}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notification.API.Grpc", "src\MicroServices\Notification\03-API\Notification.API.Grpc\Notification.API.Grpc.csproj", "{610E9EAE-FF20-4AE5-9E98-C9F25F7F3676}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notification.API.Grpc.Verification", "src\MicroServices\Notification\03-API\Notification.API.Grpc.Verification\Notification.API.Grpc.Verification.csproj", "{317D6B8C-6436-447D-8B53-8E97430F94FE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notification.API", "src\MicroServices\Notification\03-API\Notification.API\Notification.API.csproj", "{6E989D2B-E458-4C44-93DB-7F459120DF03}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -191,18 +187,10 @@ Global
 		{CE5BAF25-FEBC-4C75-A3AB-96E597DF5C2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE5BAF25-FEBC-4C75-A3AB-96E597DF5C2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE5BAF25-FEBC-4C75-A3AB-96E597DF5C2F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{45221A4D-A9C0-4EF0-A433-9E0434CC1C53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{45221A4D-A9C0-4EF0-A433-9E0434CC1C53}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{45221A4D-A9C0-4EF0-A433-9E0434CC1C53}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{45221A4D-A9C0-4EF0-A433-9E0434CC1C53}.Release|Any CPU.Build.0 = Release|Any CPU
-		{610E9EAE-FF20-4AE5-9E98-C9F25F7F3676}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{610E9EAE-FF20-4AE5-9E98-C9F25F7F3676}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{610E9EAE-FF20-4AE5-9E98-C9F25F7F3676}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{610E9EAE-FF20-4AE5-9E98-C9F25F7F3676}.Release|Any CPU.Build.0 = Release|Any CPU
-		{317D6B8C-6436-447D-8B53-8E97430F94FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{317D6B8C-6436-447D-8B53-8E97430F94FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{317D6B8C-6436-447D-8B53-8E97430F94FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{317D6B8C-6436-447D-8B53-8E97430F94FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E989D2B-E458-4C44-93DB-7F459120DF03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E989D2B-E458-4C44-93DB-7F459120DF03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E989D2B-E458-4C44-93DB-7F459120DF03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E989D2B-E458-4C44-93DB-7F459120DF03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -250,9 +238,7 @@ Global
 		{32B3BE96-10E4-43DA-BD35-11097B14F27C} = {9193E3DE-69FB-4723-83D3-C0E7A4167FCA}
 		{B609A308-DD33-4061-B418-EEE8828EBB44} = {9193E3DE-69FB-4723-83D3-C0E7A4167FCA}
 		{CE5BAF25-FEBC-4C75-A3AB-96E597DF5C2F} = {861E4646-6536-44E8-98FC-42B90C18E90A}
-		{45221A4D-A9C0-4EF0-A433-9E0434CC1C53} = {90361C6C-6828-4955-BE5D-A31D0172A226}
-		{610E9EAE-FF20-4AE5-9E98-C9F25F7F3676} = {90361C6C-6828-4955-BE5D-A31D0172A226}
-		{317D6B8C-6436-447D-8B53-8E97430F94FE} = {90361C6C-6828-4955-BE5D-A31D0172A226}
+		{6E989D2B-E458-4C44-93DB-7F459120DF03} = {90361C6C-6828-4955-BE5D-A31D0172A226}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5929BD2B-F9E7-4193-A8D3-685286088163}

@@ -7,7 +7,7 @@ namespace Order.Domain.Models.OrderAggregate.Entities;
 
 public class BookOrder : AggregateRoot<OrderId>
 {
-
+    private DateTime _dueDate;
     private readonly List<OrderHistory> _history = [];
     public IEnumerable<OrderHistory> Histories => _history;
 
@@ -15,7 +15,9 @@ public class BookOrder : AggregateRoot<OrderId>
     public UserId UserId { get; private set; } = default!;
     public DateTime BorrowDate { get; private set; }
     public DateTime? ReturnDate { get; private set; }
-    public DateTime DueDate => BorrowDate.AddDays(14);
+    public DateTime DueDate { get; set; }
+
+      
     public TimeSpan OverDueDate
     {
         get
@@ -59,7 +61,7 @@ public class BookOrder : AggregateRoot<OrderId>
     protected override void ValidateInvariants()
     {
         if (BorrowDate > DateTime.UtcNow) throw new Exception("Borrow Date can not be in the future.");
-        if (DueDate <= BorrowDate) throw new Exception("DueDate must be after BorrowDate");
+        if (DueDate >= BorrowDate) throw new Exception("DueDate must be after BorrowDate");
         if (ReturnDate.HasValue) throw new Exception("Rental is already returned");
         if (ReturnDate < BorrowDate) throw new Exception("ReturnDate cannot be before BorrowDate");
         if (IsExtended) throw new Exception("Rental period has already been extended");

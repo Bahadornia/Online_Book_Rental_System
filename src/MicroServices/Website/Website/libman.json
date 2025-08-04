@@ -20,6 +20,10 @@
     {
       "library": "metisMenu@3.0.7",
       "destination": "wwwroot/lib/metisMenu/"
+    },
+    {
+      "library": "microsoft-signalr@8.0.7",
+      "destination": "wwwroot/lib/microsoft-signalr/"
     }
   ]
 }

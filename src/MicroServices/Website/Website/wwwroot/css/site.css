@@ -98,6 +98,20 @@ body {
     justify-content: center !important;
 }
 
+.notification-badge {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    position: absolute;
+    background-color: red;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    top: 2px;
+    left: -10px
+}
 
 
 /*------------------------------*/
