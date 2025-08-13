@@ -20,11 +20,11 @@ internal sealed class OutboxProcessorJob : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        while (!stoppingToken.IsCancellationRequested)
+        var timer = new PeriodicTimer(TimeSpan.FromDays(1));
+        while (await timer.WaitForNextTickAsync(stoppingToken))
         {
             using var scope = _scopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IOutboxMessgeRepository>();
-            await Task.Delay(TimeSpan.FromDays(1), stoppingToken);
             var messages = await repository.GetOnProcessedMessages(stoppingToken);
             if (messages.Count > 0)
             {
@@ -40,8 +40,6 @@ internal sealed class OutboxProcessorJob : BackgroundService
                 }
 
             }
-
-            //update
         }
     }
 

@@ -5,7 +5,7 @@ namespace Order.Infrastructure.Services;
 internal class OrdersJob
 {
     public const string ORDERS_JOBID= "OrdersJob";
-    public const string ORDERS_JOB_CRON = "5 * * * *";
+    public const string ORDERS_JOB_CRON = "59 23 * * *";
     private readonly IOrderService _orderService;
 
     public OrdersJob(IOrderService orderService)

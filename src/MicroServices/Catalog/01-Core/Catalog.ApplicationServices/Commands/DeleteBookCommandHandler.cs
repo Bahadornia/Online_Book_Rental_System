@@ -29,7 +29,7 @@ public class DeleteBookCommandHandler : ICommandHandler<DeleteBookCommand>
         var bookDeletedEvent = new BookDeletedIntegrationEvent
         {
             BookId = request.BookId,
-            EventId = _snowFlakeService.CreateId(),
+            CorrelationId = Guid.NewGuid(),
         };
         await _eventPublisher.Publish<BookDeletedIntegrationEvent>(bookDeletedEvent, ct);
         try

@@ -7,15 +7,19 @@
         "Action": "Start"
       },
       {
-        "Path": "src\\MicroServices\\Inventory\\03-API\\Inventory.API\\Inventory.API.csproj",
-        "Action": "Start"
-      },
-      {
         "Path": "src\\MicroServices\\Order\\03-API\\Order.API.Grpc\\Order.API.Grpc.csproj",
         "Action": "Start"
       },
       {
+        "Path": "src\\MicroServices\\Catalog\\03-API\\Catalog.API.Grpc.Verification\\Catalog.API.Grpc.Verification.csproj",
+        "Action": "Start"
+      },
+      {
         "Path": "src\\MicroServices\\Notification\\03-API\\Notification.API\\Notification.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "src\\MicroServices\\Inventory\\03-API\\Inventory.API\\Inventory.API.csproj",
         "Action": "Start"
       },
       {

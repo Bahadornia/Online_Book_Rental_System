@@ -53,13 +53,13 @@ class AddOrderBookCommandHandler : ICommandHandler<AddOrderBookCommand>
         bookOrder.AddOrderHistory(history);
         var bookRentedEvent = new BookRentedIntegrationEvent
         {
-            EventId = _snowFlakeService.CreateId(),
+            CorrelationId =Guid.NewGuid(),
             BookId = command.BookId,
             BorrowDate = command.BorrowDate,
         };
 
         await _unitOfWork.BenginTransacttionAsync(ct);
-        await _eventPublisher.Publish<BookRentedIntegrationEvent>(bookRentedEvent, ct);
+        await _eventPublisher.Publish<OrderRequested>(bookRentedEvent, ct);
         _OrderRepository.AddBookOrder(bookOrder, ct);
         await _unitOfWork.SaveChangesAsync(ct);
         try

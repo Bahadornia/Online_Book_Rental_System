@@ -21,7 +21,7 @@ internal sealed class BookAddedEventHandler : INotificationHandler<BookAdded>
     {
         var bookAddedEvent = new BookAddedIntegrationEvent
         {
-            EventId = _snowFlakeService.CreateId(),
+            CorrelationId = Guid.NewGuid(),
             BookId = notification.Book.Id.Value,
             AvailableCopies = notification.Book.AvailableCopies,
         };

@@ -48,7 +48,7 @@ public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
         var domainEvents = book.ClearDomainEvents();
         var bookAddedEvent = new BookAddedIntegrationEvent
         {
-            EventId = 45646456,
+            CorrelationId = Guid.NewGuid(),
             BookId = book.Id.Value,
             AvailableCopies = book.AvailableCopies,
         };

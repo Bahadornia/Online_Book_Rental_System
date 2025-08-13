@@ -2,6 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Order.Infrastructure.Sagas;
+using Order.Infrastructure.Sagas.BookOrderSagas;
+using System.Reflection;
 
 namespace Order.Infrastructure.Extensions;
 
@@ -22,12 +25,22 @@ public static class MassTransitExtensions
         services.AddMassTransit(x =>
          {
              x.SetKebabCaseEndpointNameFormatter();
+             x.AddSagaStateMachine<BookOrderSaga, BookOrderSagaState>()
+       .EntityFrameworkRepository(r =>
+       {
+           r.ConcurrencyMode = ConcurrencyMode.Optimistic;
+           r.AddDbContext<DbContext, OrderSagaDbContext>((provider, builder) =>
+           {
+               builder.UseSqlServer(configuration.GetConnectionString("DefatultDatabase"), m =>
+               {
+                   m.MigrationsAssembly(Assembly.GetExecutingAssembly().GetName().Name);
+                   m.MigrationsHistoryTable($"__{nameof(OrderSagaDbContext)}");
+               });
+           });
+       });
              x.AddEntityFrameworkOutbox<T>(o =>
              {
-                 // configure which database lock provider to use (Postgres, SqlServer, or MySql)
                  o.UseSqlServer();
-
-                 // enable the bus outbox
                  o.UseBusOutbox();
              });
              x.UsingRabbitMq((context, cfg) =>
@@ -37,7 +50,6 @@ public static class MassTransitExtensions
                      h.Username(rabbitConfig["Username"]!);
                      h.Password(rabbitConfig["Password"]!);
                  });
-
 
                  cfg.ConfigureEndpoints(context);
              });

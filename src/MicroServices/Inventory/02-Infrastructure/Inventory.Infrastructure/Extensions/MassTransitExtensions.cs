@@ -4,6 +4,7 @@ using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SharedKernel.Messaging.Events;
 namespace Inventory.Infrastructure.Extensions;
 
 public static class MassTransitExtensions
@@ -21,7 +22,8 @@ public static class MassTransitExtensions
         var rabbitConfig = configuration.GetSection("RabbitMq");
         services.AddMassTransit(x =>
         {
-            x.AddConsumer<BookRentedConsumer>();
+            x.AddConsumer<OrderRequestedConsumer>();
+            x.AddConsumer<ChargePaymentConsumer>();
             x.AddConsumer<BookAddedConsumer>();
             x.AddConsumer<BookAddedFualtConsumer>();
             x.AddConsumer<BookDeletedConsumer>();
