@@ -13,8 +13,4 @@ internal class BookService : IBookService
         _dbContext = dbContext;
     }
 
-    public Task AddBook(BookDto book, CancellationToken ct = default)
-    {
-        throw new NotImplementedException();
-    }
 }

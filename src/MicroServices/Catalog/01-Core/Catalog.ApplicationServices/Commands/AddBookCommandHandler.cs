@@ -16,6 +16,10 @@ namespace Catalog.ApplicationServices.Commands;
 public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
 {
     private readonly IBookRepository _bookRepository;
+    private readonly IPubliserRepository _publisherRepository;
+    private readonly ICategoryRepository _categroyRepository;
+    private readonly IPublisherService _publisherService;
+    private readonly ICategoryService _categoryService;
     private readonly IMapper _mapper;
     private readonly IFileService _fileService;
     private readonly ISnowFlakeService _sonowFlakeService;
@@ -23,7 +27,7 @@ public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
     private readonly ILogger<AddBookCommandHandler> _logger;
     private readonly IIntegrationEventPublisher _eventPublisher;
 
-    public AddBookCommandHandler(IBookRepository bookService, IMapper mapper, IFileService fileService, ISnowFlakeService sonowFlakeService, IDomainEventPublisher publisher, ILogger<AddBookCommandHandler> logger, IUnitOfWork unitOfWork, IIntegrationEventPublisher eventPublisher)
+    public AddBookCommandHandler(IBookRepository bookService, IMapper mapper, IFileService fileService, ISnowFlakeService sonowFlakeService, IDomainEventPublisher publisher, ILogger<AddBookCommandHandler> logger, IUnitOfWork unitOfWork, IIntegrationEventPublisher eventPublisher, IPubliserRepository publisherRepository, ICategoryRepository categroyRepository, IPublisherService publisherService, ICategoryService categoryService)
     {
         _bookRepository = bookService;
         _mapper = mapper;
@@ -32,31 +36,45 @@ public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
         _logger = logger;
         _unitOfWork = unitOfWork;
         _eventPublisher = eventPublisher;
+        _publisherRepository = publisherRepository;
+        _categroyRepository = categroyRepository;
+        _publisherService = publisherService;
+        _categoryService = categoryService;
     }
 
     public async Task<Unit> Handle(AddBookCommand command, CancellationToken ct)
     {
-        var bookDto = _mapper.Map<BookDto>(command);
-        bookDto.Id = _sonowFlakeService.CreateId();
-        var fileName = await UplodaImage(bookDto.Id, command.Title, command.Image, command.ContentType, ct);
-        bookDto.ImageUrl = fileName;
-
-        var book = Book.Create(bookDto.Id, bookDto.Title, bookDto.Author, bookDto.Publisher, bookDto.Category, bookDto.ISBN, bookDto.Description, bookDto.ImageUrl, bookDto.AvailableCopies);
-
-        await _unitOfWork.BeginTransaction(ct);
-        await _bookRepository.AddBook(book, ct);
-        var domainEvents = book.ClearDomainEvents();
-        var bookAddedEvent = new BookAddedIntegrationEvent
-        {
-            CorrelationId = Guid.NewGuid(),
-            BookId = book.Id.Value,
-            AvailableCopies = book.AvailableCopies,
-        };
-        await _eventPublisher.Publish<BookAddedIntegrationEvent>(bookAddedEvent, ct);
-
-        _logger.LogAddBook(book.Id.Value);
         try
         {
+            var bookDto = _mapper.Map<BookDto>(command);
+            bookDto.Id = _sonowFlakeService.CreateId();
+            var fileName = await UplodaImage(bookDto.Id, command.Title, command.Image, command.ContentType, ct);
+            bookDto.ImageUrl = fileName;
+
+            var book = Book.Create(bookDto.Id, bookDto.Title, bookDto.Author, bookDto.Publisher, bookDto.Category, bookDto.ISBN, bookDto.Description, bookDto.ImageUrl, bookDto.AvailableCopies);
+
+            await _unitOfWork.BeginTransaction(ct);
+            await _bookRepository.AddBook(book, ct);
+            if(!await _publisherService.CheckIfPublisherNotExists(book.Publisher, ct))
+            {
+            await _publisherRepository.Add(new Publisher { Name = book.Publisher}, ct);
+            }
+
+            if(!await _categoryService.CheckIfCategoryNotExists(book.Category, ct))
+            {
+            await _categroyRepository.Add(new Category { Name = book.Category}, ct);
+            }
+            var domainEvents = book.ClearDomainEvents();
+            var bookAddedEvent = new BookAddedIntegrationEvent
+            {
+                CorrelationId = Guid.NewGuid(),
+                BookId = book.Id.Value,
+                AvailableCopies = book.AvailableCopies,
+            };
+            await _eventPublisher.Publish<BookAddedIntegrationEvent>(bookAddedEvent, ct);
+
+            _logger.LogAddBook(book.Id.Value);
+
             await _unitOfWork.CommitTransaction(ct);
         }
         catch (Exception)

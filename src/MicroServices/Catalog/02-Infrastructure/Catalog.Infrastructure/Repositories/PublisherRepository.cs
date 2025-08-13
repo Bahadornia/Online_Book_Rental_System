@@ -1,4 +1,5 @@
 ﻿using Catalog.Domain.IRepositories;
+using Catalog.Domain.Models.BookAggregate.Entities;
 using Catalog.Infrastructure.Data;
 
 namespace Catalog.Infrastructure.Repositories
@@ -12,12 +13,17 @@ namespace Catalog.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task AddPubliser(string publisher, CancellationToken ct)
+        public async Task Add(Publisher publisher, CancellationToken ct)
         {
-            //await _dbContext.Publishers.InsertOneAsync(publisher, null, ct);
+            await _dbContext.Publishers.InsertOneAsync(publisher, null, ct);
         }
 
         public Task<IReadOnlyCollection<string>> GetAll(string publisher, CancellationToken ct)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IReadOnlyCollection<Publisher>> IPubliserRepository.GetAll(string publisher, CancellationToken ct)
         {
             throw new NotImplementedException();
         }

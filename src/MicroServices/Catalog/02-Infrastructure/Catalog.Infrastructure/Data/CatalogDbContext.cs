@@ -1,4 +1,5 @@
-﻿using Catalog.Infrastructure.Data.BookAggregate;
+﻿using Catalog.Domain.Models.BookAggregate.Entities;
+using Catalog.Infrastructure.Data.BookAggregate;
 using MassTransit.MongoDbIntegration;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -8,6 +9,9 @@ namespace Catalog.Infrastructure.Data;
 public class CatalogDbContext
 {
     private const string BOOK_COLLECTION_NAME = "Book";
+    private const string PUBLISHER_COLLECTION_NAME = "Publisher";
+    private const string CATEGORY_COLLECTION_NAME = "Category";
+
     private readonly IMongoClient _client;
     private readonly IMongoDatabase _db;
     private readonly MongoDbContext _context;
@@ -22,7 +26,8 @@ public class CatalogDbContext
     public IMongoDatabase Database => _db;
     public IClientSessionHandle? Session => _context.Session;
     public IMongoCollection<BookData> Books => _db.GetCollection<BookData>(BOOK_COLLECTION_NAME);
-    //public IMongoCollection<string> Publishers => _db.GetCollection<string>(PUBLISHER_COLLECTION_NAME);
+    public IMongoCollection<Publisher> Publishers => _db.GetCollection<Publisher>(PUBLISHER_COLLECTION_NAME);
+    public IMongoCollection<Category> Categories => _db.GetCollection<Category>(CATEGORY_COLLECTION_NAME);
 
     public async Task InitializeMongoDb()
     {

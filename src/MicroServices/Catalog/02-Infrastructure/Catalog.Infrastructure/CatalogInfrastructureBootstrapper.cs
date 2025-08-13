@@ -23,6 +23,10 @@ public static class CatalogInfrastructureBootstrapper
         services.AddSingleton<IMongoClient>(_ => new MongoClient(configuration.GetConnectionString("Database")));
         services.AddSingleton(provider => provider.GetRequiredService<IMongoClient>().GetDatabase("CatalogDb"));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IPubliserRepository, PublisherRepository>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IPublisherService, PublisherService>();
+        services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IBookRepository, BookRepository>();
         services.Decorate<IBookRepository, CachedBookRepository>();
         services.AddMapsterService(Assembly.GetExecutingAssembly());
