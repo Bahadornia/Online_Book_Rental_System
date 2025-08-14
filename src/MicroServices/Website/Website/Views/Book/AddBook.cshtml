@@ -18,7 +18,9 @@
                 </div>
                 <div class="col-12 col-md-4">
                     <label for="publisher">ناشر</label>
-                    <input id="publisher" type="text" asp-for="Publisher" class="form-control" value="" />
+                <select  asp-for="Publisher" class="form-control" id="publishers">
+                </select>
+                
                     <span asp-validation-for="Publisher"></span>
                 </div>
             </div>

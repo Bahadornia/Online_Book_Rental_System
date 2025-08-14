@@ -24,6 +24,10 @@
     {
       "library": "microsoft-signalr@8.0.7",
       "destination": "wwwroot/lib/microsoft-signalr/"
+    },
+    {
+      "library": "select2@4.0.13",
+      "destination": "wwwroot/lib/select2/"
     }
   ]
 }

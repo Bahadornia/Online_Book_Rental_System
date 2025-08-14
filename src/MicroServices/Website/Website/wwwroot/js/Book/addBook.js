@@ -25,3 +25,29 @@ previewImage = () => {
     }
 }
 
+$("#publishers").select2({
+    placeholder: "ناشر را انتخاب کنید",
+    theme: "bootstrap4",
+    allowClear: false,
+    ajax: {
+        url: "/api/publisher",
+        data: function (params) {
+            var query =
+            {
+                
+            };
+            return query;
+        },
+        contentType: "application/json; charset=utf-8",
+        processResults: function (result) {
+            return {
+                results: $.map(result, function (item) {
+                    return {
+                        id: item.name,
+                        text: item.name
+                    };
+                }),
+            };
+        }
+    }
+});
