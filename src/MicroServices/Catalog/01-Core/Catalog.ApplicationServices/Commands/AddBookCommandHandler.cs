@@ -55,15 +55,9 @@ public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
 
             await _unitOfWork.BeginTransaction(ct);
             await _bookRepository.AddBook(book, ct);
-            if(!await _publisherService.CheckIfPublisherNotExists(book.Publisher, ct))
-            {
-            await _publisherRepository.Add(new Publisher { Name = book.Publisher}, ct);
-            }
-
-            if(!await _categoryService.CheckIfCategoryNotExists(book.Category, ct))
-            {
-            await _categroyRepository.Add(new Category { Name = book.Category}, ct);
-            }
+            await _publisherService.AddIfPublisherNotExists(_unitOfWork.Session, book.Publisher, ct);
+            await _categoryService.AddIfCategoryNotExists(_unitOfWork.Session, book.Category, ct);
+          
             var domainEvents = book.ClearDomainEvents();
             var bookAddedEvent = new BookAddedIntegrationEvent
             {

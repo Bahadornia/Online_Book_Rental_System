@@ -1,31 +1,35 @@
-﻿using Catalog.Domain.IRepositories;
+﻿using Catalog.Domain.Dtos;
+using Catalog.Domain.IRepositories;
 using Catalog.Domain.Models.BookAggregate.Entities;
 using Catalog.Infrastructure.Data;
+using Catalog.Infrastructure.Data.BookAggregate;
+using MapsterMapper;
+using MongoDB.Driver;
 
 namespace Catalog.Infrastructure.Repositories
 {
     internal class PublisherRepository : IPubliserRepository
     {
         private readonly CatalogDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public PublisherRepository(CatalogDbContext dbContext)
+        public PublisherRepository(CatalogDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
-        public async Task Add(Publisher publisher, CancellationToken ct)
+        public async Task Add(PublisherDto publisher, CancellationToken ct)
         {
-            await _dbContext.Publishers.InsertOneAsync(publisher, null, ct);
+            var publisherData = new PublisherData { Name = publisher.Name };
+            await _dbContext.Publishers.InsertOneAsync(publisherData, null, ct);
         }
 
-        public Task<IReadOnlyCollection<string>> GetAll(string publisher, CancellationToken ct)
+        async Task<IReadOnlyCollection<PublisherDto>> IPubliserRepository.GetAll(CancellationToken ct)
         {
-            throw new NotImplementedException();
-        }
-
-        Task<IReadOnlyCollection<Publisher>> IPubliserRepository.GetAll(string publisher, CancellationToken ct)
-        {
-            throw new NotImplementedException();
+            var filter = Builders<PublisherData>.Filter.Empty;
+            var publishersData = await _dbContext.Publishers.Find(filter).ToListAsync(ct);
+            return _mapper.Map<IReadOnlyCollection<PublisherDto>>(publishersData);
         }
     }
 }

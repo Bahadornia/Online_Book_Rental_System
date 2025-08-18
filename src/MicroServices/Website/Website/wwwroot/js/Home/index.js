@@ -32,14 +32,17 @@ var isAdmin = $("#isAdmin").val();
 
 const datasource = {
     getRows(params) {
+        console.log(params.request);
         params.request;
         $.ajax({
             url: "/Home/GetAll",
-            type: "Get",
+            type: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            data: JSON.stringify(params.request),
             success: function (data) {
                 params.success({
                     rowData: data.rows,
-                    rowCount: data.total
+                    rowCount: data.totalCount
                 });
 
             },
@@ -50,7 +53,23 @@ const datasource = {
         });
     }
 };
+const fa = {
+    Page: "صفحه",
+    page: "صفحه",
+    from: "از",
+    to: "به",
+    of: "از",
+    Size: "سایز",
+    pageSize: 'اندازه صفحه',
+    pageLastRowUnknown: '?',
+    nextPage: 'صفحه بعد',
+    lastPage: 'آخرین صفحه',
+    firstPage: 'اولین صفحه',
+    previousPage: 'صفحه قبلی',
+    pageSizeSelectorLabel: 'اندازه صفحه:',
+    ariaPageSizeSelectorLabel: 'اندازه صفحه',
 
+}
 const gridOptions = {
     columnDefs: [
         { headerName: "تصویر", field: "imageUrl", sortable: true, filter: true, cellClass: "logo", cellRenderer: (params) => `<img src="${params.value}">`, maxWidth: 100 },
@@ -64,7 +83,12 @@ const gridOptions = {
         { headerName: "عملیات", sortable: false, filter: false, cellClass: "operation", cellRenderer: (params) => operationComponent(params.data.id) }
     ],
 
-
+    localeTextFunc: (key, defaultValue) => {
+        // Peek keys during dev:
+        // console.log('locale key:', key, 'default:', defaultValue);
+        if (key === 'Page Size') return 'اندازه صفحه';
+        return fa[pageSize] ?? defaultValue;
+    },
     defaultColDef: {
         flex: 1,
         minWidth: 60,
@@ -86,7 +110,9 @@ const gridOptions = {
     rowModelType: 'serverSide',
     serverSideDatasource: datasource,
     pagination: true,
-    paginationPageSize: 10,
+    paginationPageSize: 25,
+    cacheBlockSize: 25,
+    localeText: fa,
     getRowId: params => params.data.id,
     onFirstDataRendered: (event) => {
 
@@ -94,6 +120,7 @@ const gridOptions = {
         [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
     },
 }
+
 reserveBook = (id) => {
 
     $.ajax({
@@ -199,7 +226,7 @@ document.getElementById("searchButton").addEventListener('click', () => {
                 success: function (data) {
                     params.success({
                         rowData: data.rows,
-                        rowCount: data.total
+                        rowCount: data.totalCount
                     });
                 },
                 error: function (err) {

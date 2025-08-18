@@ -10,6 +10,6 @@ public interface IBookRepository
     Task DeleteBook(long bookId, CancellationToken ct);
     Task<IReadOnlyCollection<BookDto>> SearchBook(BookFilterDto filter,  CancellationToken ct);
     Task<BookDto> GetBookById(long id, CancellationToken ct);
-    Task<IReadOnlyCollection<BookDto>> GetAll(CancellationToken ct);
+    Task<AllBooksDto> GetAll(AgGridRequestDto request,CancellationToken ct);
     Task<IReadOnlyCollection<BookDto>> GetBooksByIds(IEnumerable<long> ids, CancellationToken ct);
 }

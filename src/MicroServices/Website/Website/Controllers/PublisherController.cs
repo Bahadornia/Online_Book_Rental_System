@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Catalog.API.Grpc.Client.Logics;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Website.Controllers
 {
@@ -6,11 +7,18 @@ namespace Website.Controllers
     [ApiController]
     public class PublisherController : ControllerBase
     {
-        [HttpGet]
+        private readonly IPublisherGrpcService _publisherService;
+
+        public PublisherController(IPublisherGrpcService publisherService)
+        {
+            _publisherService = publisherService;
+        }
+
+        [HttpGet("getAll")]
         public async Task<IActionResult> GetAll(CancellationToken ct)
         {
-            
-            return Ok(list);
+           var publishers = await _publisherService.GetPublishers(ct);
+            return Ok(publishers);
         }
     }
 }

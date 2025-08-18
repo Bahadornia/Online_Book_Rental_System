@@ -26,14 +26,14 @@ public class CatalogDbContext
     public IMongoDatabase Database => _db;
     public IClientSessionHandle? Session => _context.Session;
     public IMongoCollection<BookData> Books => _db.GetCollection<BookData>(BOOK_COLLECTION_NAME);
-    public IMongoCollection<Publisher> Publishers => _db.GetCollection<Publisher>(PUBLISHER_COLLECTION_NAME);
-    public IMongoCollection<Category> Categories => _db.GetCollection<Category>(CATEGORY_COLLECTION_NAME);
+    public IMongoCollection<PublisherData> Publishers => _db.GetCollection<PublisherData>(PUBLISHER_COLLECTION_NAME);
+    public IMongoCollection<CategoryData> Categories => _db.GetCollection<CategoryData>(CATEGORY_COLLECTION_NAME);
 
     public async Task InitializeMongoDb()
     {
-        var collectionName = BOOK_COLLECTION_NAME;
+
         var collectionList = await _db.ListCollectionNames().ToListAsync();
-        if (!collectionList.Contains(collectionName))
+        if (!collectionList.Contains(BOOK_COLLECTION_NAME))
         {
             var schema = new BsonDocument
             {
@@ -79,19 +79,25 @@ public class CatalogDbContext
                 )
             };
 
-            await _db.CreateCollectionAsync(collectionName, options);
+            await _db.CreateCollectionAsync(BOOK_COLLECTION_NAME, options);
         }
 
 
-        var indexes = Builders<BookData>.IndexKeys
+        var bookIndexes = Builders<BookData>.IndexKeys
             //.Ascending(item => item.Title)
             //.Ascending(item => item.Author)
             //.Ascending(item => item.Publisher)
             //.Ascending(item => item.Category)
             .Ascending(item => item.ISBN);
-        
-        var indexModel = new CreateIndexModel<BookData>(indexes);
-        await _db.GetCollection<BookData>(collectionName).Indexes.CreateOneAsync(indexModel);
+        var bookIndexModel = new CreateIndexModel<BookData>(bookIndexes);
+
+        var publisherIndexes = Builders<PublisherData>.IndexKeys
+            .Ascending(p => p.Name);
+
+        var publisherIndexModel = new CreateIndexModel<PublisherData>(publisherIndexes);
+
+        await _db.GetCollection<BookData>(BOOK_COLLECTION_NAME).Indexes.CreateOneAsync(bookIndexModel);
+        await _db.GetCollection<PublisherData>(PUBLISHER_COLLECTION_NAME).Indexes.CreateOneAsync(publisherIndexModel);
     }
 }
 

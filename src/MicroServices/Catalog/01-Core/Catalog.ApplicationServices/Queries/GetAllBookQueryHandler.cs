@@ -5,9 +5,10 @@ using Framework.CQRS;
 
 namespace Catalog.ApplicationServices.Queries;
 
-public class GetAllBookQueryHandler : IQueryHandler<GetAllBookQuery, IReadOnlyCollection<BookDto>>
+public class GetAllBookQueryHandler : IQueryHandler<GetAllBookQuery, AllBooksDto>
 {
     private readonly IBookRepository _bookRepository;
+    private readonly IBookService _bookService;
     private readonly IFileService _fileService;
 
     public GetAllBookQueryHandler(IBookRepository bookRepository, IFileService fileService)
@@ -16,11 +17,12 @@ public class GetAllBookQueryHandler : IQueryHandler<GetAllBookQuery, IReadOnlyCo
         _fileService = fileService;
     }
 
-    public async Task<IReadOnlyCollection<BookDto>> Handle(GetAllBookQuery request, CancellationToken ct)
+    public async Task<AllBooksDto> Handle(GetAllBookQuery request, CancellationToken ct)
     {
-        var rs = await _bookRepository.GetAll(ct);
+        var agGridRequest = request.AgGridRequest;
+        var rs = await _bookRepository.GetAll(agGridRequest, ct);
 
-        var tasks = rs.Select(async (item) =>
+        var tasks = rs.Books.Select(async (item) =>
         {
             var url = await _fileService.GetFileAsync($"thumbnails/{item.ImageUrl}", ct);
             item.ImageUrl = url;

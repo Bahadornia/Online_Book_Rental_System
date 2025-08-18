@@ -8,10 +8,13 @@ namespace Catalog.Infrastructure.Data
     {
         private readonly MongoDbContext _context;
 
+
         public UnitOfWork(MongoDbContext context)
         {
             _context = context;
         }
+
+        public IClientSessionHandle Session => _context.Session!;
 
         public Task AbortTransaction(CancellationToken cancellationToken) => _context.AbortTransaction(cancellationToken);
 

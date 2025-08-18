@@ -15,7 +15,7 @@ namespace Catalog.API.Grpc.Client.Logics
         Task<GetBookImageRs> GetBookImage(GetBookImageRq rq, CallContext callContext = default);
 
         [OperationContract]
-        Task<IReadOnlyCollection<GetBookRs>> GetAllBooks(CallContext callContext = default);
+        Task<GetAllBookRs> GetAllBooks(AgGridRequestRq rq, CallContext callContext = default);
 
         [OperationContract]
         Task DeleteBook(DeleteBookRq rq, CallContext callContext = default);

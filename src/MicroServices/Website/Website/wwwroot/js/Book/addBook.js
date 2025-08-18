@@ -25,20 +25,25 @@ previewImage = () => {
     }
 }
 
-$("#publishers").select2({
+$("#publishers-select").select2({
     placeholder: "ناشر را انتخاب کنید",
     theme: "bootstrap4",
+    minimumResultsForSearch: -1,
+    delay:250,
+    minimumInputLength: 1,
+    
     allowClear: false,
     ajax: {
-        url: "/api/publisher",
+        url: "/api/publisher/getAll",
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
         data: function (params) {
             var query =
             {
-                
+
             };
             return query;
         },
-        contentType: "application/json; charset=utf-8",
         processResults: function (result) {
             return {
                 results: $.map(result, function (item) {
@@ -49,5 +54,7 @@ $("#publishers").select2({
                 }),
             };
         }
-    }
+    },
+    tags:true
+
 });

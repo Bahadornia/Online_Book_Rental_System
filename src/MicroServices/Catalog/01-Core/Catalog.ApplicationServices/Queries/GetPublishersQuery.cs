@@ -3,5 +3,4 @@ using Framework.CQRS;
 
 namespace Catalog.ApplicationServices.Queries;
 
-public record GetAllBookQuery(AgGridRequestDto AgGridRequest) : IQuery<AllBooksDto>;
-
+public record GetPublishersQuery(): IQuery<IReadOnlyCollection<PublisherDto>>;

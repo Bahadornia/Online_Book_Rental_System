@@ -2,6 +2,7 @@
 using Catalog.Domain.IServices;
 using Catalog.Domain.Models.BookAggregate.Entities;
 using Catalog.Infrastructure.Data;
+using Catalog.Infrastructure.Data.BookAggregate;
 using MongoDB.Driver;
 
 namespace Catalog.Infrastructure.Services;
@@ -15,10 +16,11 @@ public sealed class PublisherService : IPublisherService
         _dbContext = dbContext;
     }
 
-    public async Task<bool> CheckIfPublisherNotExists(string name, CancellationToken ct = default)
+    public async Task AddIfPublisherNotExists(IClientSessionHandle session, string name, CancellationToken ct)
     {
-        var filter = Builders<Publisher>.Filter.Eq(p => p.Name, name);
-        var rs = await _dbContext.Publishers.Find(filter).AnyAsync(ct);
-        return rs;
+        var filter = Builders<PublisherData>.Filter.Eq(p => p.Name, name);
+        var update = Builders<PublisherData>.Update.SetOnInsert(p => p.Name, name);
+
+        var rs = await _dbContext.Publishers.UpdateOneAsync(session, filter, update, new UpdateOptions { IsUpsert = true }, ct);
     }
 }

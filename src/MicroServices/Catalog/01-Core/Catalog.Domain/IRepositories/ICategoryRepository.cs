@@ -1,10 +1,11 @@
-﻿using Catalog.Domain.Models.BookAggregate.Entities;
+﻿using Catalog.Domain.Dtos;
+using Catalog.Domain.Models.BookAggregate.Entities;
 
 namespace Catalog.Domain.IRepositories
 {
     public interface ICategoryRepository
     {
-        Task Add(Category publisher, CancellationToken ct);
-        Task<IReadOnlyCollection<Category>> GetAll(string publisher, CancellationToken ct);
+        Task Add(CategoryDto publisher, CancellationToken ct);
+        Task<IReadOnlyCollection<CategoryDto>> GetAll(CancellationToken ct);
     }
 }

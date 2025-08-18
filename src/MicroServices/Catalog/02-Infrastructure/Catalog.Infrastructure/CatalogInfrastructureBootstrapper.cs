@@ -28,7 +28,9 @@ public static class CatalogInfrastructureBootstrapper
         services.AddScoped<IPublisherService, PublisherService>();
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IBookRepository, BookRepository>();
+        services.AddScoped<IBookService, BookService>();
         services.Decorate<IBookRepository, CachedBookRepository>();
+        services.Decorate<IPubliserRepository, CachedPublisherRepositroy>();
         services.AddMapsterService(Assembly.GetExecutingAssembly());
         services.AddDomainServices();
         services.AddMassTransitService(configuration);

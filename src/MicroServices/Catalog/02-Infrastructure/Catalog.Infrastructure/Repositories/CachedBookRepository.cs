@@ -38,7 +38,7 @@ namespace Catalog.Infrastructure.Repositories
             await _db.HashDeleteAsync(HASH_KEY, KEY);
         }
 
-        async Task<IReadOnlyCollection<BookDto>> IBookRepository.GetAll(CancellationToken ct)
+        async Task<AllBooksDto> IBookRepository.GetAll(AgGridRequestDto rq, CancellationToken ct)
         {
 
             //var value = await _db.HashGetAsync(HASH_KEY, KEY);
@@ -49,7 +49,7 @@ namespace Catalog.Infrastructure.Repositories
             //    return rs;
             //}
 
-            var books  = await _bookRepository.GetAll(ct);
+            var books  = await _bookRepository.GetAll(rq, ct);
 
             //await _db.HashSetAsync(HASH_KEY, KEY, JsonSerializer.Serialize(books));
             return books;

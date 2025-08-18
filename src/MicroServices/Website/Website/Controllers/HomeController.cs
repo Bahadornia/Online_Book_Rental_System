@@ -48,13 +48,14 @@ public class HomeController : Controller
         return View();
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetAll(CancellationToken ct)
+    [HttpPost]
+    public async Task<IActionResult> GetAll([FromBody] AgGridRequestDto rq, CancellationToken ct)
     {
         var claims = User.Claims;
+        var agGridRq = _mapper.Map<AgGridRequestRq>(rq);
         var toekn = await HttpContext.GetTokenAsync("id_token");
-        var books = await _bookService.GetAllBooks(ct);
-        var rs = books.Select(book => new BookDto
+        var result = await _bookService.GetAllBooks(agGridRq, ct);
+        var rs = result.Books.Select(book => new BookDto
         {
             Author = book.Author,
             Category = book.Category,
@@ -65,7 +66,7 @@ public class HomeController : Controller
             Publisher = book.Publisher,
             Title = book.Title
         });
-        return Ok(new { rows = rs, toatlCount = books.Count });
+        return Ok(new { rows = rs, totalCount = result.TotalCount });
     }
 
 

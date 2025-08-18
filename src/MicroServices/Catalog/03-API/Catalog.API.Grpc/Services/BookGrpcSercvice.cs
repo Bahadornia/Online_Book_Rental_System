@@ -28,11 +28,16 @@ public class BookGrpcSercvice : IBookGrpcService
         await _mediator.Send(command, callContext.CancellationToken);
     }
 
-    public async Task<IReadOnlyCollection<GetBookRs>> GetAllBooks(CallContext callContext)
+    public async Task<GetAllBookRs> GetAllBooks(AgGridRequestRq rq, CallContext callContext)
     {
-        var query = new GetAllBookQuery();
+        var agGridRequestDto = _mapper.Map<AgGridRequestDto>(rq);
+        var query = new GetAllBookQuery(agGridRequestDto);
         var rs = await _mediator.Send(query, callContext.CancellationToken);
-        var result = _mapper.Map<IReadOnlyCollection<GetBookRs>>(rs);
+        var result = new GetAllBookRs
+        {
+            Books = _mapper.Map<IReadOnlyCollection<GetBookRs>>(rs.Books),
+            TotalCount = rs.TotalCount,
+        };
         return result;
     }
 

@@ -4,5 +4,4 @@ namespace Catalog.Domain.IServices;
 
 public interface IBookService
 {
-   
 }

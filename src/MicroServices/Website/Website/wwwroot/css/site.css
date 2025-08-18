@@ -38,7 +38,12 @@ html {
     font-size: 14px;
 }
 
-
+[class*=ag-theme-] {
+    font-family: 'vazir', Arial, sans-serif !important;
+}
+.ag-paging-panel{
+    justify-content:flex-start !important;
+}
 .ag-root-wrapper,
 .ag-root,
 .ag-body-viewport,
