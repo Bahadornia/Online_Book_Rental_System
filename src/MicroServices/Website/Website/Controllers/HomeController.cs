@@ -39,9 +39,7 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        var name = Resources.resources.Approved;
-
-        return View();
+        return User.IsInRole("user") ? View() : RedirectToAction("AddBook", "Book");
     }
 
     public IActionResult Privacy()

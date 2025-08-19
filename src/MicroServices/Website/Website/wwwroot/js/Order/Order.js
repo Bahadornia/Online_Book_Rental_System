@@ -1,6 +1,6 @@
 ﻿let gridApi;
 
-const datasource = {
+const dataSource = {
     getRows(params) {
         params.request;
         $.ajax({
@@ -20,44 +20,25 @@ const datasource = {
     }
 };
 
-const gridOptions = {
-    columnDefs: [
-        { headerName: "شناسه سفارش", field: "orderId", maxWidth: 150 },
-        { headerName: "شناسه کتاب", field: "bookId", sortable: true, filter: true },
-        { headerName: "نام کتاب", field: "bookTitle", sortable: true, filter: true },
-        { headerName: "شابک", field: "isbn", sortable: true, filter: true },
-        { headerName: "تاریخ امانت", field: "orderDate", sortable: true, filter: true },
-        { headerName: "تاریخ عودت", field: "description", sortable: true, filter: true },
-        { headerName: "تعداد دفعات تمدید شده", field: "description", sortable: true, filter: true },
-        { headerName: "وضعیت", field: "statusString", sortable: true, filter: true },
-        { headerName: "عملیات", sortable: false, filter: false, cellClass: "operation", cellRenderer: (params) => operationComponent(params.data.id) }
-    ],
+const columnsDef = [
+    { headerName: "شناسه سفارش", field: "orderId", maxWidth: 150 },
+    { headerName: "شناسه کتاب", field: "bookId", sortable: true, filter: true },
+    { headerName: "نام کتاب", field: "bookTitle", sortable: true, filter: true },
+    { headerName: "شابک", field: "isbn", sortable: true, filter: true },
+    { headerName: "تاریخ امانت", field: "orderDate", sortable: true, filter: true },
+    { headerName: "تاریخ عودت", field: "description", sortable: true, filter: true },
+    { headerName: "تعداد دفعات تمدید شده", field: "description", sortable: true, filter: true },
+    { headerName: "وضعیت", field: "statusString", sortable: true, filter: true },
+    { headerName: "عملیات", sortable: false, filter: false, cellClass: "operation", cellRenderer: (params) => operationComponent(params.data.id) }
+];
 
 
-    defaultColDef: {
-        flex: 1,
-        minWidth: 60,
-        resizable: true
-    },
-    rowStyle: { display: "flex", alignItems: "center", justifyContent: "center", backGroundColor: 'reds' },
-    rowHeight: 60,
-    enableRtl: true,
-    animateRows: true,
-    cellStyle: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    headerStyle: {
-        justifyContent: "center",
-        display: 'flex'
-    },
-    rowModelType: 'serverSide',
-    serverSideDatasource: datasource,
-    pagination: true,
-    paginationPageSize: 10,
-    getRowId: params => params.data.id,
-}
+let gridObject = new Grid(dataSource, columnsDef);
+
+gridApi = gridObject.drawGrid();
+
+
+    
 reserveBook = (id) => {
 
     $.ajax({
@@ -117,11 +98,4 @@ let operationComponent = (id) => {
     }
     return html;
 }
-
-
-const gridDiv = document.querySelector('#agGrid');
-document.addEventListener('DOMContentLoaded', () => {
-    gridApi = agGrid.createGrid(gridDiv, gridOptions)
-});
-
 

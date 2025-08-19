@@ -1,8 +1,10 @@
 ﻿@{
     ViewData["Title"] = "لیست سفارشات";
+    ViewBag.hasGrid = true;
+    ViewBag.gridHeight = "calc(100vh - 145px)";
 }
 
 
 @section Scripts{
-    <script src="~/js/Order/Order.min.js"></script>
+    <script src="~/js/Order/order.min.js" defer></script>
 }

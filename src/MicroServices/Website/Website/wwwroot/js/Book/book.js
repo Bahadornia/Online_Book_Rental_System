@@ -110,3 +110,35 @@ $("#publishers-select").select2({
     tags:true
 
 });
+
+deleteBook = bookId => {
+    Swal.fire({
+        html: 'آیا از حذف کتاب با شناسه' + ` <b>${bookId}</b> ` + 'مطمئن هستید.',
+        icon: 'warning',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showCloseButton: true,
+        showCancelButton: true,
+        confirmButtonText: "بله",
+        cancelButtonText: "لغو",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $("#deleteBook input[name='bookId']").val(bookId);
+            $("#deleteBook").submit();
+        };
+    });
+}
+
+onSuccessDeleteBook = (data) => {
+    gridApi.refreshServerSide();
+    Swal.fire({
+        html: 'کتاب با شناسه' + ` <b>${data}</b> ` + 'حذف شد.',
+        icon: 'success',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showCloseButton: true,
+        showCancelButton: false,
+        confirmButtonText: "باشه"
+    })
+}
+
