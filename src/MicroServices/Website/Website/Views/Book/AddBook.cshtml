@@ -1,4 +1,7 @@
-﻿@model BookViewModel
+﻿@{
+    ViewBag.hasGrid = true;
+}
+@model BookViewModel
 <div class="book-form">
 
         <form enctype="multipart/form-data"
@@ -74,5 +77,5 @@
 </div>
 
 @section Scripts {
-    <script src="~/js/Book/addBook.js" defer></script>
+    <script src="~/js/Book/addBook.min.js" defer></script>
 }

@@ -1,5 +1,6 @@
 ﻿@{
-    var isAdmin = User.IsInRole("Admin");
+    var isAdmin = User.IsInRole("admin");
+    var tmp = "df";
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -32,12 +33,15 @@
                     <div>
                         <ul class="navbar-nav flex-grow-1">
 
+                            @if (isAdmin)
+                            {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="AddBook">افزودن کتاب</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index">لیست سفارشات</a>
                             </li>
+                            }
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">لیست کتابها</a>
                             </li> 
@@ -65,11 +69,14 @@
     <div class="container" dir="rtl">
         <main role="main" class="pb-3">
             @RenderBody()
-            <div class="row">
-                <div class="col-12" style="height: @(isAdmin ? "500px":"calc(100vh - 150px)") ">
-                    <div id="agGrid" style="height: 100%; width: 100%;" class="ag-theme-alpine" dir="rtl"></div>
+            @if (ViewBag.hasGrid)
+            {
+                <div class="row">
+                    <div class="col-12" style="height: @(isAdmin ? "500px" : "calc(100vh - 150px)") ">
+                        <div id="agGrid" style="height: 100%; width: 100%;" class="ag-theme-alpine" dir="rtl"></div>
+                    </div>
                 </div>
-            </div>
+            }
         </main>
     </div>
 
@@ -88,7 +95,8 @@
     <script src="~/lib/sweetalert2/dist/sweetalert2.min.js" asp-append-version="true" defer></script>
     <script src="~/lib/microsoft-signalr/signalr.min.js" asp-append-version="true" defer></script>
     <script src="~/lib/select2/js/select2.min.js" asp-append-version="true" defer></script>
-    <script type="module" src="~/js/app.min.js" asp-append-version="true" defer></script>
+    <script src="~/js/grid.min.js" asp-append-version="true" defer></script>
+    <script src="~/js/app.min.js" asp-append-version="true" defer></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

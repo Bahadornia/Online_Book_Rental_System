@@ -28,5 +28,17 @@
     "inputFiles": [
       "wwwroot/css/site.css"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/Book/addBook.min.js",
+    "inputFiles": [
+      "wwwroot/js/Book/addBook.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/grid.min.js",
+    "inputFiles": [
+      "wwwroot/js/grid.js"
+    ]
   }
 ]

@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "لیست کتابها";
+    ViewBag.hasGrid = true;
 }
 
 <div class="row">
@@ -9,10 +10,10 @@
 </div>
 
 
-<input type="hidden" id="isAdmin" value="@User.IsInRole("Admin").ToString().ToLower()" />
 
 @await Html.PartialAsync("_DeleteBook")
 @section Scripts {
 
+   
     <script src="~/js/Home/index.min.js" defer></script>
 }

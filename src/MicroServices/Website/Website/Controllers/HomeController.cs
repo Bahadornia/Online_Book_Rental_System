@@ -3,6 +3,7 @@ using Catalog.API.Grpc.Client.Requests;
 using HashidsNet;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Order.API.Grpc.Client.Logics;
 using Order.API.Grpc.Client.Requests;
@@ -14,7 +15,7 @@ using Website.Models;
 
 namespace Website.Controllers;
 
-//[Authorize]
+[Authorize]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -53,7 +54,8 @@ public class HomeController : Controller
     {
         var claims = User.Claims;
         var agGridRq = _mapper.Map<AgGridRequestRq>(rq);
-        var toekn = await HttpContext.GetTokenAsync("id_token");
+        var idtoken = await HttpContext.GetTokenAsync("id_token");
+        var accesstoken = await HttpContext.GetTokenAsync("access_token");
         var result = await _bookService.GetAllBooks(agGridRq, ct);
         var rs = result.Books.Select(book => new BookDto
         {
@@ -97,17 +99,4 @@ public class HomeController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteBook([FromForm] string bookId, CancellationToken ct)
-    {
-        var id = _hashIds.DecodeLong(bookId);
-
-        var deleteBookRq = new DeleteBookRq
-        {
-            BookId = id[0]
-        };
-        await _bookService.DeleteBook(deleteBookRq, ct);
-        return Ok(bookId);
-    }
 }
