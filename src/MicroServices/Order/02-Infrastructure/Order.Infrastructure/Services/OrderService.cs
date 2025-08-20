@@ -29,7 +29,7 @@ internal class OrderService : IOrderService
         _dbContext = dbContext;
     }
 
-    public Task<bool> CanUserRentBook(long userId, CancellationToken ct)
+    public Task<bool> CanUserRentBook(string UserId, CancellationToken ct)
     {
         throw new NotImplementedException();
     }

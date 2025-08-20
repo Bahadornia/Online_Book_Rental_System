@@ -2,7 +2,7 @@
 {
     public sealed class OrderRequested : IntegrationBaseEvent
     {
-        public long UserId { get; set; }
+        public string UserId { get; set; }
         public long BookId { get; set; }
     }
 }

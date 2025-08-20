@@ -75,7 +75,7 @@ class AddOrderBookCommandHandler : ICommandHandler<AddOrderBookCommand>
         return Unit.Value;
     }
 
-    private async Task<bool> CanUserRentBook(long userId, CancellationToken ct)
+    private async Task<bool> CanUserRentBook(string UserId, CancellationToken ct)
     {
         return await Task.FromResult(true);
     }

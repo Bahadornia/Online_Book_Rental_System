@@ -2,7 +2,6 @@
 {
     public class RentBookDto
     {
-        public string BookId { get; set; }
-        public long UserId { get; set; }
+        public string BookId { get; set; } = default!;
     }
 }

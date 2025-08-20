@@ -4,11 +4,13 @@ using HashidsNet;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Order.API.Grpc.Client.Logics;
 using Order.API.Grpc.Client.Requests;
 using System.Diagnostics;
 using System.Globalization;
+using System.Security.Claims;
 using Website.Dtos;
 using Website.Enum;
 using Website.Models;
@@ -82,10 +84,11 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> RentBook(RentBookDto dto, CancellationToken ct)
     {
+        var userId =  _httpContext.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
         var rentBookRq = new OrderBookRq
         {
             BookId = _hashIds.DecodeLong(dto.BookId)[0],
-            UserId = dto.UserId,
+            UserId = userId,
             BorrowDate = DateTime.UtcNow,
         };
         await _rentalGrpcService.RentBook(rentBookRq);

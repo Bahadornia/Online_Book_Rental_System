@@ -2,4 +2,4 @@
 
 namespace Order.ApplicationServices.Commands;
 
-public record AddOrderBookCommand(long BookId, long UserId, DateTime BorrowDate): ICommand;
+public record AddOrderBookCommand(long BookId, string UserId, DateTime BorrowDate): ICommand;

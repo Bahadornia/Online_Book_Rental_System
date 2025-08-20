@@ -9,7 +9,7 @@ public record OrderBookRq
     public long BookId { get; init; }
 
     [ProtoMember(2)]
-    public long UserId { get; init; }
+    public string UserId { get; init; }
 
     [ProtoMember(3)]
     public DateTime BorrowDate { get; set; }
