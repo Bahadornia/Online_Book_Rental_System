@@ -105,3 +105,46 @@ document.getElementById("searchButton").addEventListener('click', () => {
         }
     })
 });
+
+$("#persian").on('click', () => {
+
+    $.ajax({
+        url: "Home/SetUserCulture",
+        type: "Post",
+        contentType: "application/json",
+        data: JSON.stringify({
+            Culture: $("#persian").val()
+        }),
+        headers: {
+            "RequestVerificationToken": $("input[name=__RequestVerificationToken]").val()
+        },
+        success: function () {
+            alert("Preferences updated!");
+        },
+        error: function () {
+            alert("Failed to update!");
+        }
+    })
+});
+
+$("#english").on('click', () => {
+
+    $.ajax({
+        url: "Home/SetUserCulture",
+        type: "Post",
+        contentType: "application/json",
+        data: JSON.stringify({
+            Culture: $("#english").val()
+        }),
+        headers: {
+            "RequestVerificationToken": $("input[name=__RequestVerificationToken]").val()
+        },
+        success: function () {
+            alert("Preferences updated!");
+        },
+        error: function () {
+            alert("Failed to update!");
+        }
+    })
+
+})

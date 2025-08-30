@@ -6,17 +6,21 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Order.API.Grpc.Client;
 using System.Globalization;
 using System.Reflection;
 using System.Security.Claims;
+using Website.Middlwares;
 using Yarp.ReverseProxy.Transforms;
 
 
-var culutureInfo = new CultureInfo("fa-IR");
-CultureInfo.CurrentCulture = culutureInfo;
-var cult = CultureInfo.CurrentCulture.Name;
+var supportedCultures = new[]
+{
+    new CultureInfo("en"),
+    new CultureInfo("fa"),
+};
 var builder = WebApplication.CreateBuilder(args);
 var yarpBuilder = builder.Services.AddReverseProxy()
     .AddTransforms(context =>
@@ -43,14 +47,16 @@ builder.Services.AddBff()
 // Add services to the container.
 builder.Services.AddLocalization(o => o.ResourcesPath = "Resources");
 builder.Services.AddControllersWithViews()
-      .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix,
-                    opts => { opts.ResourcesPath = "Resources"; })
+      .AddViewLocalization()
     .AddDataAnnotationsLocalization();
+
 builder.Services.AddCatalogGrpcClient(builder.Configuration.GetValue<string>("CatalogGrpcService")!);
 builder.Services.AddRentalGrpcClient(builder.Configuration.GetValue<string>("RentalGrpcService")!);
 builder.Services.AddMapsterService(Assembly.GetExecutingAssembly());
 builder.Services.AddHashids(opt => opt.Salt = "/-_#*+!?()=:.@");
 var authConfigs = builder.Configuration.GetSection("Authentication");
+
+builder.Services.AddTransient<SetDefaultCulture>();
 builder.Services.AddAuthentication(opt =>
 {
     opt.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -60,7 +66,6 @@ builder.Services.AddAuthentication(opt =>
     {
         opt.Cookie.SameSite = SameSiteMode.Lax;          // allow cross-site auth redirect
         opt.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        
     })
     .AddOpenIdConnect(opt =>
     {
@@ -85,13 +90,25 @@ builder.Services.AddAuthentication(opt =>
     });
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    options.DefaultRequestCulture = new RequestCulture("fa", "fa");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+
+    // Providers checked in order:
+    options.RequestCultureProviders = new IRequestCultureProvider[]
+    {
+        new QueryStringRequestCultureProvider(), // ?culture=fr
+        new CookieRequestCultureProvider(),      // from cookie
+        new AcceptLanguageHeaderRequestCultureProvider()
+    };
+});
 var app = builder.Build();
 
-var supportedCultures = new[]
-{
-    new CultureInfo("en"), // English (United States)
-    new CultureInfo("fa")  // Farsi (Iran)
-};
+app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
+app.UseMiddleware<SetDefaultCulture>();
+app.UseStaticFiles();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -100,12 +117,6 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-app.UseRequestLocalization(new RequestLocalizationOptions
-{
-    DefaultRequestCulture = new RequestCulture("fa"),
-    SupportedCultures = supportedCultures,
-    SupportedUICultures = supportedCultures
-});
 
 app.UseDeveloperExceptionPage();
 

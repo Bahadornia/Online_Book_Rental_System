@@ -5,12 +5,14 @@ using MapsterMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Order.API.Grpc.Client.Logics;
 using Order.API.Grpc.Client.Requests;
 using System.Diagnostics;
 using System.Globalization;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using Website.Dtos;
 using Website.Enum;
 using Website.Models;
@@ -110,4 +112,11 @@ public class HomeController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SetUserCulture([FromBody] CultureDto dto, CancellationToken ct)
+    {
+        var culture = dto.Culture;
+        return Ok();
+    }
 }

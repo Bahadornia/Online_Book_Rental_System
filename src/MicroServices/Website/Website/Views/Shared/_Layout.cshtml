@@ -58,21 +58,34 @@
                         </ul>
                     </div>
                     <div>
-                       
-                          
-                                <div class="dropdown">
-                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                      <span><i class="fa fa-user"></i>&nbsp;</span> <span>خوش آمدید</span>&nbsp;<sapn>@username</sapn>
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        @if (User is not null && User.Identity is not null && User.Identity.IsAuthenticated || true)
-                                        {
-                                            <button id="logoutButton" class="dropdown-item">@Localizer["logout"]</button>
-                                        }
-                                    </div>
+
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="languageDropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    انتخاب زبان
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <button value="fa" id="persian">فارسی</button>
                                 </div>
-                           
-                       
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <button value="en" id="english">انگلیسی</button>
+                                </div>
+                            </div>
+
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="logoutDropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span><i class="fa fa-user"></i>&nbsp;</span> <span>خوش آمدید</span>&nbsp;<sapn>@username</sapn>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    @if (User is not null && User.Identity is not null && User.Identity.IsAuthenticated || true)
+                                    {
+                                        <button id="logoutButton" class="dropdown-item">@Localizer["logout"]</button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
