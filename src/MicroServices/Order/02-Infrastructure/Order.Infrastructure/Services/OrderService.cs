@@ -1,5 +1,6 @@
 ﻿using Catalog.API.Grpc.Client.Logics;
-using MapsterMapper;
+using Catalog.API.Grpc.Client.Responses;
+using MassTransit.Initializers;
 using Microsoft.EntityFrameworkCore;
 using Order.Domain.Dtos;
 using Order.Domain.IRepositories;
@@ -36,7 +37,7 @@ internal class OrderService : IOrderService
 
     public async Task<IReadOnlyCollection<OrderListDto>> GetAll(CancellationToken ct)
     {
-        var orders = await _orderRepository.GetAll(ct).ToListAsync(ct);
+        var orders = await _orderRepository.GetAll(ct);
         var bookIds = orders.Select(order => order.BookId.Value).Distinct();
         var books = await _bookService.GetBooksByIds(bookIds, ct);
         var bookDict = books.Where(book => book is not null).ToDictionary(b => b.Id);
@@ -71,28 +72,28 @@ internal class OrderService : IOrderService
     async Task IOrderService.CheckOverDueDateOrders(CancellationToken ct)
     {
         IReadOnlyCollection<OverDueDatedOrdersDto> result = [];
-        var overDueDatedOrders = await _orderRepository.GetAll(ct).Where(order => order.DueDate < DateTime.Now.AddDays(1)).Select(order =>
+        var projectedOverDueDatedOrders = (await _orderRepository.GetOverDueDatedOrders(ct)).Select(order =>
         new OverDueDatedOrdersDto
         {
             BookId = order.BookId,
             OrderId = order.Id,
             DueDate = order.DueDate,
             UserId = order.UserId,
-        }).ToListAsync(ct);
+        });
 
-        if (overDueDatedOrders.Any())
+        if (projectedOverDueDatedOrders.Count() > 0)
         {
-            var bookIds = overDueDatedOrders.Select(item => item.BookId);
-            var userId = overDueDatedOrders.Select(item => item.UserId);
+            var bookIds = projectedOverDueDatedOrders.Select(item => item.BookId);
+            var userId = projectedOverDueDatedOrders.Select(item => item.UserId);
 
             var books = await _bookService.GetBooksByIds(bookIds, ct);
             var bookDict = books.Where(book => book is not null).ToDictionary(b => b.Id);
 
-            result = overDueDatedOrders.Select(order => new OverDueDatedOrdersDto
+            result = projectedOverDueDatedOrders.Select(order => new OverDueDatedOrdersDto
             {
                 BookId = order.BookId,
                 OrderId = order.OrderId,
-                BookTitle = bookDict[order.BookId].Title,
+                BookTitle = "",
                 DueDate = order.DueDate,
                 FullNam = "",
                 UserId = order.UserId

@@ -1,6 +1,8 @@
 ﻿using MassTransit.MongoDbIntegration;
 using MongoDB.Driver;
 using Notification.Domain.Models.Entities;
+using Notification.Infrastructure.Models;
+using System.Threading.Tasks;
 
 namespace Notification.Infrastructure.Data;
 
@@ -25,4 +27,11 @@ public sealed class NotificationDbContext
     public IClientSessionHandle? Session => _context.Session;
     public IMongoCollection<NotificationEntity> Notifications => _db.GetCollection<NotificationEntity>(NOTIFICATION_COLLECTION_NAME);
     public IMongoCollection<OutboxMessage> OutboxMessages => _db.GetCollection<OutboxMessage>(OUT_BOX_COLLECTION_NAME); 
+
+    public async Task InitializeMongoDb()
+    {
+        var proccessedAtIndex = Builders<OutboxMessage>.IndexKeys.Descending(n => n.ProcessedAt);
+        var proccessedAtIndexModel = new CreateIndexModel<OutboxMessage>(proccessedAtIndex);
+        await _db.GetCollection<OutboxMessage>(OUT_BOX_COLLECTION_NAME).Indexes.CreateOneAsync(proccessedAtIndexModel);
+    }
 }

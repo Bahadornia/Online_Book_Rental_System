@@ -12,6 +12,7 @@ using SharedKernel.Messaging.Extensions;
 using Catalog.Infrastructure.Extensions;
 using MongoDB.Driver.Core.Configuration;
 using System.Reflection;
+using Microsoft.AspNetCore.Builder;
 
 namespace Catalog.Infrastructure;
 

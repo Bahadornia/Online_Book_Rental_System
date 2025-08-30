@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Order.Domain.Dtos;
 using Order.Domain.IRepositories;
 using Order.Domain.Models.OrderAggregate.Entities;
 using Order.Infrastructure.Data;
@@ -21,9 +20,15 @@ internal class OrderRepository : IOrderRepository
         _dbContext.BookOrders.Add(rental);
     }
 
-    public IQueryable<BookOrder> GetAll(CancellationToken ct)
+    public async Task<IEnumerable<BookOrder>> GetAll(CancellationToken ct)
     {
-        var bookOrders = _dbContext.BookOrders.Include(bookOrder => bookOrder.Histories);
+        var bookOrders = await _dbContext.BookOrders.Include(bookOrder => bookOrder.Histories).ToListAsync(); ;
         return bookOrders;
+    }
+
+    public async Task<IEnumerable<BookOrder>> GetOverDueDatedOrders(CancellationToken ct)
+    {
+        var overDueDated = await _dbContext.BookOrders.Where(order => order.DueDate < DateTime.Now.AddDays(1)).ToListAsync(ct);
+        return overDueDated;
     }
 }

@@ -78,6 +78,7 @@ public class BookOrder : AggregateRoot<OrderId>
     {
         Status = status;
         var statusChangedEvent = new OrderUpdatedEvent(this);
+        Emit(statusChangedEvent);
     }
-
 }
+

@@ -5,6 +5,7 @@ using Inventory.Infrastructure.Extensions;
 using Inventory.Infrastructure.Repositories;
 using Inventory.Infrastructure.Services;
 using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

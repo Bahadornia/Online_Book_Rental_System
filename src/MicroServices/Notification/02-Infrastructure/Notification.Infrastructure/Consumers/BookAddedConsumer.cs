@@ -1,7 +1,7 @@
 ﻿using MassTransit;
 using SharedKernel.Messaging.Events;
 
-namespace Inventory.Infrastructure.Consumers
+namespace Notification.Infrastructure.Consumers
 {
     public class BookAddedConsumer : IConsumer<BookAddedIntegrationEvent>
     {

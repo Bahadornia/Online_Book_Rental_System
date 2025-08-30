@@ -1,9 +1,12 @@
-﻿namespace Catalog.Domain.Models.BookAggregate.ValueObjects
+﻿using Catalog.Domain.Exceptions;
+
+namespace Catalog.Domain.Models.BookAggregate.ValueObjects
 {
     public record BookId
     {
         public long Value { get; private set; }
-        private BookId(long id) {
+        private BookId(long id)
+        {
             Value = id;
         }
 
@@ -11,13 +14,13 @@
         {
             Validate(id);
             return new BookId(id);
-            
+
         }
 
         private static void Validate(long value)
         {
-          return;
-            
+            if (value <= 0) throw new DomainException("Id can not be zero or negative!");
+            return;
         }
 
         public static implicit operator BookId(long id)
@@ -30,5 +33,5 @@
             return id.Value;
         }
     }
-    
+
 }

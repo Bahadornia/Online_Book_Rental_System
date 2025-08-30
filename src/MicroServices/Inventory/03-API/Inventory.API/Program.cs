@@ -1,7 +1,10 @@
-using Inventory.Infrastructure;
-using SharedKernel.Messaging.Extensions;
 using Framework.Extensions;
+using Inventory.API.Policies;
+using Inventory.API.Policies.Requirements;
 using Inventory.ApplicationServices;
+using Inventory.Infrastructure;
+using Microsoft.AspNetCore.Authorization;
+using SharedKernel.Messaging.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +13,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddSingleton<IAuthorizationHandler, MinimumAgeHandler>();
+builder.Services.AddAuthorization(opt =>
+{
+    opt.AddPolicy("AtLeast18", opt =>
+    {
+        opt.Requirements.Add(new MinimumAgeRequirement(int.Parse(builder.Configuration.GetValue<string>("minimumAge")!)));
+    });
+});
 builder.Services.AddSwaggerGen();
 builder.Services.AddMessagingServices();
 builder.Services.AddInventoryApplicationServices();

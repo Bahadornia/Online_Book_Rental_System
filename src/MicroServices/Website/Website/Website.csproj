@@ -4,6 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>bdb8b8d8-0597-49ce-98bd-a0778f6a4b66</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +17,9 @@
 
   <ItemGroup>
     <PackageReference Include="AspNetCore.Hashids" Version="2.0.0" />
+    <PackageReference Include="Duende.BFF" Version="3.0.0" />
+    <PackageReference Include="Duende.BFF.Yarp" Version="3.0.0" />
+    <PackageReference Include="Duende.IdentityModel" Version="7.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="9.0.8" />
   </ItemGroup>
 
@@ -43,6 +47,10 @@
       <LastGenOutput>resources.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\Views\Home\" />
   </ItemGroup>
 
 </Project>

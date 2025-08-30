@@ -14,7 +14,7 @@ internal class UnitOfWork : IUnitOfWork
 
     public async Task BenginTransacttionAsync(CancellationToken ct)
     {
-        await _dbContext.Database.BeginTransactionAsync(ct);
+       await _dbContext.Database.BeginTransactionAsync(ct);
     }
 
     public async Task CommitTransacttionAsync(CancellationToken ct)

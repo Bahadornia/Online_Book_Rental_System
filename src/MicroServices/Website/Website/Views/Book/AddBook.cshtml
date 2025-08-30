@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
     ViewData["Title"] = "افزودن کتاب";
     ViewBag.hasGrid = true;
     ViewBag.gridHeight = "calc(100vh - 400px)";
@@ -12,7 +15,7 @@
               data-ajax-loading="#loader">
             <div class="row mb-2">
                 <div class="col-12 col-md-4">
-                    <label for="title">عنوان</label>
+                <label for="title">@Localizer["title"]</label>
                     <input id="title" type="text" asp-for="Title" class="form-control" value="" />
                     <span asp-validation-for="Title"></span>
                 </div>

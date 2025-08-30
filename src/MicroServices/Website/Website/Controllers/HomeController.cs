@@ -52,23 +52,33 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> GetAll([FromBody] AgGridRequestDto rq, CancellationToken ct)
     {
+        IReadOnlyCollection<BookDto> rs;
         var claims = User.Claims;
         var agGridRq = _mapper.Map<AgGridRequestRq>(rq);
         var idtoken = await HttpContext.GetTokenAsync("id_token");
         var accesstoken = await HttpContext.GetTokenAsync("access_token");
+      
+
         var result = await _bookService.GetAllBooks(agGridRq, ct);
-        var rs = result.Books.Select(book => new BookDto
+            if(result.Books is { Count: > 0} books){
+            rs = books.Select(book => new BookDto
+            {
+                Author = book.Author,
+                Category = book.Category,
+                Id = _hashIds.EncodeLong(book.Id),
+                Description = book.Description,
+                ISBN = book.ISBN,
+                ImageUrl = book.ImageUrl,
+                Publisher = book.Publisher,
+                Title = book.Title
+            }).ToList().AsReadOnly();
+            return Ok(new { rows = rs, totalCount = result.TotalCount });
+        }
+        else
         {
-            Author = book.Author,
-            Category = book.Category,
-            Id = _hashIds.EncodeLong(book.Id),
-            Description = book.Description,
-            ISBN = book.ISBN,
-            ImageUrl = book.ImageUrl,
-            Publisher = book.Publisher,
-            Title = book.Title
-        });
-        return Ok(new { rows = rs, totalCount = result.TotalCount });
+            rs = [];
+        }
+            return Ok(new { rows = rs, totalCount = 0 });
     }
 
 

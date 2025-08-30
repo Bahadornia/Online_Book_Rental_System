@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    var username = User.Identity.IsAuthenticated ? User?.Claims.FirstOrDefault(claim => claim.Type == "name").Value : "";
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -39,11 +46,11 @@
                             }
                             @if (User is not null && User.Identity is not null && User.Identity.IsAuthenticated && User.IsInRole("user"))
                             {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">لیست کتابها</a>
-                            </li> 
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">لیست کتابها</a>
+                                </li>
                             }
-                            
+
                             <li style="position : relative" class="nav-item d-flex align-items-center">
                                 <span><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></span>
                                 <span id="notification-badge" class="notification-badge">0</span>
@@ -51,14 +58,21 @@
                         </ul>
                     </div>
                     <div>
-                        <ul class="navbar-nav flex-grow-1">
-                            @if (User is not null && User.Identity is not null && User.Identity.IsAuthenticated || true)
-                            {
-                                <li class="nav-item">
-                                    <button id="logoutButton" class="nav-link text-dark">logout</button>
-                                </li>
-                            }
-                        </ul>
+                       
+                          
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      <span><i class="fa fa-user"></i>&nbsp;</span> <span>خوش آمدید</span>&nbsp;<sapn>@username</sapn>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        @if (User is not null && User.Identity is not null && User.Identity.IsAuthenticated || true)
+                                        {
+                                            <button id="logoutButton" class="dropdown-item">@Localizer["logout"]</button>
+                                        }
+                                    </div>
+                                </div>
+                           
+                       
                     </div>
                 </div>
             </div>

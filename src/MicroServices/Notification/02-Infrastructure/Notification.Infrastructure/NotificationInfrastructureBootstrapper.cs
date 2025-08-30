@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
@@ -17,7 +18,7 @@ public static class NotificationInfrastructureBootstrapper
 {
     public static IServiceCollection AddNotificationInfratructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddHostedService<OutboxProcessorJob>();
+        //services.AddHostedService<OutboxProcessorJob>();
         services.AddScoped<NotificationDbContext>();
         services.AddScoped<IUnitofWork, UnitOfWork>();
         services.AddScoped<INotificationRepository, NotificationRepository>();
@@ -32,8 +33,10 @@ public static class NotificationInfrastructureBootstrapper
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
+               
             });
         });
+        services.AddSingleton<IUserIdProvider, SubUserIdProvider>();
         services.AddSingleton<IMongoClient>(_ => new MongoClient(configuration.GetConnectionString("Database")));
         services.AddSingleton(provider => provider.GetRequiredService<IMongoClient>().GetDatabase("NotificationDb"));
         return services;
@@ -46,7 +49,15 @@ public static class NotificationInfrastructureBootstrapper
     }
     public static IEndpointRouteBuilder UseHubRoutes(this IEndpointRouteBuilder endPoints, string route)
     {
-        endPoints.MapHub<OrdersNotificationHub>(route);
+        endPoints.MapHub<OrdersNotificationHub>(route).RequireAuthorization();
         return endPoints;
+    }
+
+    public static IApplicationBuilder InitializeNotifcationDb(this IApplicationBuilder app)
+    {
+        using var scope = app.ApplicationServices.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<NotificationDbContext>();
+        dbContext.InitializeMongoDb().GetAwaiter().GetResult(); 
+      return app;
     }
 }
