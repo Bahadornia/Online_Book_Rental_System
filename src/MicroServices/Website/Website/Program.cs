@@ -9,10 +9,13 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Order.API.Grpc.Client;
+using Refit;
 using System.Globalization;
 using System.Reflection;
 using System.Security.Claims;
-using Website.Middlwares;
+using Website.Externals;
+using Website.Externals.Refit;
+using Website.Midlewares;
 using Yarp.ReverseProxy.Transforms;
 
 
@@ -56,7 +59,6 @@ builder.Services.AddMapsterService(Assembly.GetExecutingAssembly());
 builder.Services.AddHashids(opt => opt.Salt = "/-_#*+!?()=:.@");
 var authConfigs = builder.Configuration.GetSection("Authentication");
 
-builder.Services.AddTransient<SetDefaultCulture>();
 builder.Services.AddAuthentication(opt =>
 {
     opt.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -80,6 +82,7 @@ builder.Services.AddAuthentication(opt =>
         opt.Scope.Add("profile");
         opt.Scope.Add("roles");
         opt.Scope.Add("notifications.read");
+        opt.Scope.Add("User.Configs.Read");
         opt.ClaimActions.MapUniqueJsonKey("name", "name");
         opt.ClaimActions.MapUniqueJsonKey("preferred_username", "preferred_username");
         opt.TokenValidationParameters = new TokenValidationParameters
@@ -104,10 +107,17 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
         new AcceptLanguageHeaderRequestCultureProvider()
     };
 });
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<UserDelegatingHandler>();
+builder.Services.AddRefitClient<IUserService>().ConfigureHttpClient(cfg =>
+{
+    cfg.BaseAddress = new Uri(builder.Configuration.GetValue<string>("ADMIN_API_BaseAddress"));
+}).AddHttpMessageHandler<UserDelegatingHandler>();
+
+builder.Services.AddTransient<SetUserCulture>();
 var app = builder.Build();
 
 app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
-app.UseMiddleware<SetDefaultCulture>();
 app.UseStaticFiles();
 
 // Configure the HTTP request pipeline.
@@ -119,10 +129,11 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseDeveloperExceptionPage();
-
+app.UseForwardedHeaders();
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();
+app.UseWhen(context => context.User.Identity.IsAuthenticated, app => app.UseMiddleware<SetUserCulture>());
 app.UseBff();
 app.UseAuthorization();
 app.MapBffManagementEndpoints();

@@ -1,56 +1,58 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>bdb8b8d8-0597-49ce-98bd-a0778f6a4b66</UserSecretsId>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>bdb8b8d8-0597-49ce-98bd-a0778f6a4b66</UserSecretsId>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Content Remove="bundleconfig.json" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Remove="bundleconfig.json" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="bundleconfig.json" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="bundleconfig.json" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AspNetCore.Hashids" Version="2.0.0" />
-    <PackageReference Include="Duende.BFF" Version="3.0.0" />
-    <PackageReference Include="Duende.BFF.Yarp" Version="3.0.0" />
-    <PackageReference Include="Duende.IdentityModel" Version="7.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="9.0.8" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="AspNetCore.Hashids" Version="2.0.0" />
+		<PackageReference Include="Duende.BFF" Version="3.0.0" />
+		<PackageReference Include="Duende.BFF.Yarp" Version="3.0.0" />
+		<PackageReference Include="Duende.IdentityModel" Version="7.1.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="9.0.8" />
+		<PackageReference Include="Refit" Version="8.0.0" />
+		<PackageReference Include="Refit.HttpClientFactory" Version="8.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\SharedKernel\Framework\Framework.csproj" />
-    <ProjectReference Include="..\..\Order\03-API\Order.API.Grpc.Client\Order.API.Grpc.Client.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\SharedKernel\Framework\Framework.csproj" />
+		<ProjectReference Include="..\..\Order\03-API\Order.API.Grpc.Client\Order.API.Grpc.Client.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Catalog.API.Grpc.Client">
-      <HintPath>..\..\Catalog\03-API\API.Grpc.Client\Catalog.API.Grpc.Client\bin\Debug\net9.0\Catalog.API.Grpc.Client.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Include="Catalog.API.Grpc.Client">
+			<HintPath>..\..\Catalog\03-API\API.Grpc.Client\Catalog.API.Grpc.Client\bin\Debug\net9.0\Catalog.API.Grpc.Client.dll</HintPath>
+		</Reference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Resources\resources.Designer.cs">
-      <DependentUpon>resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Update="Resources\resources.Designer.cs">
+			<DependentUpon>resources.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+		</Compile>
+	</ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\resources.resx">
-      <LastGenOutput>resources.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="Resources\resources.resx">
+			<LastGenOutput>resources.Designer.cs</LastGenOutput>
+			<Generator>PublicResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Resources\Views\Home\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="Resources\Views\Home\" />
+	</ItemGroup>
 
 </Project>

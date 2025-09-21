@@ -28,3 +28,47 @@ document.getElementById("logoutButton").addEventListener('click', () => {
 })
 
 
+$("#persian").on('click', () => {
+
+    $.ajax({
+        url: "/Home/SetUserCulture",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({
+            Culture: $("#persian").val(),
+            Theme:""
+        }),
+        headers: {
+            "RequestVerificationToken": $("input[name=__RequestVerificationToken]").val()
+        },
+        success: function () {
+            window.location.reload();
+        },
+        error: function () {
+           
+        }
+    })
+});
+
+$("#english").on('click', () => {
+
+    $.ajax({
+        url: "/Home/SetUserCulture",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({
+            Culture: $("#english").val(),
+            Theme: ""
+        }),
+        headers: {
+            "RequestVerificationToken": $("input[name=__RequestVerificationToken]").val()
+        },
+        success: function () {
+            window.location.reload();
+        },
+        error: function () {
+          
+        }
+    })
+
+})

@@ -4,17 +4,15 @@ using HashidsNet;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Order.API.Grpc.Client.Logics;
 using Order.API.Grpc.Client.Requests;
 using System.Diagnostics;
-using System.Globalization;
 using System.Security.Claims;
-using System.Text.RegularExpressions;
 using Website.Dtos;
-using Website.Enum;
+using Website.Externals.Refit;
 using Website.Models;
 
 namespace Website.Controllers;
@@ -29,8 +27,10 @@ public class HomeController : Controller
     private readonly IHashids _hashIds;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly HttpContext _httpContext;
+    private readonly IUserService _userService;
+    private readonly string _userId;
 
-    public HomeController(ILogger<HomeController> logger, IBookGrpcService bookService, IMapper msapper, IOrderGrpcService rentalGrpcService, IHashids hashIds, IHttpContextAccessor httpContextAccessor)
+    public HomeController(ILogger<HomeController> logger, IBookGrpcService bookService, IMapper msapper, IOrderGrpcService rentalGrpcService, IHashids hashIds, IHttpContextAccessor httpContextAccessor, IUserService userService)
     {
         _logger = logger;
         _bookService = bookService;
@@ -39,6 +39,9 @@ public class HomeController : Controller
         _hashIds = hashIds;
         _httpContextAccessor = httpContextAccessor;
         _httpContext = _httpContextAccessor.HttpContext;
+        _userService = userService;
+        _userId = _httpContext.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
+
     }
 
     public IActionResult Index()
@@ -55,14 +58,14 @@ public class HomeController : Controller
     public async Task<IActionResult> GetAll([FromBody] AgGridRequestDto rq, CancellationToken ct)
     {
         IReadOnlyCollection<BookDto> rs;
-        var claims = User.Claims;
         var agGridRq = _mapper.Map<AgGridRequestRq>(rq);
         var idtoken = await HttpContext.GetTokenAsync("id_token");
         var accesstoken = await HttpContext.GetTokenAsync("access_token");
-      
+
 
         var result = await _bookService.GetAllBooks(agGridRq, ct);
-            if(result.Books is { Count: > 0} books){
+        if (result.Books is { Count: > 0 } books)
+        {
             rs = books.Select(book => new BookDto
             {
                 Author = book.Author,
@@ -80,7 +83,7 @@ public class HomeController : Controller
         {
             rs = [];
         }
-            return Ok(new { rows = rs, totalCount = 0 });
+        return Ok(new { rows = rs, totalCount = 0 });
     }
 
 
@@ -96,11 +99,10 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> RentBook(RentBookDto dto, CancellationToken ct)
     {
-        var userId =  _httpContext.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
         var rentBookRq = new OrderBookRq
         {
             BookId = _hashIds.DecodeLong(dto.BookId)[0],
-            UserId = userId,
+            UserId = _userId,
             BorrowDate = DateTime.UtcNow,
         };
         await _rentalGrpcService.RentBook(rentBookRq);
@@ -114,9 +116,27 @@ public class HomeController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> SetUserCulture([FromBody] CultureDto dto, CancellationToken ct)
+    public async Task<IActionResult> SetUserCulture([FromBody] UserDto userDto, CancellationToken ct)
     {
-        var culture = dto.Culture;
+        var culture = userDto.Culture;
+        try
+        {
+            await _userService.SetUserConfig(userDto, _userId, ct);
+            SetCultureInCookie(_httpContext, culture);
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+
         return Ok();
+    }
+
+    private void SetCultureInCookie(HttpContext httpContext, string culture)
+    {
+        httpContext.Response.Cookies.Append(
+             CookieRequestCultureProvider.DefaultCookieName,
+             CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+             new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) });
     }
 }
