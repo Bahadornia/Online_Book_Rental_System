@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Notification.Domain.IRepositories;
@@ -16,12 +17,15 @@ public static class NotificationInfrastructureBootstrapper
     public static IServiceCollection AddNotificationInfratructureServices(this IServiceCollection services, IConfiguration configuration)
     {
         //services.AddHostedService<OutboxProcessorJob>();
-        services.AddScoped<NotificationDbContext>();
         services.AddScoped<IUnitofWork, UnitOfWork>();
         services.AddScoped<INotificationRepository, NotificationRepository>();
         services.AddScoped<IOutboxMessgeRepository, OutboxMessgeRepository>();
         services.AddSignalR();
         services.AddMessagingServices();
+        services.AddDbContextPool<NotificationDbContext>(opt =>
+        {
+            opt.UseSqlServer(configuration.GetConnectionString("Database"));
+        });
         services.AddCors((corsOptions) =>
         {
             corsOptions.AddPolicy("ClientHub", (p) =>
