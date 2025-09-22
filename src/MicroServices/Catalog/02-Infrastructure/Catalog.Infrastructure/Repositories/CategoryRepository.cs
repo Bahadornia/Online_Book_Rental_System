@@ -2,23 +2,25 @@
 using Catalog.Domain.IRepositories;
 using Catalog.Domain.Models.BookAggregate.Entities;
 using Catalog.Infrastructure.Data;
-using Catalog.Infrastructure.Data.BookAggregate;
 
 namespace Catalog.Infrastructure.Repositories;
 
 public sealed class CategoryRepository : ICategoryRepository
 {
     private readonly CatalogDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CategoryRepository(CatalogDbContext dbContext)
+    public CategoryRepository(CatalogDbContext dbContext, IUnitOfWork unitOfWork)
     {
         _dbContext = dbContext;
+        _unitOfWork = unitOfWork;
     }
 
-    public async Task Add(CategoryDto category, CancellationToken ct)
+    public async Task Add(CategoryDto dto, CancellationToken ct)
     {
-        var categoryData = new CategoryData { Name = category.Name };
-        await _dbContext.Categories.InsertOneAsync(categoryData, null, ct);
+        var category = Category.Create(dto.Id, dto.Name);
+        _dbContext.Categories.Add(category);
+        await _unitOfWork.SaveChangesAsync(ct);
     }
 
     public Task<IReadOnlyCollection<CategoryDto>> GetAll(CancellationToken ct)

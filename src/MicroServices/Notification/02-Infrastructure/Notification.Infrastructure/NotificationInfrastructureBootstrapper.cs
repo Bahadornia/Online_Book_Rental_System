@@ -1,15 +1,12 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MongoDB.Driver;
 using Notification.Domain.IRepositories;
 using Notification.Infrastructure.Data;
 using Notification.Infrastructure.Hubs;
 using Notification.Infrastructure.Repositories;
-using Notification.Infrastructure.Services;
 using SharedKernel.Messaging.Extensions;
 
 namespace Notification.Infrastructure;
@@ -33,17 +30,15 @@ public static class NotificationInfrastructureBootstrapper
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
-               
+
             });
         });
         services.AddSingleton<IUserIdProvider, SubUserIdProvider>();
-        services.AddSingleton<IMongoClient>(_ => new MongoClient(configuration.GetConnectionString("Database")));
-        services.AddSingleton(provider => provider.GetRequiredService<IMongoClient>().GetDatabase("NotificationDb"));
         return services;
     }
 
     public static IApplicationBuilder UseNotificationServices(this IApplicationBuilder app)
-    { 
+    {
         app.UseCors("ClientHub");
         return app;
     }
@@ -57,7 +52,7 @@ public static class NotificationInfrastructureBootstrapper
     {
         using var scope = app.ApplicationServices.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<NotificationDbContext>();
-        dbContext.InitializeMongoDb().GetAwaiter().GetResult(); 
-      return app;
+        dbContext.InitializeMongoDb().GetAwaiter().GetResult();
+        return app;
     }
 }

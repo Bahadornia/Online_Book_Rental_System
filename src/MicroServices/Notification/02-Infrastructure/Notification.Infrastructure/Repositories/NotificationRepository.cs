@@ -6,15 +6,18 @@ namespace Notification.Infrastructure.Repositories;
 
 public sealed class NotificationRepository : INotificationRepository
 {
+    private readonly IUnitofWork _unitofWork;
     private readonly NotificationDbContext _dbContext;
 
-    public NotificationRepository(NotificationDbContext dbContext)
+    public NotificationRepository(NotificationDbContext dbContext, IUnitofWork unitofWork)
     {
         _dbContext = dbContext;
+        _unitofWork = unitofWork;
     }
 
     public async Task Add(NotificationEntity notification, CancellationToken ct)
     {
-        await _dbContext.Notifications.InsertOneAsync(_dbContext.Session,notification, null, ct);
+        _dbContext.Notifications.Add(notification);
+        await _unitofWork.SaveChangesAsync(ct);
     }
 }

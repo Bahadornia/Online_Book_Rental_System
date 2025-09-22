@@ -1,37 +1,30 @@
-﻿using MassTransit.MongoDbIntegration;
-using MongoDB.Driver;
+﻿using Microsoft.EntityFrameworkCore;
 using Notification.Domain.Models.Entities;
-using Notification.Infrastructure.Models;
-using System.Threading.Tasks;
+using System.Reflection;
 
 namespace Notification.Infrastructure.Data;
 
-public sealed class NotificationDbContext
+public sealed class NotificationDbContext: DbContext
 {
-    private const string DATABASE_NAME = "NotificationDb";
-    private const string NOTIFICATION_COLLECTION_NAME = "Notificatios";
-    private const string OUT_BOX_COLLECTION_NAME = "OutboxMessages";
-    private readonly IMongoClient _client;
-    private readonly IMongoDatabase _db;
-    private readonly MongoDbContext _context;
+   
 
-    public NotificationDbContext(IMongoClient client, MongoDbContext context)
+    public NotificationDbContext(DbContextOptions<NotificationDbContext> options):base(options)
     {
-        _client = client;
-        _db = _client.GetDatabase(DATABASE_NAME);
-        _context = context;
+       
     }
 
-    public IMongoClient Client => _client;
-    public IMongoDatabase Database => _db;
-    public IClientSessionHandle? Session => _context.Session;
-    public IMongoCollection<NotificationEntity> Notifications => _db.GetCollection<NotificationEntity>(NOTIFICATION_COLLECTION_NAME);
-    public IMongoCollection<OutboxMessage> OutboxMessages => _db.GetCollection<OutboxMessage>(OUT_BOX_COLLECTION_NAME); 
+
+    public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
+    public DbSet<NotificationEntity> Notifications => Set<NotificationEntity>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());  
+    }
 
     public async Task InitializeMongoDb()
     {
-        var proccessedAtIndex = Builders<OutboxMessage>.IndexKeys.Descending(n => n.ProcessedAt);
-        var proccessedAtIndexModel = new CreateIndexModel<OutboxMessage>(proccessedAtIndex);
-        await _db.GetCollection<OutboxMessage>(OUT_BOX_COLLECTION_NAME).Indexes.CreateOneAsync(proccessedAtIndexModel);
+        
     }
 }

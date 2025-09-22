@@ -1,4 +1,4 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.EntityFrameworkCore;
 using Notification.Domain.IRepositories;
 using Notification.Domain.Models.Entities;
 using Notification.Infrastructure.Data;
@@ -8,31 +8,35 @@ namespace Notification.Infrastructure.Repositories;
 internal class OutboxMessgeRepository : IOutboxMessgeRepository
 {
     private readonly NotificationDbContext _dbContext;
+    private readonly IUnitofWork _unitofWork;
 
-    public OutboxMessgeRepository(NotificationDbContext dbContext)
+    public OutboxMessgeRepository(NotificationDbContext dbContext, IUnitofWork unitofWork)
     {
         _dbContext = dbContext;
+        _unitofWork = unitofWork;
     }
 
     public async Task Add(OutboxMessage message, CancellationToken ct)
     {
-        await _dbContext.OutboxMessages.InsertOneAsync(_dbContext.Session, message, null, ct);
+        _dbContext.OutboxMessages.Add(message);
+        await _dbContext.SaveChangesAsync(ct);
     }
 
-    public async Task<IReadOnlyCollection<OutboxMessage>> GetOnProcessedMessages(CancellationToken ct)
+    public async Task<IReadOnlyCollection<OutboxMessage>> GetOnProcessedMessages(CancellationToken ct = default)
     {
-        var builder = Builders<OutboxMessage>.Filter;
-        var filter = builder.Eq(m => m.ProcessedAt, null);
-        var messages =await  _dbContext.OutboxMessages.Find(filter).ToListAsync(ct);
-        return messages;
+        return await _dbContext.OutboxMessages.Where(m=> m.ProcessedAt == null).ToListAsync(ct);
     }
 
-    async Task IOutboxMessgeRepository.UpdateProcessesOn(IReadOnlyCollection<OutboxMessage> messages, CancellationToken ct)
+    public async Task UpdateProcessesOn(IReadOnlyCollection<OutboxMessage> messages, CancellationToken ct = default)
     {
-        var bulkOpts = messages.Select(item => new UpdateOneModel<OutboxMessage>(
-            Builders<OutboxMessage>.Filter.Eq(m => m.Id, item.Id),
-            Builders<OutboxMessage>.Update.Set(m => m.ProcessedAt, DateTime.Now)));
+        var dict = messages.ToDictionary(m => m.Id);
+        var ids= dict.Keys;
+        await _dbContext.OutboxMessages.Where(m => ids.Contains(m.Id)).ExecuteUpdateAsync(s => s.SetProperty(m => m.ProcessedAt , DateTime.UtcNow), ct);
+    }
 
-        await _dbContext.OutboxMessages.BulkWriteAsync(bulkOpts, null, ct);
+    async Task IOutboxMessgeRepository.UpdateProcessesOn(CancellationToken ct)
+    {
+
+        await _dbContext.OutboxMessages.Where(n => n.ProcessedAt == null).ExecuteUpdateAsync(s => s.SetProperty(n => n.ProcessedAt, DateTime.UtcNow), ct);
     }
 }

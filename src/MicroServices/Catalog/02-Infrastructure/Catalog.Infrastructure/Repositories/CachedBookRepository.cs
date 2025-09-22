@@ -62,10 +62,10 @@ namespace Catalog.Infrastructure.Repositories
         }
 
 
-        async Task<IReadOnlyCollection<BookDto>> IBookRepository.SearchBook(BookFilterDto filter, CancellationToken ct)
+        async Task<IReadOnlyCollection<BookDto>> IBookRepository.SearchBook(IQueryable<Book> books, BookFilterDto filter, CancellationToken ct)
         {
            
-                return await _bookRepository.SearchBook(filter, ct);
+                return await _bookRepository.SearchBook(books, filter, ct);
            
           
         }

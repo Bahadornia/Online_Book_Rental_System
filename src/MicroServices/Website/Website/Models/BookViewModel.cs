@@ -11,10 +11,10 @@ namespace Website.Models
         public string Author { get; init; } = default!;
 
         [Required(ErrorMessage = "ناشر الزامی است.")]
-        public string Publisher { get; set; } = default!;
+        public long PublisherId { get; set; } = default!;
 
         [Required(ErrorMessage = "دسته الزامی است.")]
-        public string Category { get; set; } = default!;
+        public long CategoryId { get; set; } = default!;
 
         [Required(ErrorMessage = "شابک الزامی است.")]
         public string ISBN { get; init; }

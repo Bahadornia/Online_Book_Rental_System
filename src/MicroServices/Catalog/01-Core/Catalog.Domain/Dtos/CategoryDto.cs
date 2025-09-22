@@ -1,4 +1,4 @@
 ﻿namespace Catalog.Domain.Dtos;
 
-public record CategoryDto(string Name);
+public record CategoryDto(long Id, string Name);
 

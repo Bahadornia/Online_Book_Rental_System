@@ -2,12 +2,11 @@
 using Catalog.Domain.IRepositories;
 using Catalog.Domain.Models.BookAggregate.Entities;
 using Catalog.Infrastructure.Data;
-using Catalog.Infrastructure.Data.BookAggregate;
+using Framework.Exceptions;
 using MapsterMapper;
-using MongoDB.Bson;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using System.Security.AccessControl;
 using System.Text.RegularExpressions;
 
 namespace Catalog.Infrastructure.Repositories;
@@ -15,27 +14,28 @@ namespace Catalog.Infrastructure.Repositories;
 internal class BookRepository : IBookRepository
 {
     private readonly CatalogDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public BookRepository(CatalogDbContext dbContext, IMapper mapper)
+    public BookRepository(CatalogDbContext dbContext, IMapper mapper, IUnitOfWork unitOfWork)
     {
         _dbContext = dbContext;
         _mapper = mapper;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task AddBook(Book book, CancellationToken ct)
     {
-        var bookData = _mapper.Map<BookData
-            >(book);
-        await _dbContext.Books.InsertOneAsync(_dbContext.Session, bookData, null, ct);
+        _dbContext.Books.Add(book);
+        await _unitOfWork.SaveChangesAsync(ct);
     }
 
     public async Task DeleteBook(long bookId, CancellationToken ct)
     {
-        var builder = Builders<BookData>.Filter;
-        var filter = builder.Eq(b => b.Id, bookId);
-        var book = _dbContext.Books.Find(filter);
-        await _dbContext.Books.DeleteOneAsync(filter, ct);
+        var book = _dbContext.Books.Find(bookId);
+        if (book is null) throw new NotFoundException(bookId, nameof(Book));
+        _dbContext.Books.Remove(book);
+        await _unitOfWork.SaveChangesAsync(ct);
     }
 
     public async Task<AllBooksDto> GetAll(AgGridRequestDto request, CancellationToken ct)
@@ -43,12 +43,10 @@ internal class BookRepository : IBookRepository
         int pageSize = request.EndRow - request.StartRow;
         int pageNumber = request.EndRow / pageSize - 1;
 
-        var builder = Builders<BookData>.Filter;
-        var filter = builder.Empty;
-        var totalCount = await _dbContext.Books.CountDocumentsAsync(filter, null, ct);
-        var rs = await _dbContext.Books.Find(filter)
+        var totalCount = await _dbContext.Books.CountAsync(ct);
+        var rs = await _dbContext.Books.AsNoTracking()
             .Skip(pageNumber)
-            .Limit(pageSize)
+            .Take(pageSize)
             .DynamicSort(request)
             .ToListAsync(ct);
         ;
@@ -72,52 +70,46 @@ internal class BookRepository : IBookRepository
 
     public async Task<BookDto> GetBookById(long id, CancellationToken ct)
     {
-        var filterBuilder = Builders<BookData>.Filter;
-        var filter = filterBuilder.Eq(b => b.Id, id);
-        var book = await _dbContext.Books.Find(filter, null).FirstOrDefaultAsync(ct);
+        var book = await _dbContext.Books.FirstOrDefaultAsync(b=> b.Id == id,ct);
+        if(book is null) throw new NotFoundException(id, nameof(Book));
         return _mapper.Map<BookDto>(book);
     }
 
     public async Task<IReadOnlyCollection<BookDto>> GetBooksByIds(IEnumerable<long> ids, CancellationToken ct)
     {
-        var filterBuilder = Builders<BookData>.Filter;
-        var filter = filterBuilder.In(b => b.Id, ids);
-        var books = await _dbContext.Books.Find(filter, null).ToListAsync(ct);
+        var books = await _dbContext.Books.Where(b=> ids.Contains(b.Id)).ToListAsync(ct);
 
         return _mapper.Map<IReadOnlyCollection<BookDto>>(books);
 
     }
 
-    public async Task<IReadOnlyCollection<BookDto>> SearchBook(BookFilterDto filterDto, CancellationToken ct)
+    public async Task<IReadOnlyCollection<BookDto>> SearchBook(IQueryable<Book> books, BookFilterDto filterDto, CancellationToken ct)
     {
-        var builder = Builders<BookData>.Filter;
-        var filters = new List<FilterDefinition<BookData>>();
+        var query = books.Where(b => true);
+        
         if (!string.IsNullOrWhiteSpace(filterDto.Title))
         {
-            filters.Add(builder.Regex(item => item.Title, new BsonRegularExpression(filterDto.Title, "i")));
+            query = query.Where(b =>b.Title.Contains(filterDto.Title));
         }
         if (!string.IsNullOrWhiteSpace(filterDto.Author))
         {
-            filters.Add(builder.Regex(item => item.Author, new BsonRegularExpression(filterDto.Author, "i")));
+            query = query.Where(b => b.Author.Contains(filterDto.Author));
         }
         if (!string.IsNullOrWhiteSpace(filterDto.Publisher))
         {
-            filters.Add(builder.Regex(item => item.Publisher, new BsonRegularExpression(filterDto.Publisher, "i")));
+            query = query.Where(b => b.Author.Contains(filterDto.Publisher));
         }
         if (!string.IsNullOrWhiteSpace(filterDto.Category))
         {
-            filters.Add(builder.Regex(item => item.Category, new BsonRegularExpression(filterDto.Category, "i")));
+            query = query.Where(b => b.Author.Contains(filterDto.Category));
         }
         if (!string.IsNullOrWhiteSpace(filterDto.ISBN))
         {
-            filters.Add(builder.Regex(item => item.ISBN, new BsonRegularExpression("^" + Regex.Escape(filterDto.ISBN), "i")));
+            query = query.Where(b => b.Author.Contains(filterDto.ISBN));
         }
 
-        var filter = filters.Count != 0 ? builder.Or(
-          filters
-            ) : builder.Empty;
-        var rs = await _dbContext.Books.Find(filter).ToListAsync(ct);
-        return _mapper.Map<IReadOnlyCollection<BookDto>>(rs);
+       
+        return _mapper.Map<IReadOnlyCollection<BookDto>>(books.ToListAsync(ct));
     }
 
     public Task UpdateBook(BookDto book, CancellationToken ct)
@@ -129,35 +121,37 @@ internal class BookRepository : IBookRepository
 
 internal static class SortBook
 {
-    public static IFindFluent<BookData, BookData> DynamicSort(this IFindFluent<BookData, BookData> paginateData, AgGridRequestDto request)
+    public static IQueryable<Book> DynamicSort(this IQueryable<Book> paginateData, AgGridRequestDto request)
     {
         if (request.SortModel is { Count: > 0 } sortModels)
         {
-            var sortDefinition = Builders<BookData>.Sort.Ascending(request.SortModel.First().ColId);
+            var firstExpression = GenerateExpression(sortModels.First());
+            var orderDefinition = paginateData.OrderBy(firstExpression);
             foreach (var sortModel in sortModels)
             {
 
-                ChainSort(ref sortDefinition, sortModel);
+                ChainSort(ref orderDefinition, sortModel);
 
             }
-            return paginateData.Sort(sortDefinition);
+            return orderDefinition;
         }
         return paginateData;
+
     }
 
-    private static void ChainSort(ref SortDefinition<BookData> sortDefinition, AgSortModelDto sortModel)
+    private static void ChainSort(ref IOrderedQueryable<Book> orderDefinition, AgSortModelDto sortModel)
     {
         var exp = GenerateExpression(sortModel);
-        sortDefinition = sortModel.Sort == "asc" ?
-            sortDefinition.Ascending(exp)
-            : sortDefinition.Descending(exp);
+        orderDefinition = sortModel.Sort == "asc" ?
+            orderDefinition.ThenBy(exp)
+            : orderDefinition.ThenByDescending(exp);
     }
 
-    private static Expression<Func<BookData, object>> GenerateExpression(AgSortModelDto sortModel)
+    private static Expression<Func<Book, object>> GenerateExpression(AgSortModelDto sortModel)
     {
-        var param = Expression.Parameter(typeof(BookData), "b");
+        var param = Expression.Parameter(typeof(Book), "b");
         var property = Expression.PropertyOrField(param, sortModel.ColId);
         var convert = Expression.Convert(property, typeof(object));
-        return Expression.Lambda<Func<BookData, object>>(convert, param);
+        return Expression.Lambda<Func<Book, object>>(convert, param);
     }
 }

@@ -2,6 +2,7 @@
 using Catalog.Domain.IRepositories;
 using Catalog.Domain.IServices;
 using Catalog.Domain.Models.BookAggregate.Entities;
+using Catalog.Infrastructure.Data;
 using Framework.CQRS;
 using Framework.Domain;
 using Framework.SnowFlake;
@@ -26,8 +27,17 @@ public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AddBookCommandHandler> _logger;
     private readonly IIntegrationEventPublisher _eventPublisher;
+    private readonly CatalogDbContext _dbContext;
 
-    public AddBookCommandHandler(IBookRepository bookService, IMapper mapper, IFileService fileService, ISnowFlakeService sonowFlakeService, IDomainEventPublisher publisher, ILogger<AddBookCommandHandler> logger, IUnitOfWork unitOfWork, IIntegrationEventPublisher eventPublisher, IPubliserRepository publisherRepository, ICategoryRepository categroyRepository, IPublisherService publisherService, ICategoryService categoryService)
+    public AddBookCommandHandler(
+        IBookRepository bookService, IMapper mapper, IFileService fileService,
+        ISnowFlakeService sonowFlakeService, IDomainEventPublisher publisher,
+        ILogger<AddBookCommandHandler> logger, IUnitOfWork unitOfWork,
+        IIntegrationEventPublisher eventPublisher,
+        IPubliserRepository publisherRepository,
+        ICategoryRepository categroyRepository,
+        IPublisherService publisherService,
+        ICategoryService categoryService, CatalogDbContext dbContext)
     {
         _bookRepository = bookService;
         _mapper = mapper;
@@ -40,6 +50,7 @@ public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
         _categroyRepository = categroyRepository;
         _publisherService = publisherService;
         _categoryService = categoryService;
+        _dbContext = dbContext;
     }
 
     public async Task<Unit> Handle(AddBookCommand command, CancellationToken ct)
@@ -51,12 +62,11 @@ public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
             var fileName = await UplodaImage(bookDto.Id, command.Title, command.Image, command.ContentType, ct);
             bookDto.ImageUrl = fileName;
 
-            var book = Book.Create(bookDto.Id, bookDto.Title, bookDto.Author, bookDto.Publisher, bookDto.Category, bookDto.ISBN, bookDto.Description, bookDto.ImageUrl, bookDto.AvailableCopies);
-
-            await _unitOfWork.BeginTransaction(ct);
+            var book = Book.Create(bookDto.Id, bookDto.Title, bookDto.Author, bookDto.PublisherId, bookDto.CategoryId, bookDto.ISBN, bookDto.Description, bookDto.ImageUrl, bookDto.AvailableCopies);
+            await _dbContext.Database.BeginTransactionAsync(ct);
             await _bookRepository.AddBook(book, ct);
-            await _publisherService.AddIfPublisherNotExists(_unitOfWork.Session, book.Publisher, ct);
-            await _categoryService.AddIfCategoryNotExists(_unitOfWork.Session, book.Category, ct);
+            //await _publisherService.AddIfPublisherNotExists(book.PublisherId, ct);
+            //await _categoryService.AddIfCategoryNotExists(book.Category, ct);
           
             var domainEvents = book.ClearDomainEvents();
             var bookAddedEvent = new BookAddedIntegrationEvent
@@ -69,11 +79,11 @@ public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
 
             _logger.LogAddBook(book.Id.Value);
 
-            await _unitOfWork.CommitTransaction(ct);
+            await _dbContext.Database.CommitTransactionAsync(ct);
         }
         catch (Exception)
         {
-            await _unitOfWork.AbortTransaction(ct);
+            await _dbContext.Database.RollbackTransactionAsync(ct);
             throw;
         }
         return Unit.Value;

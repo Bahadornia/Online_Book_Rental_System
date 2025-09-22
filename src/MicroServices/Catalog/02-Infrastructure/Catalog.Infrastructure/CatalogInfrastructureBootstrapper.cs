@@ -7,12 +7,9 @@ using Framework.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Minio;
-using MongoDB.Driver;
-using SharedKernel.Messaging.Extensions;
 using Catalog.Infrastructure.Extensions;
-using MongoDB.Driver.Core.Configuration;
 using System.Reflection;
-using Microsoft.AspNetCore.Builder;
+using SharedKernel.Messaging.Extensions;
 
 namespace Catalog.Infrastructure;
 
@@ -21,8 +18,6 @@ public static class CatalogInfrastructureBootstrapper
     public static IServiceCollection AddCatalogInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<CatalogDbContext>();
-        services.AddSingleton<IMongoClient>(_ => new MongoClient(configuration.GetConnectionString("Database")));
-        services.AddSingleton(provider => provider.GetRequiredService<IMongoClient>().GetDatabase("CatalogDb"));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IPubliserRepository, PublisherRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -34,7 +29,7 @@ public static class CatalogInfrastructureBootstrapper
         services.Decorate<IPubliserRepository, CachedPublisherRepositroy>();
         services.AddMapsterService(Assembly.GetExecutingAssembly());
         services.AddDomainServices();
-        services.AddMassTransitService(configuration);
+        services.AddMassTransitService<CatalogDbContext>(configuration);
         services.AddMessagingServices();
 
         services.AddMinio(cfg =>

@@ -2,25 +2,25 @@
 using Catalog.Domain.IServices;
 using Catalog.Domain.Models.BookAggregate.Entities;
 using Catalog.Infrastructure.Data;
-using Catalog.Infrastructure.Data.BookAggregate;
-using MongoDB.Driver;
 
 namespace Catalog.Infrastructure.Services;
 
 public sealed class PublisherService : IPublisherService
 {
     private readonly CatalogDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public PublisherService(CatalogDbContext dbContext)
+    public PublisherService(CatalogDbContext dbContext, IUnitOfWork unitOfWork)
     {
         _dbContext = dbContext;
+        _unitOfWork = unitOfWork;
     }
 
-    public async Task AddIfPublisherNotExists(IClientSessionHandle session, string name, CancellationToken ct)
+    public async Task AddIfPublisherNotExists(long id, string name, CancellationToken ct)
     {
-        var filter = Builders<PublisherData>.Filter.Eq(p => p.Name, name);
-        var update = Builders<PublisherData>.Update.SetOnInsert(p => p.Name, name);
+        var publisher = Publisher.Create(id, name);
 
-        var rs = await _dbContext.Publishers.UpdateOneAsync(session, filter, update, new UpdateOptions { IsUpsert = true }, ct);
+        _dbContext.Publishers.Add(publisher);
+        await _unitOfWork.SaveChangesAsync(ct);
     }
 }

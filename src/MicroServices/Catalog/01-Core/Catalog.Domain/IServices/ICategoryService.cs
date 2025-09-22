@@ -1,9 +1,7 @@
-﻿using MongoDB.Driver;
-
-namespace Catalog.Domain.IServices;
+﻿namespace Catalog.Domain.IServices;
 
 public interface ICategoryService
 {
-    Task AddIfCategoryNotExists(IClientSessionHandle session,string name, CancellationToken ct = default);
+    Task AddIfCategoryNotExists(long id, string name, CancellationToken ct = default);
 
 }

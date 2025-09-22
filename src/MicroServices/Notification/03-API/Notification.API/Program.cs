@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Notification.Infrastructure;
+using Notification.Infrastructure.Data;
 using Notification.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddNotificationInfratructureServices(builder.Configuration);
-builder.Services.AddMassTransitService(builder.Configuration);
+builder.Services.AddMassTransitService<NotificationDbContext>(builder.Configuration);
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opt =>
     {

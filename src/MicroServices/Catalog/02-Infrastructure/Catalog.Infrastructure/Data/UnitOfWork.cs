@@ -1,37 +1,19 @@
 ﻿using Catalog.Domain.IRepositories;
-using MassTransit.MongoDbIntegration;
-using MongoDB.Driver;
 
 namespace Catalog.Infrastructure.Data
 {
     internal class UnitOfWork : IUnitOfWork
     {
-        private readonly MongoDbContext _context;
+        private readonly CatalogDbContext _context;
 
-
-        public UnitOfWork(MongoDbContext context)
+        public UnitOfWork(CatalogDbContext context)
         {
             _context = context;
         }
 
-        public IClientSessionHandle Session => _context.Session!;
-
-        public Task AbortTransaction(CancellationToken cancellationToken) => _context.AbortTransaction(cancellationToken);
-
-
-        public Task BeginTransaction(CancellationToken cancellationToken) => _context.BeginTransaction(cancellationToken);
-
-        public Task CommitTransaction(CancellationToken cancellationToken) => _context.CommitTransaction(cancellationToken);
-
-        public void Dispose()
+        public async Task<int> SaveChangesAsync(CancellationToken ct)
         {
-            _context.Dispose();
+            return await _context.SaveChangesAsync(ct);
         }
-
-        public MongoDbCollectionContext<T> GetCollection<T>() => _context.GetCollection<T>();
-
-
-        public Task<IClientSessionHandle> StartSession(CancellationToken cancellationToken) => _context.StartSession(cancellationToken);
-
     }
 }

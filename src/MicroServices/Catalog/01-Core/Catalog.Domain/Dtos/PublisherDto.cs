@@ -1,3 +1,3 @@
 ﻿namespace Catalog.Domain.Dtos;
 
-public sealed record PublisherDto(string Name);
+public sealed record PublisherDto(long Id, string Name);

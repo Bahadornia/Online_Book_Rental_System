@@ -3,6 +3,7 @@ using Notification.Domain.Dtos;
 using Notification.Domain.Enums;
 using Notification.Domain.IRepositories;
 using Notification.Domain.Models.Entities;
+using Notification.Infrastructure.Data;
 using SharedKernel.Messaging.Events;
 using System.Text.Json;
 
@@ -11,14 +12,16 @@ namespace Notification.Infrastructure.Consumers;
 public class OrdersOverDueDatedConsumer : IConsumer<OrdersOverDueDatedIntegrationEvent>
 {
     private readonly IUnitofWork _unitOfWork;
+    private readonly NotificationDbContext _dbContext;
     private readonly INotificationRepository _notificationRepositoy;
     private readonly IOutboxMessgeRepository _outboxMessgeRepository;
 
-    public OrdersOverDueDatedConsumer(IUnitofWork unitOfWork, INotificationRepository repositoy, IOutboxMessgeRepository outboxMessgeRepository)
+    public OrdersOverDueDatedConsumer(IUnitofWork unitOfWork, INotificationRepository repositoy, IOutboxMessgeRepository outboxMessgeRepository, NotificationDbContext dbContext)
     {
         _unitOfWork = unitOfWork;
         _notificationRepositoy = repositoy;
         _outboxMessgeRepository = outboxMessgeRepository;
+        _dbContext = dbContext;
     }
 
     public async Task Consume(ConsumeContext<OrdersOverDueDatedIntegrationEvent> context)
@@ -47,16 +50,16 @@ public class OrdersOverDueDatedConsumer : IConsumer<OrdersOverDueDatedIntegratio
                 };
                 try
                 {
-                    await _unitOfWork.BeginTransaction(ct);
+                    await _dbContext.Database.BeginTransactionAsync(ct);
                     await _notificationRepositoy.Add(notification, ct);
                     await _outboxMessgeRepository.Add(outBoxMessage, ct);
-                    await _unitOfWork.CommitTransaction(ct);
+                    await _dbContext.Database.CommitTransactionAsync(ct);
 
                 }
                 catch (Exception)
                 {
 
-                    await _unitOfWork.AbortTransaction(context.CancellationToken);
+                    await _dbContext.Database.RollbackTransactionAsync(context.CancellationToken);
                 }
                 //await _hubContext.Clients.All.SendOverDuetedOrderNotification(orders);
             }

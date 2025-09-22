@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MongoDB.Driver;
 using Notification.Infrastructure.Consumers;
 
 namespace Notification.Infrastructure.Extensions;
@@ -17,8 +16,8 @@ public static class MassTransitExtensions
         return modelBuilder;
     }
 
-    public static IServiceCollection AddMassTransitService(this IServiceCollection services, IConfiguration configuration)
-
+    public static IServiceCollection AddMassTransitService<T>(this IServiceCollection services, IConfiguration configuration)
+        where T:DbContext
     {
         var rabbitConfig = configuration.GetSection("RabbitMq");
         services.AddMassTransit(x =>
@@ -26,15 +25,12 @@ public static class MassTransitExtensions
              x.AddConsumer<BookAddedConsumer>();
              x.AddConsumer<OrdersOverDueDatedConsumer>();
              x.SetKebabCaseEndpointNameFormatter();
-             x.AddMongoDbOutbox(o =>
+             x.AddEntityFrameworkOutbox<T>(o =>
              {
-                 o.QueryDelay = TimeSpan.FromSeconds(1);
+                 // configure which database lock provider to use (Postgres, SqlServer, or MySql)
+                 o.UseSqlServer();
 
-                 o.ClientFactory(provider => provider.GetRequiredService<IMongoClient>());
-                 o.DatabaseFactory(provider => provider.GetRequiredService<IMongoDatabase>());
-
-                 o.DuplicateDetectionWindow = TimeSpan.FromSeconds(30);
-
+                 // enable the bus outbox
                  o.UseBusOutbox();
              });
              x.UsingRabbitMq((context, cfg) =>

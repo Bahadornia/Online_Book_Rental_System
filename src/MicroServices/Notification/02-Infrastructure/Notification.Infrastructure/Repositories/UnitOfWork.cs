@@ -1,27 +1,19 @@
-﻿using MassTransit.MongoDbIntegration;
-using Notification.Domain.IRepositories;
+﻿using Notification.Domain.IRepositories;
+using Notification.Infrastructure.Data;
 
 namespace Notification.Infrastructure.Repositories;
 
-public sealed class UnitOfWork : IUnitofWork, IDisposable
+public sealed class UnitOfWork : IUnitofWork
 {
-    private readonly MongoDbContext _context;
+    private readonly NotificationDbContext _context;
 
-    public UnitOfWork(MongoDbContext context)
+    public UnitOfWork(NotificationDbContext context)
     {
         _context = context;
     }
 
-    public Task AbortTransaction(CancellationToken ct) => _context.AbortTransaction(ct);
-
-
-    public Task BeginTransaction(CancellationToken ct) => _context.BeginTransaction(ct);
-   
-    public Task CommitTransaction(CancellationToken ct)=> _context.CommitTransaction(ct);
-   
-
-    public void Dispose()
+    public async Task<int> SaveChangesAsync(CancellationToken ct)
     {
-       _context.Dispose();
+        return await _context.SaveChangesAsync(ct);
     }
 }
