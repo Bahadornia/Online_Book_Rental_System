@@ -12,10 +12,10 @@ public class AddBookRq
     public string Author { get; set; } = default!;
 
     [ProtoMember(3)]
-    public string Publisher { get; set; } = default!;
+    public long PublisherId { get; set; } = default!;
 
     [ProtoMember(4)]
-    public string Category { get; set; } = default!;
+    public long CategoryId { get; set; } = default!;
 
     [ProtoMember(5)]
     public string ISBN { get; set; } = default!;

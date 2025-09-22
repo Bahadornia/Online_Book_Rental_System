@@ -3,9 +3,9 @@ using Framework.Exceptions;
 
 namespace Catalog.Domain.Models.BookAggregate.ValueObjects;
 
-public class PublisherId
+public readonly record struct PublisherId
 {
-    public long Value { get; private set; }
+    public long Value { get; init; }
     private PublisherId(long publisherId)
     {
         Value = publisherId;

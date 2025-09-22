@@ -8,8 +8,8 @@ public class Book : AggregateRoot<BookId>
 {
     public string Title { get; set; } = default!;
     public string Author { get; set; } = default!;
-    public long PublisherId { get; set; } = default!;
-    public long CategoryId { get; set; } = default!;
+    public PublisherId PublisherId { get; set; } = default!;
+    public CategoryId CategoryId { get; set; } = default!;
     public ISBN ISBN { get; set; } = default!;
     public string? Description { get; set; }
     public string? ImageUrl { get; set; }

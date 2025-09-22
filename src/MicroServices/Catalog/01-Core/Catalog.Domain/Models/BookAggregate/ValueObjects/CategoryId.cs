@@ -3,9 +3,9 @@ using Framework.Exceptions;
 
 namespace Catalog.Domain.Models.BookAggregate.ValueObjects;
 
-public class CategoryId
+public readonly struct CategoryId
 {
-    public long Value { get; private set; }
+    public long Value { get; init; }
 
     private CategoryId(long categoryId) {
     

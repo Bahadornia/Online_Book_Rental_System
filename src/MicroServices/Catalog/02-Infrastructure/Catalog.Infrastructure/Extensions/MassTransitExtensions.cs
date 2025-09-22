@@ -25,15 +25,19 @@ public static class MassTransitExtensions
              x.SetKebabCaseEndpointNameFormatter();
              x.AddEntityFrameworkOutbox<T>(o =>
              {
-                 // configure which database lock provider to use (Postgres, SqlServer, or MySql)
                  o.UseSqlServer();
-
-                 // enable the bus outbox
                  o.UseBusOutbox();
              });
+             x.UsingRabbitMq((context, cfg) =>
+             {
+                 cfg.Host(rabbitConfig["Host"], h =>
+                 {
+                     h.Username(rabbitConfig["Username"]!);
+                     h.Password(rabbitConfig["Password"]!);
+                 });
 
-
-             x.AddConfigureEndpointsCallback((context, name, cfg) => { cfg.UseEntityFrameworkOutbox<CatalogDbContext>(context); });
+                 cfg.ConfigureEndpoints(context);
+             });
          });
 
         return services;

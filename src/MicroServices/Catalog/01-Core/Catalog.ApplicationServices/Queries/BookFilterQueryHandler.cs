@@ -1,6 +1,7 @@
 ﻿using Catalog.Domain.Dtos;
 using Catalog.Domain.IRepositories;
 using Catalog.Domain.IServices;
+using Catalog.Infrastructure.Data;
 using Framework.CQRS;
 
 namespace Catalog.ApplicationServices.Queries;
@@ -9,17 +10,19 @@ public class BookFilterQueryHandler : IQueryHandler<BookFilterQuery, IReadOnlyCo
 {
     private readonly IBookRepository _bookRepository;
     private readonly IFileService _fileService;
+    private readonly CatalogDbContext _dbContext;
 
-    public BookFilterQueryHandler(IBookRepository bookRepository, IFileService fileService)
+    public BookFilterQueryHandler(IBookRepository bookRepository, IFileService fileService, CatalogDbContext dbContext)
     {
         _bookRepository = bookRepository;
         _fileService = fileService;
+        _dbContext = dbContext;
     }
 
     public async Task<IReadOnlyCollection<BookDto>> Handle(BookFilterQuery request, CancellationToken ct)
     {
         var bookFilterDto = request.BookDto;
-        var rs = await _bookRepository.SearchBook(bookFilterDto, ct);
+        var rs = await _bookRepository.SearchBook(_dbContext.Books,bookFilterDto, ct);
         var tasks = rs.Select(async (item) =>
         {
             var url = await _fileService.GetFileAsync($"thumbnails/{item.ImageUrl}", ct);

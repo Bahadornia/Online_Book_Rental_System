@@ -10,6 +10,7 @@ using Minio;
 using Catalog.Infrastructure.Extensions;
 using System.Reflection;
 using SharedKernel.Messaging.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Infrastructure;
 
@@ -17,7 +18,11 @@ public static class CatalogInfrastructureBootstrapper
 {
     public static IServiceCollection AddCatalogInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<CatalogDbContext>();
+        services.AddMassTransitService<CatalogDbContext>(configuration);
+        services.AddDbContextPool<CatalogDbContext>(opt =>
+        {
+            opt.UseSqlServer(configuration.GetConnectionString("Database"));
+        });
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IPubliserRepository, PublisherRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -29,7 +34,6 @@ public static class CatalogInfrastructureBootstrapper
         services.Decorate<IPubliserRepository, CachedPublisherRepositroy>();
         services.AddMapsterService(Assembly.GetExecutingAssembly());
         services.AddDomainServices();
-        services.AddMassTransitService<CatalogDbContext>(configuration);
         services.AddMessagingServices();
 
         services.AddMinio(cfg =>

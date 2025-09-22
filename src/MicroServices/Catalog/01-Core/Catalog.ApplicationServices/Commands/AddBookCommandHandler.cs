@@ -67,7 +67,7 @@ public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
             await _bookRepository.AddBook(book, ct);
             //await _publisherService.AddIfPublisherNotExists(book.PublisherId, ct);
             //await _categoryService.AddIfCategoryNotExists(book.Category, ct);
-          
+
             var domainEvents = book.ClearDomainEvents();
             var bookAddedEvent = new BookAddedIntegrationEvent
             {
@@ -80,6 +80,7 @@ public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
             _logger.LogAddBook(book.Id.Value);
 
             await _dbContext.Database.CommitTransactionAsync(ct);
+            await _unitOfWork.SaveChangesAsync(ct);
         }
         catch (Exception)
         {

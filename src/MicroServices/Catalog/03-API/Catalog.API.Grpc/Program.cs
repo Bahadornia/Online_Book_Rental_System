@@ -4,6 +4,7 @@ using Catalog.Infrastructure;
 using Framework.Extensions;
 using Catalog.ApplicationServices;
 using Catalog.Infrastructure.Data;
+using SharedKernel.Messaging.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ builder.Services.AddCodeFirstGrpc();
 builder.Services.AddCatalogApplicationServices();
 builder.Services.AddCatalogInfrastructureServices(builder.Configuration);
 builder.Host.AddSerilogService("CatalogApp");
+builder.Services.AddMessagingServices();
 builder.Services.AddRedisServices(builder.Configuration);
 
 
@@ -27,7 +29,6 @@ void Initialize(WebApplication app)
 {
     using var scope = app.Services.CreateScope();
     var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
-    dbContext.InitializeMongoDb().GetAwaiter().GetResult();
 }
 
 app.Run();

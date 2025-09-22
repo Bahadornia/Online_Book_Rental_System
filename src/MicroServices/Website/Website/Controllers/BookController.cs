@@ -8,7 +8,7 @@ using Website.Models;
 
 namespace Website.Controllers;
 
-[Authorize(Roles ="admin")]
+[Authorize(Roles = "admin")]
 public class BookController : Controller
 {
     private readonly IMapper _mapper;
@@ -41,7 +41,7 @@ public class BookController : Controller
     }
 
 
-[HttpPost]
+    [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteBook([FromForm] string bookId, CancellationToken ct)
     {
