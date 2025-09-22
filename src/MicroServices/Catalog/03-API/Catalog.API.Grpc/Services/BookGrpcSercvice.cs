@@ -24,7 +24,7 @@ public class BookGrpcSercvice : IBookGrpcService
     public async Task AddBook(AddBookRq rq, CallContext callContext)
     {
 
-        var command = new AddBookCommand(rq.Title, rq.Author,rq.PubliserName, rq.PublisherId,rq.CategoryName, rq.CategoryId, rq.ISBN, rq.Description, rq.ContentType, rq.AvailableCopies, rq.Image);
+        var command = new AddBookCommand(rq.Title, rq.Author,rq.PublisherName,rq.CategoryName, rq.ISBN, rq.Description, rq.ContentType, rq.AvailableCopies, rq.Image);
         await _mediator.Send(command, callContext.CancellationToken);
     }
 

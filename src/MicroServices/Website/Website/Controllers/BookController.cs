@@ -1,5 +1,6 @@
 ﻿using Catalog.API.Grpc.Client.Logics;
 using Catalog.API.Grpc.Client.Requests;
+using CommunityToolkit.HighPerformance.Helpers;
 using HashidsNet;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -31,17 +32,17 @@ public class BookController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddBook([FromForm] BookViewModel book, CancellationToken ct)
     {
+        int publisherId;
+        int categoryId;
         if (!ModelState.IsValid)
         {
             return View("AddBook", book);
         }
-        var publisherId = _hashIds.Decode(book.PublisherId).First();
-        var categoryId = _hashIds.Decode(book.CategoryId).First();
-        
+
         var addBookRq = _mapper.Map<AddBookRq>(book);
 
-        addBookRq.PublisherId = publisherId;
-        addBookRq.CategoryId = categoryId;
+        addBookRq.PublisherName = book.PublisherName;
+        addBookRq.CategoryName = book.CategoryName;
         await _bookService.AddBook(addBookRq, ct);
         return Redirect("/Home/Index");
     }

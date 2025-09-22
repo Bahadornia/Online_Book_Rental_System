@@ -1,7 +1,9 @@
-﻿namespace Catalog.Domain.IServices;
+﻿using Catalog.Domain.Models.BookAggregate.Entities;
+
+namespace Catalog.Domain.IServices;
 
 public interface ICategoryService
 {
-    Task AddIfCategoryNotExists(string name, CancellationToken ct = default);
+    Task<Category> AddIfCategoryNotExists(string name, CancellationToken ct = default);
 
 }

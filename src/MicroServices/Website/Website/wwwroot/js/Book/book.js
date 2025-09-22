@@ -86,9 +86,8 @@ $("#publishers-select").select2({
             return null;
         }
 
-        // This ensures that if it's not in DB, the typed text itself is returned
         return {
-            id: term,     // <--- use text as id
+            id: term,    
             text: term,
             newTag: true
         };
@@ -127,7 +126,6 @@ $("#publishers-select").select2({
             };
         }
     },
-    tags:true
 
 });
 

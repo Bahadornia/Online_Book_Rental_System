@@ -57,22 +57,20 @@ public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
     {
         var bookDto = _mapper.Map<BookDto>(command);
         var bookId = _sonowFlakeService.CreateId();
-        var publisherId = bookDto.PublisherId;
-        var categoryId = bookDto.CategoryId;
+        var publisherName = bookDto.PublisherName;
+        var categoryName = bookDto.CategoryName;
         await using var transaction = await _dbContext.Database.BeginTransactionAsync(ct);
         try
         {
             var fileName = await UplodaImage(bookDto.Id, command.Title, command.Image, command.ContentType, ct);
             bookDto.ImageUrl = fileName;
 
-            var book = Book.Create(bookId, bookDto.Title, bookDto.Author, bookDto.PublisherId, bookDto.CategoryId, bookDto.ISBN, bookDto.Description, bookDto.ImageUrl, bookDto.AvailableCopies);
+            var publisher = await _publisherService.AddIfPublisherNotExists(bookDto.PublisherName, ct);
+            var category = await _categoryService.AddIfCategoryNotExists(bookDto.CategoryName, ct);
+
+            var book = Book.Create(bookId, bookDto.Title, bookDto.Author, publisher.Id.Value, category.Id.Value, bookDto.ISBN, bookDto.Description, bookDto.ImageUrl, bookDto.AvailableCopies);
             _bookRepository.AddBook(book, ct);
 
-            if (publisherId == 0)
-                await _publisherService.AddIfPublisherNotExists(bookDto.PublisherName, ct);
-
-            if (categoryId == 0)
-                await _categoryService.AddIfCategoryNotExists(bookDto.CategoryName, ct);
 
             var domainEvents = book.ClearDomainEvents();
             var bookAddedEvent = new BookAddedIntegrationEvent
@@ -82,7 +80,6 @@ public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
                 AvailableCopies = book.AvailableCopies,
             };
             await _eventPublisher.Publish<BookAddedIntegrationEvent>(bookAddedEvent, ct);
-
 
             await _unitOfWork.SaveChangesAsync(ct);
             await transaction.CommitAsync(ct);

@@ -95,8 +95,8 @@ internal class BookRepository : IBookRepository
             query = query.Where(b => b.Author.Contains(filterDto.ISBN));
         }
 
-       
-        return _mapper.Map<IReadOnlyCollection<BookDto>>(books.ToListAsync(ct));
+        var result = await query.ToListAsync(ct);
+        return  _mapper.Map<IReadOnlyCollection<BookDto>>(result);
     }
 
     public Task UpdateBook(BookDto book, CancellationToken ct)

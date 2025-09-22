@@ -2,6 +2,6 @@
 
 public sealed class AllBooksDto
 {
-    public IEnumerable<BookDto> Books { get; set; } = [];
+    public IReadOnlyCollection<BookDto> Books { get; set; } = [];
     public long TotalCount { get; set; }
 }

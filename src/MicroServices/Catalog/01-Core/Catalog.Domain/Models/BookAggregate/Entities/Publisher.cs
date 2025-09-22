@@ -5,7 +5,7 @@ namespace Catalog.Domain.Models.BookAggregate.Entities;
 
 public sealed class Publisher: Entity<PublisherId>
 {
-    public string Name { get; set; } = default!;
+    public string Name { get; private set; } = default!;
     public List<Book> Books { get; set; } = [];
 
     private Publisher() { }

@@ -10,15 +10,11 @@ namespace Website.Models
         [Required(ErrorMessage = "نام نویسنده الزامی است.")]
         public string Author { get; init; } = default!;
 
-        [Required(ErrorMessage = "ناشر الزامی است.")]
+        [Required(ErrorMessage = "نام ناشر الزامی است.")]
         public string PublisherName { get; set; } = default!;
 
-        public string PublisherId { get; set; } = default!;
-
-        [Required(ErrorMessage = "دسته الزامی است.")]
+        [Required(ErrorMessage = "نام دسته بندی الزامی است.")]
         public string CategoryName { get; set; } = default!;
-
-        public string CategoryId { get; set; } = default!;
 
         [Required(ErrorMessage = "شابک الزامی است.")]
         public string ISBN { get; init; } = default!;
