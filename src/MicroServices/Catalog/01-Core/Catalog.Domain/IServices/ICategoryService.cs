@@ -2,6 +2,6 @@
 
 public interface ICategoryService
 {
-    Task AddIfCategoryNotExists(long id, string name, CancellationToken ct = default);
+    Task AddIfCategoryNotExists(string name, CancellationToken ct = default);
 
 }

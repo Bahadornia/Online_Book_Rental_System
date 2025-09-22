@@ -35,7 +35,13 @@ public class BookController : Controller
         {
             return View("AddBook", book);
         }
+        var publisherId = _hashIds.Decode(book.PublisherId).First();
+        var categoryId = _hashIds.Decode(book.CategoryId).First();
+        
         var addBookRq = _mapper.Map<AddBookRq>(book);
+
+        addBookRq.PublisherId = publisherId;
+        addBookRq.CategoryId = categoryId;
         await _bookService.AddBook(addBookRq, ct);
         return Redirect("/Home/Index");
     }

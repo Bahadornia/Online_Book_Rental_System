@@ -5,26 +5,26 @@ namespace Catalog.Domain.Models.BookAggregate.ValueObjects;
 
 public readonly record struct PublisherId
 {
-    public long Value { get; init; }
-    private PublisherId(long publisherId)
+    public int Value { get; init; }
+    private PublisherId(int publisherId)
     {
         Value = publisherId;
     }
 
-    public static PublisherId Create(long publisherId)
+    public static PublisherId Create(int publisherId)
     {
         Validate(publisherId);
         return new PublisherId(publisherId);
     }
 
-    private static void Validate(long publisherId)
+    private static void Validate(int publisherId)
     {
         if(publisherId <= 0)
         {
             throw new InvalidIdentifierException(nameof(publisherId));
         }
     }
-    public static implicit operator PublisherId(long publisherId)
+    public static implicit operator PublisherId(int publisherId)
     {
         return Create(publisherId);
     }

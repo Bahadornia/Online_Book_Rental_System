@@ -10,11 +10,10 @@ public sealed class Publisher: Entity<PublisherId>
 
     private Publisher() { }
 
-    public static Publisher Create(long id, string Name)
+    public static Publisher Create(string Name)
     {
         var publisher = new Publisher
         {
-            Id = id,
             Name = Name
         };
         return publisher;

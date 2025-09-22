@@ -22,7 +22,7 @@ namespace Catalog.Infrastructure.Repositories
 
         public async Task Add(PublisherDto dto, CancellationToken ct)
         {
-            var publisher = Publisher.Create(dto.Id, dto.Name);
+            var publisher = Publisher.Create(dto.Name);
             _dbContext.Publishers.Add(publisher);
             await _unitOfWork.SaveChangesAsync(ct);
         }

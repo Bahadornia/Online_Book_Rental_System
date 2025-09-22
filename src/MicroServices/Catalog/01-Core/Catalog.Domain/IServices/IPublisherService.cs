@@ -2,5 +2,5 @@
 
 public interface IPublisherService
 {
-    Task AddIfPublisherNotExists(long id, string name, CancellationToken ct = default);
+    Task AddIfPublisherNotExists(string name, CancellationToken ct = default);
 }

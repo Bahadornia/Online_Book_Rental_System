@@ -95,5 +95,14 @@ namespace Website.Resources {
                 return ResourceManager.GetString("Rejected", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Language.
+        /// </summary>
+        public static string Select_Language {
+            get {
+                return ResourceManager.GetString("Select Language", resourceCulture);
+            }
+        }
     }
 }

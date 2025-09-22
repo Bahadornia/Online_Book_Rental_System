@@ -10,11 +10,10 @@ public sealed class Category: Entity<CategoryId>
 
     private Category() { }
 
-    public static Category Create(long id, string name)
+    public static Category Create(string name)
     {
         return new Category
         {
-            Id = id,
             Name = name,
         };
     }

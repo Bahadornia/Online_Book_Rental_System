@@ -14,28 +14,24 @@ namespace Catalog.Infrastructure.Repositories;
 internal class BookRepository : IBookRepository
 {
     private readonly CatalogDbContext _dbContext;
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
     public BookRepository(CatalogDbContext dbContext, IMapper mapper, IUnitOfWork unitOfWork)
     {
         _dbContext = dbContext;
         _mapper = mapper;
-        _unitOfWork = unitOfWork;
     }
 
-    public async Task AddBook(Book book, CancellationToken ct)
+    public void AddBook(Book book, CancellationToken ct)
     {
         _dbContext.Books.Add(book);
-        await _unitOfWork.SaveChangesAsync(ct);
     }
 
-    public async Task DeleteBook(long bookId, CancellationToken ct)
+    public void DeleteBook(long bookId, CancellationToken ct)
     {
         var book = _dbContext.Books.Find(bookId);
         if (book is null) throw new NotFoundException(bookId, nameof(Book));
         _dbContext.Books.Remove(book);
-        await _unitOfWork.SaveChangesAsync(ct);
     }
 
     public async Task<AllBooksDto> GetAll(AgGridRequestDto request, CancellationToken ct)
@@ -50,15 +46,6 @@ internal class BookRepository : IBookRepository
             .DynamicSort(request)
             .ToListAsync(ct);
         ;
-
-        //if (request.FilterModel is not null &&
-        //   request.SortModel is not null &&
-        //   request.FilterModel.Count == 0 &&
-        //   request.SortModel.Count == 0)
-        //{
-
-
-        //}
 
         var result = new AllBooksDto
         {

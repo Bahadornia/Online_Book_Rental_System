@@ -18,7 +18,7 @@ public sealed class CategoryRepository : ICategoryRepository
 
     public async Task Add(CategoryDto dto, CancellationToken ct)
     {
-        var category = Category.Create(dto.Id, dto.Name);
+        var category = Category.Create(dto.Name);
         _dbContext.Categories.Add(category);
         await _unitOfWork.SaveChangesAsync(ct);
     }

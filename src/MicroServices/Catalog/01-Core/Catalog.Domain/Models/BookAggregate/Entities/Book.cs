@@ -20,7 +20,7 @@ public class Book : AggregateRoot<BookId>
 
     private Book() { }
 
-    public static Book Create(BookId id, string title, string author, long publisherId, long categoryId, ISBN isbn, string desctiption, string image, int availableCopies)
+    public static Book Create(BookId id, string title, string author, int publisherId, int categoryId, ISBN isbn, string desctiption, string image, int availableCopies)
     {
 
         
@@ -40,7 +40,7 @@ public class Book : AggregateRoot<BookId>
         return book;
     }
 
-    public void Update(string title, string author, long publisherId, long categoryId, string isbn, string desctiption, string image, int availableCopies)
+    public void Update(string title, string author, int publisherId, int categoryId, string isbn, string desctiption, string image, int availableCopies)
     {
         Title = title;
         Author = author;

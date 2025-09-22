@@ -11,13 +11,17 @@ namespace Website.Models
         public string Author { get; init; } = default!;
 
         [Required(ErrorMessage = "ناشر الزامی است.")]
-        public long PublisherId { get; set; } = default!;
+        public string PublisherName { get; set; } = default!;
+
+        public string PublisherId { get; set; } = default!;
 
         [Required(ErrorMessage = "دسته الزامی است.")]
-        public long CategoryId { get; set; } = default!;
+        public string CategoryName { get; set; } = default!;
+
+        public string CategoryId { get; set; } = default!;
 
         [Required(ErrorMessage = "شابک الزامی است.")]
-        public string ISBN { get; init; }
+        public string ISBN { get; init; } = default!;
         public string? Description { get; init; }
         public IFormFile ImageFile { get; set; } = default!;
         public string? ImageUrl { get; set; }

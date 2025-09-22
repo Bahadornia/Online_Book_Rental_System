@@ -7,9 +7,11 @@ public record BookDto
     public long Id { get; set; }
     public string Title { get; init; } = default!;
     public string Author { get; init; } = default!;
-    public long PublisherId { get; init; } = default!;
-    public long CategoryId { get; init; } = default!;
-    public string ISBN { get; init; }
+    public int PublisherId { get; init; } = default!;
+    public string PublisherName { get; init; } = default!;
+    public int CategoryId { get; init; } = default!;
+    public string CategoryName { get; init; } = default!;
+    public string ISBN { get; init; } = default!;
     public string Description { get; init; } = default!;
     public string ImageUrl { get; set; } = default!;
     public string ContentType { get; set; } = default!;

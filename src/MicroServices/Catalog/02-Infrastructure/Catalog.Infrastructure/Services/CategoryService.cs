@@ -8,19 +8,15 @@ namespace Catalog.Infrastructure.Services;
 public sealed class CategoryService : ICategoryService
 {
     private readonly CatalogDbContext _dbContext;
-    private readonly IUnitOfWork _unitOfWork;
 
-    public CategoryService(CatalogDbContext catalogDbContext, IUnitOfWork unitOfWork)
+    public CategoryService(CatalogDbContext catalogDbContext)
     {
         _dbContext = catalogDbContext;
-        _unitOfWork = unitOfWork;
     }
 
-    public async Task AddIfCategoryNotExists(long id, string name, CancellationToken ct = default)
+    public async Task AddIfCategoryNotExists(string name, CancellationToken ct)
     {
-        var category = Category.Create(id, name);
-        _dbContext.Categories.Add(category);
-        await _unitOfWork.SaveChangesAsync(ct);
-
+        var category = Category.Create(name);
+        await _dbContext.Categories.AddAsync(category, ct);
     }
 }

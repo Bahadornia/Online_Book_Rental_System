@@ -78,10 +78,30 @@ previewImage = () => {
 }
 
 $("#publishers-select").select2({
+    tags: true,
+    createTag: function (params) {
+        let term = $.trim(params.term);
+
+        if (term === '') {
+            return null;
+        }
+
+        // This ensures that if it's not in DB, the typed text itself is returned
+        return {
+            id: term,     // <--- use text as id
+            text: term,
+            newTag: true
+        };
+    },
     placeholder: "ناشر را انتخاب کنید",
     theme: "bootstrap4",
     minimumResultsForSearch: -1,
-    delay:250,
+    delay: 250,
+    language: {
+        searching: function () {
+            return "در حال جست و جو"
+        }
+    },
     minimumInputLength: 1,
     
     allowClear: false,

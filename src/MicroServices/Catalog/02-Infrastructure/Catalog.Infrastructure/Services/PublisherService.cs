@@ -8,19 +8,16 @@ namespace Catalog.Infrastructure.Services;
 public sealed class PublisherService : IPublisherService
 {
     private readonly CatalogDbContext _dbContext;
-    private readonly IUnitOfWork _unitOfWork;
 
-    public PublisherService(CatalogDbContext dbContext, IUnitOfWork unitOfWork)
+    public PublisherService(CatalogDbContext dbContext)
     {
         _dbContext = dbContext;
-        _unitOfWork = unitOfWork;
     }
 
-    public async Task AddIfPublisherNotExists(long id, string name, CancellationToken ct)
+    public async Task AddIfPublisherNotExists(string name, CancellationToken ct)
     {
-        var publisher = Publisher.Create(id, name);
+        var publisher = Publisher.Create(name);
 
-        _dbContext.Publishers.Add(publisher);
-        await _unitOfWork.SaveChangesAsync(ct);
+        await _dbContext.Publishers.AddAsync(publisher, ct);
     }
 }

@@ -55,36 +55,42 @@ public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
 
     public async Task<Unit> Handle(AddBookCommand command, CancellationToken ct)
     {
+        var bookDto = _mapper.Map<BookDto>(command);
+        var bookId = _sonowFlakeService.CreateId();
+        var publisherId = bookDto.PublisherId;
+        var categoryId = bookDto.CategoryId;
+        await using var transaction = await _dbContext.Database.BeginTransactionAsync(ct);
         try
         {
-            var bookDto = _mapper.Map<BookDto>(command);
-            bookDto.Id = _sonowFlakeService.CreateId();
             var fileName = await UplodaImage(bookDto.Id, command.Title, command.Image, command.ContentType, ct);
             bookDto.ImageUrl = fileName;
 
-            var book = Book.Create(bookDto.Id, bookDto.Title, bookDto.Author, bookDto.PublisherId, bookDto.CategoryId, bookDto.ISBN, bookDto.Description, bookDto.ImageUrl, bookDto.AvailableCopies);
-            await _dbContext.Database.BeginTransactionAsync(ct);
-            await _bookRepository.AddBook(book, ct);
-            //await _publisherService.AddIfPublisherNotExists(book.PublisherId, ct);
-            //await _categoryService.AddIfCategoryNotExists(book.Category, ct);
+            var book = Book.Create(bookId, bookDto.Title, bookDto.Author, bookDto.PublisherId, bookDto.CategoryId, bookDto.ISBN, bookDto.Description, bookDto.ImageUrl, bookDto.AvailableCopies);
+            _bookRepository.AddBook(book, ct);
+
+            if (publisherId == 0)
+                await _publisherService.AddIfPublisherNotExists(bookDto.PublisherName, ct);
+
+            if (categoryId == 0)
+                await _categoryService.AddIfCategoryNotExists(bookDto.CategoryName, ct);
 
             var domainEvents = book.ClearDomainEvents();
             var bookAddedEvent = new BookAddedIntegrationEvent
             {
-                CorrelationId = Guid.NewGuid(),
+                CorrelationId = Guid.CreateVersion7(),
                 BookId = book.Id.Value,
                 AvailableCopies = book.AvailableCopies,
             };
             await _eventPublisher.Publish<BookAddedIntegrationEvent>(bookAddedEvent, ct);
 
-            _logger.LogAddBook(book.Id.Value);
 
-            await _dbContext.Database.CommitTransactionAsync(ct);
             await _unitOfWork.SaveChangesAsync(ct);
+            await transaction.CommitAsync(ct);
+            _logger.LogAddBook(book.Id.Value);
         }
         catch (Exception)
         {
-            await _dbContext.Database.RollbackTransactionAsync(ct);
+            await transaction.RollbackAsync(ct);
             throw;
         }
         return Unit.Value;

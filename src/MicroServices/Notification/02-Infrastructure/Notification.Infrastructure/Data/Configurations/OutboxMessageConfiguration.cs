@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Notification.Domain.Models.Entities;
 
-namespace Notification.Infrastructure.Configurations
+namespace Notification.Infrastructure.Data.Configurations
 {
-    internal class NotificationConfiguration : IEntityTypeConfiguration<OutboxMessage>
+    internal class OutboxMessageConfiguration : IEntityTypeConfiguration<OutboxMessage>
     {
         public void Configure(EntityTypeBuilder<OutboxMessage> builder)
         {

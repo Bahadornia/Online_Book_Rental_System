@@ -5,20 +5,20 @@ namespace Catalog.Domain.Models.BookAggregate.ValueObjects;
 
 public readonly struct CategoryId
 {
-    public long Value { get; init; }
+    public int Value { get; init; }
 
-    private CategoryId(long categoryId) {
+    private CategoryId(int categoryId) {
     
         Value = categoryId;
     }    
 
-    public static CategoryId Create(long categoryId)
+    public static CategoryId Create(int categoryId)
     {
         Validate(categoryId);
         return new CategoryId(categoryId);
     }
 
-    private static void Validate(long categoryId)
+    private static void Validate(int categoryId)
     {
         if (categoryId <= 0) 
         {
@@ -26,7 +26,7 @@ public readonly struct CategoryId
         }
     }
 
-    public static implicit operator CategoryId(long categoryId) {
+    public static implicit operator CategoryId(int categoryId) {
 
         return Create(categoryId);
     }

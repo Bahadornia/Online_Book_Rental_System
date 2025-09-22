@@ -9,8 +9,9 @@ internal class CategoryConfiguration : IEntityTypeConfiguration<Category>
 {
     public void Configure(EntityTypeBuilder<Category> builder)
     {
-        builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id).HasConversion(c => c.Value, c => CategoryId.Create(c));
+        builder.HasKey(c => c.Id);
+        builder.Property(c=> c.Id).HasConversion(c => c.Value, c => CategoryId.Create(c)).UseIdentityColumn();
+        builder.Property(c => c.Name).HasMaxLength(150).IsRequired();
         builder.HasMany(c => c.Books).WithOne(b => b.Category);
     }
 }

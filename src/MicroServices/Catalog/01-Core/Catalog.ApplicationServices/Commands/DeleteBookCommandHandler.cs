@@ -27,22 +27,24 @@ public class DeleteBookCommandHandler : ICommandHandler<DeleteBookCommand>
 
     public async Task<Unit> Handle(DeleteBookCommand request, CancellationToken ct)
     {
-        await _dbContext.Database.BeginTransactionAsync(ct);
-        await _bookRepository.DeleteBook(request.BookId, ct);
-        var bookDeletedEvent = new BookDeletedIntegrationEvent
-        {
-            BookId = request.BookId,
-            CorrelationId = Guid.NewGuid(),
-        };
-        await _eventPublisher.Publish<BookDeletedIntegrationEvent>(bookDeletedEvent, ct);
+        await using var transaction = await  _dbContext.Database.BeginTransactionAsync(ct);
+       
         try
         {
-            await _dbContext.Database.CommitTransactionAsync(ct);
+            _bookRepository.DeleteBook(request.BookId, ct);
+            var bookDeletedEvent = new BookDeletedIntegrationEvent
+            {
+                BookId = request.BookId,
+                CorrelationId = Guid.NewGuid(),
+            };
+            await _eventPublisher.Publish<BookDeletedIntegrationEvent>(bookDeletedEvent, ct);
+            await _unitOfWork.SaveChangesAsync(ct);
+            await transaction.CommitAsync(ct);
         }
         catch (Exception)
         {
 
-            await _dbContext.Database.RollbackTransactionAsync(ct);
+            await transaction.RollbackAsync(ct);
         }
         return Unit.Value;
     }
