@@ -117,10 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ChooseFile" xml:space="preserve">
-    <value>انتخاب فایل</value>
+  <data name="BulkUpload" xml:space="preserve">
+    <value>آپلود گروهی</value>
   </data>
-  <data name="title" xml:space="preserve">
-    <value>عنوان</value>
+  <data name="FileUpload" xml:space="preserve">
+    <value>آپلود فایل</value>
   </data>
 </root>

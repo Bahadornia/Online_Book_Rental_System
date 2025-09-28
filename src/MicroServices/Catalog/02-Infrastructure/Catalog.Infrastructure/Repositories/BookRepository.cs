@@ -2,6 +2,7 @@
 using Catalog.Domain.IRepositories;
 using Catalog.Domain.Models.BookAggregate.Entities;
 using Catalog.Infrastructure.Data;
+using Mapster;
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -22,6 +23,7 @@ internal class BookRepository : IBookRepository
     public void Add(Book book)
     {
         _dbContext.Books.Add(book);
+        
     }
 
     public void Delete(Book book)

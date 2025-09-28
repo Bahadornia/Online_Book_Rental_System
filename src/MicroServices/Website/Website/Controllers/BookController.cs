@@ -61,4 +61,15 @@ public class BookController : Controller
         await _bookService.DeleteBook(deleteBookRq, ct);
         return Ok(bookId);
     }
+    [HttpPost("BulkInsert")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> BulkInsert(BulkInsertViewModel model)
+    {
+        if (!ModelState.IsValid)
+
+        {
+            return View("AddBook", model);
+        }
+        return Ok();
+    }
 }
