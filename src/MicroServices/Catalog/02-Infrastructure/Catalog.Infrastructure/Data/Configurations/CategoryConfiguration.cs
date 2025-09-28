@@ -11,7 +11,6 @@ internal class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {
         builder.HasKey(c => c.Id);
         builder.HasAlternateKey(c => c.Name);
-        builder.Property(c=> c.Id).HasConversion(c => c.Value, c => CategoryId.Create(c)).UseIdentityColumn();
         builder.Property(c => c.Name).HasMaxLength(150).IsRequired();
         builder.HasMany(c => c.Books).WithOne(b => b.Category);
     }

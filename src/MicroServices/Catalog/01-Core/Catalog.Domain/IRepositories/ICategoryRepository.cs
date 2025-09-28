@@ -5,7 +5,7 @@ namespace Catalog.Domain.IRepositories
 {
     public interface ICategoryRepository
     {
-        Task Add(CategoryDto publisher, CancellationToken ct);
-        Task<IReadOnlyCollection<CategoryDto>> GetAll(CancellationToken ct);
+        void Add(CategoryDto publisher);
+        Task<IReadOnlyCollection<Category>> GetAll(string term, CancellationToken ct);
     }
 }

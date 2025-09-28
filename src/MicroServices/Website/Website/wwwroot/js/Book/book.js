@@ -79,19 +79,6 @@ previewImage = () => {
 
 $("#publishers-select").select2({
     tags: true,
-    createTag: function (params) {
-        let term = $.trim(params.term);
-
-        if (term === '') {
-            return null;
-        }
-
-        return {
-            id: term,    
-            text: term,
-            newTag: true
-        };
-    },
     placeholder: "ناشر را انتخاب کنید",
     theme: "bootstrap4",
     minimumResultsForSearch: -1,
@@ -101,9 +88,9 @@ $("#publishers-select").select2({
             return "در حال جست و جو"
         }
     },
-    minimumInputLength: 1,
+    minimumInputLength: 4,
     
-    allowClear: false,
+    allowClear: true,
     ajax: {
         url: "/api/publisher/getAll",
         type: "GET",
@@ -111,7 +98,45 @@ $("#publishers-select").select2({
         data: function (params) {
             var query =
             {
+                term: params.term
+            };
+            return query;
+        },
+        processResults: function (result) {
+            return {
+                results: $.map(result, function (item) {
+                    return {
+                        id: item.name,
+                        text: item.name
+                    };
+                }),
+            };
+        }
+    },
 
+});
+$("#categories-select").select2({
+    tags: true,
+    placeholder: "دسته را انتخاب کنید",
+    theme: "bootstrap4",
+    minimumResultsForSearch: -1,
+    delay: 250,
+    language: {
+        searching: function () {
+            return "در حال جست و جو"
+        }
+    },
+    minimumInputLength: 4,
+    
+    allowClear: true,
+    ajax: {
+        url: "/api/category/getAll",
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        data: function (params) {
+            var query =
+            {
+                term: params.term
             };
             return query;
         },

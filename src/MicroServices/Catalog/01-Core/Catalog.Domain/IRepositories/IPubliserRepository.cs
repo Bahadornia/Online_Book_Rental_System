@@ -5,7 +5,7 @@ namespace Catalog.Domain.IRepositories
 {
     public interface IPubliserRepository
     {
-        Task Add(PublisherDto publisher, CancellationToken ct);
-        Task<IReadOnlyCollection<PublisherDto>> GetAll(CancellationToken ct);
+        void Add(PublisherDto publisher);
+        Task<IReadOnlyCollection<Publisher>> GetAll(string term, CancellationToken ct);
     }
 }

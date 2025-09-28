@@ -8,7 +8,7 @@ namespace Catalog.API.Grpc.Client.Logics;
 public interface IPublisherGrpcService
 {
     [OperationContract]
-    Task<IReadOnlyCollection<GetPublisherRs>> GetPublishers(CallContext context = default);
+    Task<IReadOnlyCollection<GetPublisherRs>> GetPublishers(string term, CallContext context = default);
 }
 
 

@@ -17,25 +17,20 @@ namespace Catalog.ApplicationServices.Commands;
 public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
 {
     private readonly IBookRepository _bookRepository;
-    private readonly IPubliserRepository _publisherRepository;
-    private readonly ICategoryRepository _categroyRepository;
     private readonly IPublisherService _publisherService;
     private readonly ICategoryService _categoryService;
     private readonly IMapper _mapper;
     private readonly IFileService _fileService;
     private readonly ISnowFlakeService _sonowFlakeService;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<AddBookCommandHandler> _logger;
     private readonly IIntegrationEventPublisher _eventPublisher;
     private readonly CatalogDbContext _dbContext;
 
     public AddBookCommandHandler(
         IBookRepository bookService, IMapper mapper, IFileService fileService,
         ISnowFlakeService sonowFlakeService, IDomainEventPublisher publisher,
-        ILogger<AddBookCommandHandler> logger, IUnitOfWork unitOfWork,
+        IUnitOfWork unitOfWork,
         IIntegrationEventPublisher eventPublisher,
-        IPubliserRepository publisherRepository,
-        ICategoryRepository categroyRepository,
         IPublisherService publisherService,
         ICategoryService categoryService, CatalogDbContext dbContext)
     {
@@ -43,11 +38,8 @@ public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
         _mapper = mapper;
         _fileService = fileService;
         _sonowFlakeService = sonowFlakeService;
-        _logger = logger;
         _unitOfWork = unitOfWork;
         _eventPublisher = eventPublisher;
-        _publisherRepository = publisherRepository;
-        _categroyRepository = categroyRepository;
         _publisherService = publisherService;
         _categoryService = categoryService;
         _dbContext = dbContext;
@@ -68,8 +60,8 @@ public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
             var publisher = await _publisherService.AddIfPublisherNotExists(bookDto.PublisherName, ct);
             var category = await _categoryService.AddIfCategoryNotExists(bookDto.CategoryName, ct);
 
-            var book = Book.Create(bookId, bookDto.Title, bookDto.Author, publisher.Id.Value, category.Id.Value, bookDto.ISBN, bookDto.Description, bookDto.ImageUrl, bookDto.AvailableCopies);
-            _bookRepository.AddBook(book, ct);
+            var book = Book.Create(bookId, bookDto.Title, bookDto.Author, publisher, category, bookDto.ISBN, bookDto.Description, bookDto.ImageUrl, bookDto.AvailableCopies);
+            _bookRepository.Add(book);
 
 
             var domainEvents = book.ClearDomainEvents();
@@ -83,7 +75,6 @@ public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
 
             await _unitOfWork.SaveChangesAsync(ct);
             await transaction.CommitAsync(ct);
-            _logger.LogAddBook(book.Id.Value);
         }
         catch (Exception)
         {

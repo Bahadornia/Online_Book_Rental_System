@@ -14,24 +14,24 @@ public class DeleteBookCommandHandler : ICommandHandler<DeleteBookCommand>
     private readonly IIntegrationEventPublisher _eventPublisher;
     private readonly CatalogDbContext _dbContext;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ISnowFlakeService _snowFlakeService;
 
-    public DeleteBookCommandHandler(IBookRepository bookRepository, IUnitOfWork unitOfWork, IIntegrationEventPublisher eventPublisher, ISnowFlakeService snowFlakeService, CatalogDbContext dbContext)
+    public DeleteBookCommandHandler(IBookRepository bookRepository, IUnitOfWork unitOfWork, IIntegrationEventPublisher eventPublisher, CatalogDbContext dbContext)
     {
         _bookRepository = bookRepository;
         _unitOfWork = unitOfWork;
         _eventPublisher = eventPublisher;
-        _snowFlakeService = snowFlakeService;
         _dbContext = dbContext;
     }
 
     public async Task<Unit> Handle(DeleteBookCommand request, CancellationToken ct)
     {
-        await using var transaction = await  _dbContext.Database.BeginTransactionAsync(ct);
-       
+        await using var transaction = await _dbContext.Database.BeginTransactionAsync(ct);
+
         try
         {
-            _bookRepository.DeleteBook(request.BookId, ct);
+            var book = await _bookRepository.GetById(request.BookId, ct);
+            if (book is null) return Unit.Value;
+            _bookRepository.Delete(book);
             var bookDeletedEvent = new BookDeletedIntegrationEvent
             {
                 BookId = request.BookId,

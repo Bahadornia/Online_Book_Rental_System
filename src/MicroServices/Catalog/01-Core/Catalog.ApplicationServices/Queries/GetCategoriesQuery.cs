@@ -3,4 +3,4 @@ using Framework.CQRS;
 
 namespace Catalog.ApplicationServices.Queries;
 
-public record GetPublishersQuery(string Term): IQuery<IReadOnlyCollection<PublisherDto>>;
+public record class GetCategoriesQuery(string Term) :IQuery<IReadOnlyCollection<CategoryDto>>;

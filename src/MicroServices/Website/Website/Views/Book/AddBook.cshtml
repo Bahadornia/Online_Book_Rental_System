@@ -34,7 +34,8 @@
             <div class="row mb-2">
                 <div class="col-12 col-md-4">
                     <label for="category">دسته</label>
-                    <input id="category" type="text" asp-for="CategoryName" class="form-control" value="" />
+                <select asp-for="CategoryName" class="form-control" id="categories-select">
+                </select>
                     <span asp-validation-for="CategoryName"></span>
                 </div>
                 <div class="col-12 col-md-4">
@@ -83,5 +84,5 @@
 @await Html.PartialAsync("_DeleteBook")
 
 @section Scripts {
-    <script src="~/js/Book/book.min.js" defer></script>
+    <script src="~/js/Book/book.js" defer></script>
 }

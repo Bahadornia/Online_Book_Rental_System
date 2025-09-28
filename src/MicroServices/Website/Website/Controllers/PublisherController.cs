@@ -18,9 +18,9 @@ namespace Website.Controllers
         }
 
         [HttpGet("getAll")]
-        public async Task<IActionResult> GetAll(CancellationToken ct)
+        public async Task<IActionResult> GetAll(string term,CancellationToken ct)
         {
-            var publishers = await _publisherService.GetPublishers(ct);
+            var publishers = await _publisherService.GetPublishers(term, ct);
             publishers.Select(p => new
             {
                 Id = _hashId.EncodeLong(p.Id),

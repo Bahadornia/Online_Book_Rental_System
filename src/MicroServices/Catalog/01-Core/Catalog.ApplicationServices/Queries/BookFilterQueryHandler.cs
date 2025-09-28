@@ -22,7 +22,7 @@ public class BookFilterQueryHandler : IQueryHandler<BookFilterQuery, IReadOnlyCo
     public async Task<IReadOnlyCollection<BookDto>> Handle(BookFilterQuery request, CancellationToken ct)
     {
         var bookFilterDto = request.BookDto;
-        var rs = await _bookRepository.SearchBook(_dbContext.Books,bookFilterDto, ct);
+        var rs = await _bookRepository.Search(_dbContext.Books,bookFilterDto, ct);
         var tasks = rs.Select(async (item) =>
         {
             var url = await _fileService.GetFileAsync($"thumbnails/{item.ImageUrl}", ct);

@@ -75,7 +75,7 @@ public class FileService : IFileService
                 .WithObject(fileName));
             return url;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             throw;
         }

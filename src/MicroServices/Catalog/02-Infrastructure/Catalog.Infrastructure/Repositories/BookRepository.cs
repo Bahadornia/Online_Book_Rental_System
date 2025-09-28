@@ -2,12 +2,9 @@
 using Catalog.Domain.IRepositories;
 using Catalog.Domain.Models.BookAggregate.Entities;
 using Catalog.Infrastructure.Data;
-using Framework.Exceptions;
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using System.Security.AccessControl;
-using System.Text.RegularExpressions;
 
 namespace Catalog.Infrastructure.Repositories;
 
@@ -22,15 +19,13 @@ internal class BookRepository : IBookRepository
         _mapper = mapper;
     }
 
-    public void AddBook(Book book, CancellationToken ct)
+    public void Add(Book book)
     {
         _dbContext.Books.Add(book);
     }
 
-    public void DeleteBook(long bookId, CancellationToken ct)
+    public void Delete(Book book)
     {
-        var book = _dbContext.Books.Find(bookId);
-        if (book is null) throw new NotFoundException(bookId, nameof(Book));
         _dbContext.Books.Remove(book);
     }
 
@@ -55,28 +50,25 @@ internal class BookRepository : IBookRepository
         return result;
     }
 
-    public async Task<BookDto> GetBookById(long id, CancellationToken ct)
+    public async Task<Book> GetById(long id, CancellationToken ct)
     {
-        var book = await _dbContext.Books.FirstOrDefaultAsync(b=> b.Id == id,ct);
-        if(book is null) throw new NotFoundException(id, nameof(Book));
-        return _mapper.Map<BookDto>(book);
+        var book = await _dbContext.Books.FirstOrDefaultAsync(b => b.Id == id, ct);
+        return book;
     }
 
-    public async Task<IReadOnlyCollection<BookDto>> GetBooksByIds(IEnumerable<long> ids, CancellationToken ct)
+    public async Task<IReadOnlyCollection<Book>> GetByIds(IEnumerable<long> ids, CancellationToken ct)
     {
-        var books = await _dbContext.Books.Where(b=> ids.Contains(b.Id)).ToListAsync(ct);
-
-        return _mapper.Map<IReadOnlyCollection<BookDto>>(books);
-
+        var books = await _dbContext.Books.Where(b => ids.Contains(b.Id)).ToListAsync(ct);
+        return books;
     }
 
-    public async Task<IReadOnlyCollection<BookDto>> SearchBook(IQueryable<Book> books, BookFilterDto filterDto, CancellationToken ct)
+    public async Task<IReadOnlyCollection<BookDto>> Search(IQueryable<Book> books, BookFilterDto filterDto, CancellationToken ct)
     {
         var query = books.Where(b => true);
-        
+
         if (!string.IsNullOrWhiteSpace(filterDto.Title))
         {
-            query = query.Where(b =>b.Title.Contains(filterDto.Title));
+            query = query.Where(b => b.Title.Contains(filterDto.Title));
         }
         if (!string.IsNullOrWhiteSpace(filterDto.Author))
         {
@@ -96,10 +88,10 @@ internal class BookRepository : IBookRepository
         }
 
         var result = await query.ToListAsync(ct);
-        return  _mapper.Map<IReadOnlyCollection<BookDto>>(result);
+        return _mapper.Map<IReadOnlyCollection<BookDto>>(result);
     }
 
-    public Task UpdateBook(BookDto book, CancellationToken ct)
+    public Task Update(BookDto book, CancellationToken ct)
     {
         throw new NotImplementedException();
     }

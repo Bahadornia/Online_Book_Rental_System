@@ -8,7 +8,6 @@ namespace Catalog.ApplicationServices.Queries;
 public class GetAllBookQueryHandler : IQueryHandler<GetAllBookQuery, AllBooksDto>
 {
     private readonly IBookRepository _bookRepository;
-    private readonly IBookService _bookService;
     private readonly IFileService _fileService;
 
     public GetAllBookQueryHandler(IBookRepository bookRepository, IFileService fileService)

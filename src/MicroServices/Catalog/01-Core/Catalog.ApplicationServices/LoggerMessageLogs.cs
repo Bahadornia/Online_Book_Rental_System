@@ -23,12 +23,21 @@ public static partial class LoggerMessageLogs
         LogCommandsAfterCritical(logger, dateTime, elapsed);
     }
 
-    [LoggerMessage(EventId = 100, Level = LogLevel.Information, Message = "Book Added in date: {Date} with id: {Id}")]
+    [LoggerMessage(EventId = 1002, Level = LogLevel.Information, Message = "Book is Added in date: {Date} with id: {Id}")]
     private static partial void LogAddBook(ILogger logger, DateTime date, long id);
 
     public static void LogAddBook(this ILogger logger, long id)
     {
         var dateTime = DateTime.UtcNow;
         LogAddBook(logger, dateTime, id);
+    }
+
+    [LoggerMessage(EventId = 1002, Level = LogLevel.Information, Message = "Book is Deleted in date: {Date} with id: {Id}")]
+    private static partial void LogDeleteBook(ILogger logger, DateTime date, long id);
+
+    public static void LogDeleteBook(this ILogger logger, long id)
+    {
+        var dateTime = DateTime.UtcNow;
+        LogDeleteBook(logger, dateTime, id);
     }
 }

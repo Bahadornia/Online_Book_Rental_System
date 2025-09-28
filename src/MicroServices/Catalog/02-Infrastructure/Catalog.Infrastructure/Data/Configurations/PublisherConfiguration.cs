@@ -11,8 +11,7 @@ internal sealed class PublisherConfiguration : IEntityTypeConfiguration<Publishe
     {
         builder.HasKey(p => p.Id);
         builder.HasAlternateKey(p => p.Name);
-        builder.Property(p => p.Id).HasConversion(p => p.Value, id => PublisherId.Create(id)).UseIdentityColumn();
         builder.Property(p => p.Name).HasMaxLength(150).IsRequired();
-        builder.HasMany(p => p.Books).WithOne(b => b.Publiser);
+        builder.HasMany(p => p.Books).WithOne(b => b.Publisher);
     }
 }

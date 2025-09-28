@@ -123,4 +123,15 @@ body {
     left: 0 !important;
 }
 
+.select2-container--bootstrap4 .select2-selection__clear{
+    padding: 0 !important;
+    height:1.2em !important;
+    width:1.2em !important;
+    margin-left: 0.3em;
+    margin-top:0.5em !important;
+    display:flex;
+    align-items:center;
+    justify-content:center
+}
+
 /*------------------------------*/

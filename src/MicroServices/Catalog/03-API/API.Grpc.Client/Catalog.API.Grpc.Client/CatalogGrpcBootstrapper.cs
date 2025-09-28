@@ -40,6 +40,11 @@ public static class CatalogGrpcBootstrapper
             var client = channel.CreateGrpcService<IPublisherGrpcService>();
             return client;
         });
+        services.AddSingleton(p =>
+        {
+            var client = channel.CreateGrpcService<ICategoryService>();
+            return client;
+        });
         return services;
     }
 }

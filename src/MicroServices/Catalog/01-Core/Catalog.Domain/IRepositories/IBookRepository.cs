@@ -5,11 +5,11 @@ namespace Catalog.Domain.IRepositories;
 
 public interface IBookRepository
 {
-    void AddBook(Book book, CancellationToken ct);
-    Task UpdateBook(BookDto book, CancellationToken ct);
-    void DeleteBook(long bookId, CancellationToken ct);
-    Task<IReadOnlyCollection<BookDto>> SearchBook(IQueryable<Book> books, BookFilterDto filter,  CancellationToken ct);
-    Task<BookDto> GetBookById(long id, CancellationToken ct);
+    void Add(Book book);
+    Task Update(BookDto book, CancellationToken ct);
+    void Delete(Book book);
+    Task<IReadOnlyCollection<BookDto>> Search(IQueryable<Book> books, BookFilterDto filter,  CancellationToken ct);
+    Task<Book> GetById(long id, CancellationToken ct);
     Task<AllBooksDto> GetAll(AgGridRequestDto request,CancellationToken ct);
-    Task<IReadOnlyCollection<BookDto>> GetBooksByIds(IEnumerable<long> ids, CancellationToken ct);
+    Task<IReadOnlyCollection<Book>> GetByIds(IEnumerable<long> ids, CancellationToken ct);
 }

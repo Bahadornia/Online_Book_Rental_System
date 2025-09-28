@@ -17,10 +17,13 @@ public sealed class CategoryService : ICategoryService
 
     public async Task<Category> AddIfCategoryNotExists(string name, CancellationToken ct)
     {
-        var foundedCategory = await _dbContext.Categories.FirstOrDefaultAsync(c => c.Name.Equals(name), ct);
+        var foundedCategory = await _dbContext.Categories.FirstOrDefaultAsync(c => c.Name.Contains(name), ct);
         if (foundedCategory is null)
         {
-            var category = Category.Create(name);
+            var category = new Category
+            {
+                Name = name,
+            };
             await _dbContext.Categories.AddAsync(category, ct);
             return category;
         }

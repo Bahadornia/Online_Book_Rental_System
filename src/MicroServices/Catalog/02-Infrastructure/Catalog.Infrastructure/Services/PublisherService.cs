@@ -17,10 +17,13 @@ public sealed class PublisherService : IPublisherService
 
     public async Task<Publisher> AddIfPublisherNotExists(string name, CancellationToken ct)
     {
-        var foundedPublisher = await _dbContext.Publishers.FirstOrDefaultAsync(x => x.Name.Equals(name), ct);
+        var foundedPublisher = await _dbContext.Publishers.FirstOrDefaultAsync(x => x.Name.Contains(name), ct);
         if (foundedPublisher is null)
         {
-            var publisher = Publisher.Create(name);
+            var publisher = new Publisher
+            {
+                Name = name,
+            };
             await _dbContext.Publishers.AddAsync(publisher, ct);
             return publisher;
         }

@@ -10,27 +10,25 @@ namespace Catalog.Infrastructure.Repositories
     internal class PublisherRepository : IPubliserRepository
     {
         private readonly CatalogDbContext _dbContext;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public PublisherRepository(CatalogDbContext dbContext, IMapper mapper, IUnitOfWork unitOfWork)
+        public PublisherRepository(CatalogDbContext dbContext)
         {
             _dbContext = dbContext;
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task Add(PublisherDto dto, CancellationToken ct)
+        public void Add(PublisherDto dto)
         {
-            var publisher = Publisher.Create(dto.Name);
+            var publisher = new Publisher
+            {
+                Name = dto.Name,
+            };
             _dbContext.Publishers.Add(publisher);
-            await _unitOfWork.SaveChangesAsync(ct);
         }
 
-        async Task<IReadOnlyCollection<PublisherDto>> IPubliserRepository.GetAll(CancellationToken ct)
+        async Task<IReadOnlyCollection<Publisher>> IPubliserRepository.GetAll(string term, CancellationToken ct)
         {
-            var publishers = _dbContext.Publishers.AsNoTracking().ToListAsync(ct);
-            return _mapper.Map<IReadOnlyCollection<PublisherDto>>(publishers);
+            var publishers = await _dbContext.Publishers.Where(p => p.Name.Contains(term)).AsNoTracking().ToListAsync(ct);
+            return publishers.AsReadOnly();
         }
     }
 }

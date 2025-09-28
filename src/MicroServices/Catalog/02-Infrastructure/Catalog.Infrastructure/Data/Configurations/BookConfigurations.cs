@@ -13,7 +13,7 @@ internal class BookConfigurations : IEntityTypeConfiguration<Book>
         builder.Property(b => b.Id).HasConversion(b => b.Value, b => BookId.Create(b));
         builder.Property(b => b.ISBN).HasConversion(b => b.Value, b => ISBN.Create(b));
         builder.HasOne(b => b.Category).WithMany(c => c.Books).HasForeignKey(b=>b.CategoryId);
-        builder.HasOne(b => b.Publiser).WithMany(p => p.Books).HasForeignKey(b=> b.PublisherId);
+        builder.HasOne(b => b.Publisher).WithMany(p => p.Books).HasForeignKey(b=> b.PublisherId);
 
     }
 }

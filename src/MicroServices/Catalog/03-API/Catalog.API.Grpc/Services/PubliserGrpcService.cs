@@ -18,9 +18,9 @@ namespace Catalog.API.Grpc.Services
             _mapper = mapper;
         }
 
-        public async Task<IReadOnlyCollection<GetPublisherRs>> GetPublishers(CallContext context)
+        public async Task<IReadOnlyCollection<GetPublisherRs>> GetPublishers(string term, CallContext context)
         {
-            var query = new GetPublishersQuery();
+            var query = new GetPublishersQuery(term);
             var rs = await _mediator.Send(query, context.CancellationToken);
             return _mapper.Map<IReadOnlyCollection<GetPublisherRs>>(rs);
         }
